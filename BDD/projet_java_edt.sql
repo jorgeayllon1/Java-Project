@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  Dim 17 mai 2020 à 18:49
+-- Généré le :  lun. 18 mai 2020 à 13:54
 -- Version du serveur :  5.7.26
 -- Version de PHP :  7.2.18
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `cours` (
   `id` int(100) NOT NULL AUTO_INCREMENT,
   `nom` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `cours`
@@ -47,7 +47,9 @@ INSERT INTO `cours` (`id`, `nom`) VALUES
 (5, 'C++ POO'),
 (6, 'Systèmes bouclés'),
 (7, 'Electromagnetisme'),
-(8, 'Algebre lineaire');
+(8, 'Algebre lineaire'),
+(9, 'C# '),
+(10, 'Ondes electromagnetiques');
 
 -- --------------------------------------------------------
 
@@ -92,7 +94,9 @@ CREATE TABLE IF NOT EXISTS `etudiant` (
 
 INSERT INTO `etudiant` (`id_utilisateur`, `numero`, `id_groupe`) VALUES
 (4, '777', 1),
-(5, '111', 1);
+(5, '111', 1),
+(7, '123', 3),
+(8, '321', 4);
 
 -- --------------------------------------------------------
 
@@ -157,7 +161,7 @@ CREATE TABLE IF NOT EXISTS `salle` (
   `id_site` int(100) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_site` (`id_site`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `salle`
@@ -165,7 +169,10 @@ CREATE TABLE IF NOT EXISTS `salle` (
 
 INSERT INTO `salle` (`id`, `nom`, `capacite`, `id_site`) VALUES
 (1, '445', 20, 2),
-(2, '211', 20, 1);
+(2, '211', 20, 1),
+(3, '446', 20, 2),
+(4, '324', 20, 3),
+(5, '421', 20, 4);
 
 -- --------------------------------------------------------
 
@@ -292,7 +299,7 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
   `prenom` tinytext NOT NULL,
   `droit` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `utilisateur`
@@ -304,7 +311,11 @@ INSERT INTO `utilisateur` (`id`, `email`, `passwd`, `nom`, `prenom`, `droit`) VA
 (3, 'profinfo@mail.com', 'profinfomdp', 'profinfo_nom', 'profinfo_prenom', 3),
 (4, 'wangdavid@mail.com', 'wangdavid', 'wang', 'david', 4),
 (5, 'ayllonjorge@mail.com', 'ayllonjorge', 'ayllon', 'jorge', 4),
-(6, 'beaujoistheo@mail.com', 'beaujoistheo', 'beaujois', 'theo', 4);
+(6, 'beaujoistheo@mail.com', 'beaujoistheo', 'beaujois', 'theo', 4),
+(7, 'eleve1@mail.com', 'eleve1', 'eleve1_nom', 'eleve1_prenom', 4),
+(8, 'eleve2@mail.com', 'eleve2', 'eleve2_nom', 'eleve2_prenom', 4),
+(9, 'profmaths@mail.com', 'profmaths', 'profmaths_nom', 'profmaths_prenom', 3),
+(10, 'profelec@mail.com', 'profelec', 'profelec_nom', 'profelec_prenom', 3);
 
 --
 -- Contraintes pour les tables déchargées
