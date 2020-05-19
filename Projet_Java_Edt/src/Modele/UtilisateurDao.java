@@ -29,16 +29,20 @@ public class UtilisateurDao extends DAO<Utilisateur> {
         {
              try
             {
-                ArrayList<String> liste;
+                ArrayList<ArrayList<String>> liste;
                 this.maconnexion = new Connexion("projet_java_edt","root","");
         
-                liste = this.maconnexion.remplirChampsTable("utilisateur");
-                for(String liste1 : liste)
+                liste = this.maconnexion.remplirChampsRequete(" SELECT* FROM utilisateur");
+                for(int i=0 ; i<liste.size() ; i++)
                 {
-                    System.out.println(liste);
+                    for(int j=0; j<4;j++)
+                    {
+                        user = new Utilisateur(id, liste.get(i).get(j), liste.get(i).get(j), liste.get(i).get(j));
+                    }
+                    
                 }
                 
-                
+
             }
             catch(ClassNotFoundException cnfe)
             {
@@ -59,6 +63,7 @@ public class UtilisateurDao extends DAO<Utilisateur> {
     
     public void afficherChampTable()
     {
+        System.out.println("Affichage des champs de la table : ");
         try
         {
              try
@@ -71,8 +76,7 @@ public class UtilisateurDao extends DAO<Utilisateur> {
                 {
                     System.out.println(liste);
                 }
-                
-                
+ 
             }
             catch(ClassNotFoundException cnfe)
             {
@@ -86,4 +90,41 @@ public class UtilisateurDao extends DAO<Utilisateur> {
                 e.printStackTrace();
         }
     }
+    
+    public void afficherDonnees()
+    {
+        System.out.println("Affichage des données de la table selon requete : ");
+        try
+        {
+             try
+            {
+                ArrayList<ArrayList<String>> liste;
+                this.maconnexion = new Connexion("projet_java_edt","root","");
+        
+                liste = this.maconnexion.remplirChampsRequete(" SELECT nom FROM utilisateur");
+                
+                    System.out.println(liste);
+                    
+                    //System.out.println(liste.size());
+                
+            }
+            catch(ClassNotFoundException cnfe)
+            {
+                    System.out.println("Connexion echouee : probleme de classe");
+                    cnfe.printStackTrace();
+            }
+        }
+        catch(SQLException e) 
+        {
+                System.out.println("Connexion echouee : probleme SQL");
+                e.printStackTrace();
+        }
+        
+        
+    }
+    
+    public void create(Utilisateur user){}
+    
+    public void delete(Utilisateur user){}
+    
 }

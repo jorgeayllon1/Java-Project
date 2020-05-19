@@ -11,6 +11,7 @@ package Modele;
  */
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * 
@@ -35,7 +36,7 @@ public class Connexion {
     /**
      * ArrayList public pour les requêtes de sélection
      */
-    public ArrayList<String> requetes = new ArrayList<>();
+    public ArrayList<ArrayList<String>> requetes = new ArrayList<ArrayList<String>>();
     /**
      * ArrayList public pour les requêtes de MAJ
      */
@@ -81,9 +82,9 @@ public class Connexion {
      *
      * @param requete
      */
-    public void ajouterRequete(String requete) {
+    /*public void ajouterRequete(String requete) {
         requetes.add(requete);
-    }
+    }*/
 
     /**
      * Méthode qui ajoute la requete de MAJ en parametre dans son
@@ -121,8 +122,7 @@ public class Connexion {
             champs = champs + " " + rsetMeta.getColumnLabel(i + 1);
         }
 
-        // ajouter un "\n" à la ligne des champs
-        champs = champs + "\n";
+        
 
         // ajouter les champs de la ligne dans l'ArrayList
         liste.add(champs);
@@ -146,26 +146,35 @@ public class Connexion {
 
         // calcul du nombre de colonnes du resultat
         int nbColonne = rsetMeta.getColumnCount();
-
         // creation d'une ArrayList de String
-        ArrayList<String> liste;
-        liste = new ArrayList<>();
+        ArrayList<ArrayList<String>> liste =new ArrayList<ArrayList<String>>();;
 
+        
+        ArrayList<String> temp = new ArrayList<String>();
+
+        int j=0;
         // tant qu'il reste une ligne 
         while (rset.next()) {
-            String champs;
-            champs = rset.getString(1); // ajouter premier champ
+            String champs="";
+            //champs = rset.getString(1); // ajouter premier champ
 
             // Concatener les champs de la ligne separes par ,
-            for (int i = 1; i < nbColonne; i++) {
-                champs = champs + "," + rset.getString(i + 1);
-            }
-
-            // ajouter un "\n" à la ligne des champs
-            champs = champs + "\n";
-
-            // ajouter les champs de la ligne dans l'ArrayList
-            liste.add(champs);
+            for (int i = 1; i < nbColonne+1; i++) 
+            {
+                //champs = champs + "," + rset.getString(i + 1);
+                champs =  rset.getString(i); 
+                temp.add(champs);
+                //liste.add(new ArrayList<String>());
+                //liste.get(i-1).add(champs);
+ 
+            }            
+            liste.add(new ArrayList<String>());            
+            for(int k=0 ; k<temp.size() ; k++)
+            {
+                liste.get(j).add(k,temp.get(k));
+            }        
+            j++;
+            temp.clear();
         }
 
         // Retourner l'ArrayList

@@ -6,6 +6,7 @@
 package projet_java_edt;
 import Modele.*;
 
+
 /**
  *
  * @author Wang David
@@ -20,6 +21,15 @@ public class Projet_Java_Edt {
         
         UtilisateurDao user = new UtilisateurDao();
         user.afficherChampTable();
+        user.afficherDonnees();
+        
+       /* DAO<Utilisateur> userDao = new UtilisateurDao();
+        
+        for(int i=0; i<3;i++)
+        {
+            Utilisateur user = userDao.find(i);
+            System.out.println(user.getID() + user.getNom() + user.getPrenom());
+        }*/
         
         
     }

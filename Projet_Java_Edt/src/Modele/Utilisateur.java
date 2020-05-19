@@ -12,12 +12,15 @@ package Modele;
 public class Utilisateur {
     
     private int id=0;
+    private String email="";
     private String nom="";
     private String prenom="";
+    private int droit=0;
     
-    public Utilisateur(int id, String nom, String prenom)
+    public Utilisateur(int id,String email,String nom, String prenom)
     {
         this.id=id;
+        this.email=email;
         this.nom=nom;
         this.prenom=prenom;
     
@@ -28,6 +31,21 @@ public class Utilisateur {
     public String getNom()
     {
         return this.nom;
+    }
+    
+    public String getMail()
+    {
+        return this.email;
+    }
+    
+    public String getPrenom()
+    {
+        return this.prenom;
+    }
+    
+    public int getID()
+    {
+        return this.id;
     }
     
 }
