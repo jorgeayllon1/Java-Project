@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package projet_java_edt;
+import Modele.*;
 
 /**
  *
@@ -16,6 +17,11 @@ public class Projet_Java_Edt {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        
+        UtilisateurDao user = new UtilisateurDao();
+        user.afficherChampTable();
+        
+        
     }
     
 }
