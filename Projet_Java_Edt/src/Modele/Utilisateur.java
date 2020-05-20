@@ -13,14 +13,17 @@ public class Utilisateur {
     
     private int id=0;
     private String email="";
+    private String mdp="";
     private String nom="";
     private String prenom="";
     private int droit=0;
     
-    public Utilisateur(int id,String email,String nom, String prenom)
+    
+    public Utilisateur(int id,String mdp, String email,String nom, String prenom)
     {
         this.id=id;
         this.email=email;
+        this.mdp=mdp;
         this.nom=nom;
         this.prenom=prenom;
     

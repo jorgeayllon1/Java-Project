@@ -5,6 +5,7 @@
  */
 package projet_java_edt;
 import Modele.*;
+import java.sql.*;
 
 
 /**
@@ -18,18 +19,25 @@ public class Projet_Java_Edt {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        
-        UtilisateurDao user = new UtilisateurDao();
-        user.afficherChampTable();
-        user.afficherDonnees();
-        
-       /* DAO<Utilisateur> userDao = new UtilisateurDao();
-        
-        for(int i=0; i<3;i++)
+ 
+        DAO<Utilisateur> userDao = new UtilisateurDao();
+           
+        for(int i=1; i<11;i++)
         {
             Utilisateur user = userDao.find(i);
-            System.out.println(user.getID() + user.getNom() + user.getPrenom());
-        }*/
+            System.out.println("id: " + user.getID() + " email: " + user.getMail() +" nom: " + user.getNom() + " prenom: " + user.getPrenom());
+            
+        }
+        userDao.afficherChampTable("utilisateur");
+        
+        
+        DAO<Cours> coursDao = new CoursDao();
+        for(int i=1;i<11;i++)
+        {
+            Cours cours = coursDao.find(i);
+            System.out.println("id: " + cours.getID() + " nom: "+ cours .getNom());
+        }        
+        
         
         
     }

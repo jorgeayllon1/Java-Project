@@ -25,8 +25,8 @@ public class Connexion {
      * Attributs prives : connexion JDBC, statement, ordre requete et resultat
      * requete
      */
-    private final Connection conn;
-    private final Statement stmt;
+    private final Connection conn= null;
+    private final Statement stmt =null;
     private ResultSet rset;
     private ResultSetMetaData rsetMeta;
     /**
@@ -36,11 +36,13 @@ public class Connexion {
     /**
      * ArrayList public pour les requêtes de sélection
      */
-    public ArrayList<ArrayList<String>> requetes = new ArrayList<ArrayList<String>>();
+    public ArrayList<String> requetes = new ArrayList<>();
     /**
      * ArrayList public pour les requêtes de MAJ
      */
     public ArrayList<String> requetesMaj = new ArrayList<>();
+    
+    public ArrayList<String> temp = new ArrayList<>();
 
     /**
      * Constructeur avec 3 paramètres : nom, login et password de la BDD locale
@@ -56,14 +58,16 @@ public class Connexion {
         Class.forName("com.mysql.jdbc.Driver");
 
         // url de connexion "jdbc:mysql://localhost:3305/usernameECE"
-        String urlDatabase = "jdbc:mysql://localhost:3306/" + nameDatabase;
+        
+        //String urlDatabase = "jdbc:mysql://localhost:3306/" + nameDatabase;
+        
        // String urlDatabase = "jdbc:mysql://localhost:3308/jps?characterEncoding=latin1";
 
         //création d'une connexion JDBC à la base 
-        conn = DriverManager.getConnection(urlDatabase, loginDatabase, passwordDatabase);
+        //conn = DriverManager.getConnection(urlDatabase, loginDatabase, passwordDatabase);
 
         // création d'un ordre SQL (statement)
-        stmt = conn.createStatement();
+        //stmt = conn.createStatement();
     }
 
 
@@ -82,9 +86,9 @@ public class Connexion {
      *
      * @param requete
      */
-    /*public void ajouterRequete(String requete) {
+    public void ajouterRequete(String requete) {
         requetes.add(requete);
-    }*/
+    }
 
     /**
      * Méthode qui ajoute la requete de MAJ en parametre dans son
@@ -137,7 +141,7 @@ public class Connexion {
      * @return 
      * @throws java.sql.SQLException
      */
-    public ArrayList remplirChampsRequete(String requete) throws SQLException {
+    public ArrayList<ArrayList<String>> remplirChampsRequete(String requete) throws SQLException {
         // récupération de l'ordre de la requete
         rset = stmt.executeQuery(requete);
 
@@ -147,10 +151,8 @@ public class Connexion {
         // calcul du nombre de colonnes du resultat
         int nbColonne = rsetMeta.getColumnCount();
         // creation d'une ArrayList de String
-        ArrayList<ArrayList<String>> liste =new ArrayList<ArrayList<String>>();;
-
+        ArrayList<ArrayList<String>> liste =new ArrayList<>();
         
-        ArrayList<String> temp = new ArrayList<String>();
 
         int j=0;
         // tant qu'il reste une ligne 
@@ -168,7 +170,7 @@ public class Connexion {
                 //liste.get(i-1).add(champs);
  
             }            
-            liste.add(new ArrayList<String>());            
+            liste.add(new ArrayList<>());            
             for(int k=0 ; k<temp.size() ; k++)
             {
                 liste.get(j).add(k,temp.get(k));
