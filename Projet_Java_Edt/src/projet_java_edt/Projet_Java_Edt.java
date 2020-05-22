@@ -50,6 +50,23 @@ public class Projet_Java_Edt {
             System.out.println("id: " + groupe.getId() + " nom: " + groupe.getNom() + " id_promotion: " + groupe.getId_promotion());
         }
 
+        DAO<Promotion> promotionDAO = new PromotionDAO();
+        for (int i = 1; i < 4; i++) {
+            Promotion promotion = promotionDAO.find(i);
+            System.out.println("id: " + promotion.getId() + " annee: " + promotion.getAnnee());
+        }
+
+        DAO<Site> siteDAO = new SiteDAO();
+        for (int i = 0; i < 5; i++) {
+            Site site = siteDAO.find(i);
+            System.out.println("id: " + site.getId() + " annee: " + site.getNom());
+        }
+
+        DAO<TypeCours> typeCoursDAO = new TypeCoursDAO();
+        for (int i = 1; i < 7; i++) {
+            TypeCours typeCours = typeCoursDAO.find(i);
+            System.out.println("id: " + typeCours.getId() + " nom: " + typeCours.getNom());
+        }
 
     }
 
