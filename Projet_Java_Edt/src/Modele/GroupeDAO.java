@@ -6,25 +6,25 @@ import java.sql.*;
  * @author jorge
  */
 
-public class SalleDAO extends DAO<Salle> {
+public class GroupeDAO extends DAO<Groupe> {
 
-    public SalleDAO() {
+    public GroupeDAO() {
     }
 
-    public SalleDAO(Connection conn) {
+    public GroupeDAO(Connection conn) {
         super(conn);
     }
 
     @Override
-    public Salle find(int id) {
-        Salle lasalle = new Salle();
+    public Groupe find(int id) {
+        Groupe legroupe = new Groupe();
         try {
             Class.forName("com.mysql.jdbc.Driver");
             this.conn = DriverManager.getConnection(this.urlBdd + "projet_java_edt", "root", "");
-            this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM salle WHERE id=" + id);
+            this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM groupe WHERE id=" + id);
 
             if (rset.first())
-                lasalle = new Salle(id, rset.getString("nom"), rset.getInt("capacite"), rset.getInt("id_site"));
+                legroupe = new Groupe(id, rset.getString("nom"), rset.getInt("id_promotion"));
         } catch (ClassNotFoundException cnfe) {
             System.out.println("Connexion echouée : problème de classe");
             cnfe.printStackTrace();
@@ -33,19 +33,22 @@ public class SalleDAO extends DAO<Salle> {
             sqle.printStackTrace();
         }
 
-        return lasalle;
+        return legroupe;
     }
 
     @Override
-    public void create(Salle obj) {
+    public void create(Groupe obj) {
+
     }
 
     @Override
-    public void delete(Salle obj) {
+    public void delete(Groupe obj) {
+
     }
 
     @Override
-    public void update(Salle obj) {
+    public void update(Groupe obj) {
+
     }
 
     @Override
@@ -66,8 +69,9 @@ public class SalleDAO extends DAO<Salle> {
             System.out.println("Connexion echouee : probleme de classe");
             e.printStackTrace();
         } catch (SQLException throwables) {
-            System.out.println("Conneion echouee : probleme SQL");
+            System.out.println("Connexion echouee : probleme SQL");
             throwables.printStackTrace();
+
         }
     }
 }

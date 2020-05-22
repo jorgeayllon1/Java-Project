@@ -8,6 +8,7 @@ package projet_java_edt;
 import Modele.*;
 
 import java.sql.*;
+import java.util.zip.GZIPOutputStream;
 
 
 /**
@@ -41,6 +42,12 @@ public class Projet_Java_Edt {
         for (int i = 1; i < 6; i++) {
             Salle salle = salleDAO.find(i);
             System.out.println("id: " + salle.getID() + " nom: " + salle.getNom() + " capacite: " + salle.getCapacite() + " id_site: " + salle.getId_site());
+        }
+
+        DAO<Groupe> groupeDAO = new GroupeDAO();
+        for (int i = 0; i < 7; i++) {
+            Groupe groupe = groupeDAO.find(i);
+            System.out.println("id: " + groupe.getId() + " nom: " + groupe.getNom() + " id_promotion: " + groupe.getId_promotion());
         }
 
 
