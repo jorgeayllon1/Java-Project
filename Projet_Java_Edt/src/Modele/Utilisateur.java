@@ -51,4 +51,9 @@ public class Utilisateur {
         return this.id;
     }
     
+    public String getMdp()
+    {
+        return this.mdp;
+    }
+    
 }

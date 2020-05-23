@@ -7,12 +7,16 @@ package Vue;
 
 import java.awt.*;
 import javax.swing.*;
+import Modele.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  *
  * @author Wang David
  */
-public class Accueil extends JFrame{
+public class Accueil extends JFrame implements ActionListener {
     
     private final JButton connexion;
     private final JTextField id,mdp;
@@ -53,13 +57,37 @@ public class Accueil extends JFrame{
         panel.add(panel1);
         panel.add(panel2);
         panel.add(panel3);
+        
+        connexion.addActionListener(this);
 
         this.setVisible(true);
-        
-        
+         
+ 
     }
-    
-    
-    
-    
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
+        ArrayList <Utilisateur> mesUsers = new ArrayList<>();
+        
+        DAO<Utilisateur> userDao = new UtilisateurDao();
+        
+        for (int i = 1; i < 11; i++)
+        {
+            Utilisateur user = userDao.find(i);
+            mesUsers.add(user);
+        }
+        
+        for(int i=0;i<mesUsers.size();i++)
+        {
+            if( (this.id.getText().equals(mesUsers.get(i).getNom())) && (this.mdp.getText().equals(mesUsers.get(i).getMdp())))
+            {
+                System.out.println("Connexion réussie !");
+            }
+        }
+
+       
+       
+    }
+  
 }
