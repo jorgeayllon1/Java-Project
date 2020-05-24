@@ -11,16 +11,19 @@ import Modele.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import Observer.*;
+import Controlleur.*;
 
 /**
  *
  * @author Wang David
  */
-public class Accueil extends JFrame implements ActionListener {
+public class Accueil extends JFrame implements Observer,ActionListener {
     
     private final JButton connexion;
     private final JTextField id,mdp;
     private final JLabel label_id,label_mdp;
+    private Controleur control_accueil;
     /**Construcetur initialisant les objets graphiques*/
     public Accueil()
     {
@@ -67,43 +70,9 @@ public class Accueil extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
-        ArrayList <Utilisateur> mesUsers = new ArrayList<>();
-        
-        DAO<Utilisateur> userDao = new UtilisateurDao();
-        
-        for (int i = 1; i < 11; i++)
-        {
-            Utilisateur user = userDao.find(i);
-            mesUsers.add(user);
-        }
-        
-        for(int i=0;i<mesUsers.size();i++)
-        {
-            if( (this.id.getText().equals(mesUsers.get(i).getNom())) && (this.mdp.getText().equals(mesUsers.get(i).getMdp())))
-            {
-                System.out.println("Connexion réussie !");
-                int droit=mesUsers.get(i).getDroit();
-                switch(droit)
-                {
-                    case 1:
-                        System.out.println("Admin");
-                        break;
-                    case 2:
-                        System.out.println("Referent");
-                        break;
-                    case 3:
-                        System.out.println("Enseignant");
-                        break;
-                    case 4:
-                        System.out.println("Eleve");
-                        break;                      
-                }
-            }
-        }
-
-       
-       
+        this.control_accueil = new Controleur();
+        this.control_accueil.control_accueil(this.id.getText(),this.mdp.getText());
+           
     }
-  
+
 }

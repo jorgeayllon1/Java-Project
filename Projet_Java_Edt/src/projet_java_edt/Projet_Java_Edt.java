@@ -6,8 +6,11 @@
 package projet_java_edt;
 
 import Modele.*;
+import Controlleur.*;
+import Vue.Accueil;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.zip.GZIPOutputStream;
 
 
@@ -30,9 +33,11 @@ public class Projet_Java_Edt {
 
         }
         userDao.afficherChampTable("utilisateur");
+        
+       
 
 
-        DAO<Cours> coursDao = new CoursDao();
+        /*DAO<Cours> coursDao = new CoursDao();
         for (int i = 1; i < 11; i++) {
             Cours cours = coursDao.find(i);
             System.out.println("id: " + cours.getID() + " nom: " + cours.getNom());
@@ -66,7 +71,7 @@ public class Projet_Java_Edt {
         for (int i = 1; i < 7; i++) {
             TypeCours typeCours = typeCoursDAO.find(i);
             System.out.println("id: " + typeCours.getId() + " nom: " + typeCours.getNom());
-        }
+        }*/
 
     }
 

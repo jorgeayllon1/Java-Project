@@ -6,7 +6,9 @@
 package Modele;
 
 import java.sql.*;
+import java.util.ArrayList;
 import javafx.beans.Observable;
+import Observer.*;
 
 /**
  *
@@ -20,6 +22,8 @@ public abstract class DAO<T> implements Observable{
     protected ResultSet rset;
     protected ResultSetMetaData rsetMeta;
     protected String urlBdd = "jdbc:mysql://localhost:3306/";
+    
+    private ArrayList<Observer> liste_observer = new ArrayList<Observer>();
     
     public DAO(Connection conn)
     {
