@@ -11,7 +11,7 @@ package Modele;
  */
 public class Utilisateur {
     
-    private int id=0;
+    protected int id=0;
     private String email="";
     private String mdp="";
     private String nom="";

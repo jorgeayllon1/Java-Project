@@ -14,7 +14,7 @@ import Observer.*;
  *
  * @author Wang David
  */
-public abstract class DAO<T> implements Observable{
+public abstract class DAO<T> {
     
     
     protected Connection conn = null;

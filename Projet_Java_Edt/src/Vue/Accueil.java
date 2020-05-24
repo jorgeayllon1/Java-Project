@@ -18,12 +18,15 @@ import Controlleur.*;
  *
  * @author Wang David
  */
+
+/** Page connexion*/
 public class Accueil extends JFrame implements Observer,ActionListener {
     
     private final JButton connexion;
     private final JTextField id,mdp;
     private final JLabel label_id,label_mdp;
-    private Controleur control_accueil;
+    private AccueilControleur control_accueil;
+    
     /**Construcetur initialisant les objets graphiques*/
     public Accueil()
     {
@@ -61,7 +64,7 @@ public class Accueil extends JFrame implements Observer,ActionListener {
         panel.add(panel2);
         panel.add(panel3);
         
-        connexion.addActionListener(this);
+        connexion.addActionListener(this);  //Si on clique on va vers le controleur AccueilControleur
 
         this.setVisible(true);
          
@@ -70,8 +73,8 @@ public class Accueil extends JFrame implements Observer,ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        this.control_accueil = new Controleur();
-        this.control_accueil.control_accueil(this.id.getText(),this.mdp.getText());
+        this.control_accueil = new AccueilControleur();
+        this.control_accueil.control_accueil(this.id.getText(),this.mdp.getText()); //On envoie les données des champs remplies ou pas
            
     }
 

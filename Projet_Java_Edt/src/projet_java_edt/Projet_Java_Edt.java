@@ -7,11 +7,14 @@ package projet_java_edt;
 
 import Modele.*;
 import Controlleur.*;
-import Vue.Accueil;
+import Vue.*;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.zip.GZIPOutputStream;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 
 /**
@@ -22,7 +25,7 @@ public class Projet_Java_Edt {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedLookAndFeelException {
         // TODO code application logic here
 
         DAO<Utilisateur> userDao = new UtilisateurDao();
@@ -30,13 +33,21 @@ public class Projet_Java_Edt {
         for (int i = 1; i < 11; i++) {
             Utilisateur user = userDao.find(i);
             System.out.println("id: " + user.getID() + " email: " + user.getMail() + " nom: " + user.getNom() + " prenom: " + user.getPrenom());
-
         }
+        
         userDao.afficherChampTable("utilisateur");
         
+       //Test get date et heure en JAVA
+       DAO<Seance> seanceDao = new SeanceDao();
        
-
-
+       Seance seance = seanceDao.find(1);
+       System.out.println(seance.getDate()+" " + seance.getHeureDebut() + " " + seance.getHeureFin());
+       
+       
+       //Affichage page connexion OK
+       UIManager.setLookAndFeel(new NimbusLookAndFeel ());
+       Accueil accueil = new Accueil();
+  
         /*DAO<Cours> coursDao = new CoursDao();
         for (int i = 1; i < 11; i++) {
             Cours cours = coursDao.find(i);
