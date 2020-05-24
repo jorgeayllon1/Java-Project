@@ -47,25 +47,4 @@ public class TypeCoursDAO extends DAO<TypeCours> {
 
     }
 
-    public void afficherChampTable(String nomTable) {
-        System.out.println("Affichage des champs de la table : ");
-
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            this.conn = DriverManager.getConnection(this.urlBdd + "projet_java_edt", "root", "");
-            this.stmt = conn.createStatement();
-            this.rset = this.stmt.executeQuery("SELECT * FROM " + nomTable);
-            this.rsetMeta = rset.getMetaData();
-
-            for (int i = 1; i <= rsetMeta.getColumnCount(); i++)
-                System.out.print(rsetMeta.getColumnName(i) + " ");
-            System.out.println("\n");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Connexion echouee : probleme de classe");
-            e.printStackTrace();
-        } catch (SQLException throwables) {
-            System.out.println("Connexion echouee : probleme SQL");
-            throwables.printStackTrace();
-        }
-    }
 }

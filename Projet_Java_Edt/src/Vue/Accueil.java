@@ -83,6 +83,22 @@ public class Accueil extends JFrame implements ActionListener {
             if( (this.id.getText().equals(mesUsers.get(i).getNom())) && (this.mdp.getText().equals(mesUsers.get(i).getMdp())))
             {
                 System.out.println("Connexion réussie !");
+                int droit=mesUsers.get(i).getDroit();
+                switch(droit)
+                {
+                    case 1:
+                        System.out.println("Admin");
+                        break;
+                    case 2:
+                        System.out.println("Referent");
+                        break;
+                    case 3:
+                        System.out.println("Enseignant");
+                        break;
+                    case 4:
+                        System.out.println("Eleve");
+                        break;                      
+                }
             }
         }
 

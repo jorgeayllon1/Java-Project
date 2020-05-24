@@ -6,12 +6,13 @@
 package Modele;
 
 import java.sql.*;
+import javafx.beans.Observable;
 
 /**
  *
  * @author Wang David
  */
-public abstract class DAO<T> {
+public abstract class DAO<T> implements Observable{
     
     
     protected Connection conn = null;
@@ -36,7 +37,36 @@ public abstract class DAO<T> {
     
     public abstract void update(T obj);
     
-    public abstract void afficherChampTable(String nomTable);
+    public void afficherChampTable(String nomTable)  //Pas besoin abstract  En revanche, une classe contenant une méthode abstraite doit être déclarée abstraite
+    {
+        System.out.println("Affichage des champs de la table : ");
+        try
+        {
+             try
+            {
+                Class.forName("com.mysql.jdbc.Driver");             
+                this.conn = DriverManager.getConnection(this.urlBdd+"projet_java_edt","root", "");             
+                this.stmt = conn.createStatement();
+                this.rset = this.stmt.executeQuery("SELECT * FROM "+ nomTable);
+                this.rsetMeta = rset.getMetaData();
+        
+                for(int i = 1; i <= rsetMeta.getColumnCount(); i++)
+                System.out.print( rsetMeta.getColumnName(i) + " ");
+                System.out.println("\n");
+                
+            }
+            catch(ClassNotFoundException cnfe)
+            {
+                    System.out.println("Connexion echouee : probleme de classe");
+                    cnfe.printStackTrace();
+            }
+        }
+        catch(SQLException e) 
+        {
+                System.out.println("Connexion echouee : probleme SQL");
+                e.printStackTrace();
+        }
+    }
     
     
 }

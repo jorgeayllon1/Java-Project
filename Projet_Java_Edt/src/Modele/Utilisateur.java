@@ -19,13 +19,14 @@ public class Utilisateur {
     private int droit=0;
     
     
-    public Utilisateur(int id,String mdp, String email,String nom, String prenom)
+    public Utilisateur(int id,String mdp, String email,String nom, String prenom,int droit)
     {
         this.id=id;
         this.email=email;
         this.mdp=mdp;
         this.nom=nom;
         this.prenom=prenom;
+        this.droit=droit;
     
     }
     
@@ -54,6 +55,11 @@ public class Utilisateur {
     public String getMdp()
     {
         return this.mdp;
+    }
+    
+    public int getDroit()
+    {
+        return this.droit;
     }
     
 }
