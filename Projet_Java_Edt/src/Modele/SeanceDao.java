@@ -62,9 +62,23 @@ public class SeanceDao extends DAO<Seance> {
     }
 
     @Override
-    public void delete(Seance obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void delete(Seance seance)
+    {
+        try{
+            this.conn.createStatement(rset.TYPE_SCROLL_INSENSITIVE, 
+                	rset.CONCUR_UPDATABLE
+                 ).executeUpdate(
+                	"DELETE FROM utilisateur WHERE id = " + seance.getID()
+                 );
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        
     }
+    
+    
 
     @Override
     public Seance update(Seance obj) {

@@ -30,12 +30,12 @@ public class Projet_Java_Edt {
 
         DAO<Utilisateur> userDao = new UtilisateurDao();
 
-        for (int i = 1; i < 12; i++) {
+        for (int i = 1; i < 13; i++) {
             Utilisateur user = userDao.find(i);
             System.out.println("id: " + user.getID() + " email: " + user.getMail() + " nom: " + user.getNom() + " prenom: " + user.getPrenom());
-            if(i==11)
+            if(i==12)
             {
-                userDao.delete(user);
+                userDao.delete(user); //Test pour delete un user
             }
         }
         
@@ -44,6 +44,7 @@ public class Projet_Java_Edt {
        //Test get date et heure en JAVA
        DAO<Seance> seanceDao = new SeanceDao();
        
+       
        Seance seance = seanceDao.find(1);
        System.out.println(seance.getDate()+" " + seance.getHeureDebut() + " " + seance.getHeureFin());
        
@@ -51,6 +52,11 @@ public class Projet_Java_Edt {
        //Affichage page connexion OK
        UIManager.setLookAndFeel(new NimbusLookAndFeel ());
        Accueil accueil = new Accueil();
+       
+       //Test pour ajouter un nouvel user en trouvant l'id max
+       Utilisateur david = new Utilisateur("ghjgjh","mail.fr","wang","david",4);
+       userDao.create(david);
+       
   
         /*DAO<Cours> coursDao = new CoursDao();
         for (int i = 1; i < 11; i++) {

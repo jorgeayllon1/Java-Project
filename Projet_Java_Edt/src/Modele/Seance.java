@@ -52,4 +52,8 @@ public class Seance {
         return this.heure_fin;
     }
     
+    public int getID()
+    {
+        return this.id;
+    }
 }

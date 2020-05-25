@@ -22,6 +22,27 @@ public class UtilisateurDao extends DAO<Utilisateur> {
         super(conn);
     }
 
+    public int trouverIdDispo()
+    {
+        int max=0;
+        try 
+        {
+            this.rset = this.conn.createStatement(
+            this.rset.TYPE_SCROLL_INSENSITIVE,                      
+            this.rset.CONCUR_READ_ONLY).executeQuery("SELECT max(id) FROM utilisateur");
+            
+            if(rset.first())
+            {
+                max=rset.getInt("max(id)")+1;
+            }
+            System.out.println(max);
+        }
+	     catch (SQLException e) {
+	            e.printStackTrace();
+	}
+        return max;
+    }
+    
     public Utilisateur find(int id)
     {
         Utilisateur user = new Utilisateur();      
@@ -61,15 +82,42 @@ public class UtilisateurDao extends DAO<Utilisateur> {
   
     }
     
-
-    public Utilisateur create(Utilisateur user){
-    return new Utilisateur();}
     
+    public Utilisateur create(Utilisateur user)
+    {
+        int id=this.trouverIdDispo(); //Trouver id dispo
+        
+        try {		
+			if(rset.first()){
+				
+    			PreparedStatement prepare = this.conn
+                                                    .prepareStatement(
+                                                    	"INSERT INTO utilisateur (id, email,passwd,nom,prenom,droit) VALUES(?,?,?,?,?,?)"
+                                                    );
+				prepare.setInt(1, id);
+				prepare.setString(2, user.getMail());
+                                prepare.setString(3,user.getMdp());
+                                prepare.setString(4, user.getNom());
+                                prepare.setString(5,user.getPrenom());
+                                prepare.setInt(6, user.getDroit());
+				
+				prepare.executeUpdate();
+				user = this.find(13);	
+				
+			}
+	    } catch (SQLException e) {
+	            e.printStackTrace();
+	    }
+        
+            return user;
+    }
+    
+    //Supprimer un élément dans la table
     public void delete(Utilisateur user)
     {
         try{
-            this.conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
-                	ResultSet.CONCUR_UPDATABLE
+            this.conn.createStatement(rset.TYPE_SCROLL_INSENSITIVE, 
+                	rset.CONCUR_UPDATABLE
                  ).executeUpdate(
                 	"DELETE FROM utilisateur WHERE id = " + user.getID()
                  );
@@ -81,7 +129,26 @@ public class UtilisateurDao extends DAO<Utilisateur> {
         
     }
     
-    public Utilisateur update(Utilisateur user){
-    return new Utilisateur();}
+    //Changer mail
+    public Utilisateur update(Utilisateur user)
+    {
+       try {
+	
+                this .conn	
+                     .createStatement(
+                    	rset.TYPE_SCROLL_INSENSITIVE, 
+                        rset.CONCUR_UPDATABLE
+                     ).executeUpdate(
+                    	"UPDATE utilisateur SET email = '" + user.getMail() + "'"+
+                    	" WHERE id = " + user.getID()
+                     );
+			
+			user = this.find(user.getID());
+	    } catch (SQLException e) {
+	            e.printStackTrace();
+	    }
+        
+      return user;
+    }
     
 }

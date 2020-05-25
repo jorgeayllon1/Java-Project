@@ -31,6 +31,16 @@ public class Utilisateur extends Observable {
         this.droit=droit;
     
     }
+    public Utilisateur(String mdp, String email,String nom, String prenom,int droit)
+    {
+        
+        this.email=email;
+        this.mdp=mdp;
+        this.nom=nom;
+        this.prenom=prenom;
+        this.droit=droit;
+    
+    }
     
     public Utilisateur(){}
     
