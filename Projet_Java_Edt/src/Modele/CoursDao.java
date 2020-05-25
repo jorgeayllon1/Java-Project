@@ -25,8 +25,7 @@ public class CoursDao extends DAO<Cours> {
         Cours cours = new Cours();
         try {
             try {
-                Class.forName("com.mysql.jdbc.Driver");
-                this.conn = DriverManager.getConnection(this.urlBdd + "projet_java_edt", "root", "");
+                this.conn=Connexion.seConnecter();
                 this.rset = this.conn.createStatement(
                         this.rset.TYPE_SCROLL_INSENSITIVE,
                         this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM cours WHERE id = " + id);
@@ -49,13 +48,15 @@ public class CoursDao extends DAO<Cours> {
         return cours;
     }
 
-    public void create(Cours cours) {
+    public Cours create(Cours cours) {
+        return new Cours();
     }
 
     public void delete(Cours cours) {
     }
 
-    public void update(Cours cours) {
+    public Cours update(Cours cours) {
+        return new Cours();
     }
 
     public void afficherChampTable(String nomTable) {

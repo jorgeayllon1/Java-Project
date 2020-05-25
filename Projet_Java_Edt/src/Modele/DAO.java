@@ -8,22 +8,22 @@ package Modele;
 import java.sql.*;
 import java.util.ArrayList;
 import javafx.beans.Observable;
-import Observer.*;
+
 
 /**
  *
  * @author Wang David
  */
-public abstract class DAO<T> {
+public abstract class DAO<T>  {
     
     
-    protected Connection conn = null;
+    protected Connection conn = null ;
     protected Statement stmt = null;
     protected ResultSet rset;
     protected ResultSetMetaData rsetMeta;
     protected String urlBdd = "jdbc:mysql://localhost:3306/";
     
-    private ArrayList<Observer> liste_observer = new ArrayList<Observer>();
+    
     
     public DAO(Connection conn)
     {
@@ -35,11 +35,11 @@ public abstract class DAO<T> {
   
     public abstract T find(int id);
     
-    public abstract void create(T obj);
+    public abstract T create(T obj);
     
     public abstract void delete(T obj);
     
-    public abstract void update(T obj);
+    public abstract T update(T obj);
     
     public void afficherChampTable(String nomTable)  //Pas besoin abstract  En revanche, une classe contenant une méthode abstraite doit être déclarée abstraite
     {
@@ -48,8 +48,7 @@ public abstract class DAO<T> {
         {
              try
             {
-                Class.forName("com.mysql.jdbc.Driver");             
-                this.conn = DriverManager.getConnection(this.urlBdd+"projet_java_edt","root", "");             
+                this.conn=Connexion.seConnecter();          
                 this.stmt = conn.createStatement();
                 this.rset = this.stmt.executeQuery("SELECT * FROM "+ nomTable);
                 this.rsetMeta = rset.getMetaData();

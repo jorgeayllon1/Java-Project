@@ -5,11 +5,13 @@
  */
 package Modele;
 
+import java.util.Observable;
+
 /**
  *
  * @author Wang David
  */
-public class Utilisateur {
+public class Utilisateur extends Observable {
     
     protected int id=0;
     private String email="";
@@ -31,6 +33,7 @@ public class Utilisateur {
     }
     
     public Utilisateur(){}
+    
     
     public String getNom()
     {

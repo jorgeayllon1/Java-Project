@@ -28,9 +28,8 @@ public class UtilisateurDao extends DAO<Utilisateur> {
         try
         {
              try
-            {            
-                Class.forName("com.mysql.jdbc.Driver");
-                this.conn = DriverManager.getConnection(this.urlBdd+"projet_java_edt", "root", "");       
+            {      
+                this.conn=Connexion.seConnecter();  
                 this.rset = this.conn.createStatement(
                 this.rset.TYPE_SCROLL_INSENSITIVE,                      
                 this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM utilisateur WHERE id = " + id);
@@ -63,10 +62,26 @@ public class UtilisateurDao extends DAO<Utilisateur> {
     }
     
 
-    public void create(Utilisateur user){}
+    public Utilisateur create(Utilisateur user){
+    return new Utilisateur();}
     
-    public void delete(Utilisateur user){}
+    public void delete(Utilisateur user)
+    {
+        try{
+            this.conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                	ResultSet.CONCUR_UPDATABLE
+                 ).executeUpdate(
+                	"DELETE FROM utilisateur WHERE id = " + user.getID()
+                 );
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        
+    }
     
-    public void update(Utilisateur user){}
+    public Utilisateur update(Utilisateur user){
+    return new Utilisateur();}
     
 }

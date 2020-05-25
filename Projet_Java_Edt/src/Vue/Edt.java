@@ -5,11 +5,13 @@
  */
 package Vue;
 
-import Observer.*;
+
 import Modele.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.*;
 
 /**
@@ -62,14 +64,27 @@ public class Edt extends JFrame implements Observer, ActionListener{
         panel.add(grille_edt);
   
         this.setVisible(true);
+        //On cree un nouveau etudiant avec l'id de l'utilisateur car id_utilisateur clé etrangere dans etudiant
+        DAO<Utilisateur> etudiantDao = new EtudiantDao(); //********************
+        Etudiant etudiant =(Etudiant) etudiantDao.find(user.getID());//*****************
+        System.out.println(etudiant.getNumEtudiant());
+        
+        //Récupération données groupe
+        DAO<Groupe> groupeDao = new GroupeDAO();
+        Groupe groupe = groupeDao.find(etudiant.getIdGroupe());
+        System.out.println(groupe.getNom());
+        
+        
     }
-    
-    
-    
 
     @Override
     public void actionPerformed(ActionEvent e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public void update(Observable o,Object obj)
+    {
+        
     }
     
 }

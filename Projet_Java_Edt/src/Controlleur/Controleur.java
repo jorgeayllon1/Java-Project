@@ -6,6 +6,7 @@
 package Controlleur;
 import Vue.*;
 import Modele.*;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import static javafx.scene.input.KeyCode.T;
 import javax.swing.UIManager;
@@ -17,7 +18,7 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
  *
  * @author Wang David
  */
-public abstract class Controleur {
+public abstract class Controleur implements ActionListener{
     
     protected DAO dao;
     

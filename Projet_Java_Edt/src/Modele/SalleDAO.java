@@ -19,8 +19,7 @@ public class SalleDAO extends DAO<Salle> {
     public Salle find(int id) {
         Salle lasalle = new Salle();
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            this.conn = DriverManager.getConnection(this.urlBdd + "projet_java_edt", "root", "");
+            this.conn=Connexion.seConnecter();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM salle WHERE id=" + id);
 
             if (rset.first())
@@ -37,7 +36,8 @@ public class SalleDAO extends DAO<Salle> {
     }
 
     @Override
-    public void create(Salle obj) {
+    public Salle create(Salle obj) {
+        return new Salle();
     }
 
     @Override
@@ -45,7 +45,8 @@ public class SalleDAO extends DAO<Salle> {
     }
 
     @Override
-    public void update(Salle obj) {
+    public Salle update(Salle obj) {
+        return new Salle();
     }
 
     

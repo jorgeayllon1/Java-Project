@@ -19,8 +19,7 @@ public class SiteDAO extends DAO<Site> {
     public Site find(int id) {
         Site lesite = new Site();
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            this.conn = DriverManager.getConnection(this.urlBdd + "projet_java_edt", "root", "");
+            this.conn=Connexion.seConnecter();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM site WHERE id=" + id);
 
             if (rset.first())
@@ -37,7 +36,8 @@ public class SiteDAO extends DAO<Site> {
     }
 
     @Override
-    public void create(Site obj) {
+    public Site create(Site obj) {
+        return new Site();
 
     }
 
@@ -47,7 +47,8 @@ public class SiteDAO extends DAO<Site> {
     }
 
     @Override
-    public void update(Site obj) {
+    public Site update(Site obj) {
+        return new Site();
 
     }
 

@@ -19,8 +19,7 @@ public class GroupeDAO extends DAO<Groupe> {
     public Groupe find(int id) {
         Groupe legroupe = new Groupe();
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            this.conn = DriverManager.getConnection(this.urlBdd + "projet_java_edt", "root", "");
+            this.conn=Connexion.seConnecter();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM groupe WHERE id=" + id);
 
             if (rset.first())
@@ -37,7 +36,8 @@ public class GroupeDAO extends DAO<Groupe> {
     }
 
     @Override
-    public void create(Groupe obj) {
+    public Groupe create(Groupe obj) {
+        return  new Groupe();
 
     }
 
@@ -47,7 +47,8 @@ public class GroupeDAO extends DAO<Groupe> {
     }
 
     @Override
-    public void update(Groupe obj) {
+    public Groupe update(Groupe obj) {
+        return  new Groupe();
 
     }
 

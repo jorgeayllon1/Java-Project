@@ -56,8 +56,9 @@ public class SeanceDao extends DAO<Seance> {
     }
     
     @Override
-    public void create(Seance obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Seance create(Seance obj) {
+        return new Seance();
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -66,8 +67,9 @@ public class SeanceDao extends DAO<Seance> {
     }
 
     @Override
-    public void update(Seance obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Seance update(Seance obj) {
+        return new Seance();
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

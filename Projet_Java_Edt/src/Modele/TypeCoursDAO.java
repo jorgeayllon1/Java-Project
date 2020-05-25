@@ -18,8 +18,7 @@ public class TypeCoursDAO extends DAO<TypeCours> {
     public TypeCours find(int id) {
         TypeCours letype = new TypeCours();
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            this.conn = DriverManager.getConnection(this.urlBdd + "projet_java_edt", "root", "");
+            this.conn=Connexion.seConnecter();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM type_cours WHERE id=" + id);
 
             if (rset.first())
@@ -35,7 +34,8 @@ public class TypeCoursDAO extends DAO<TypeCours> {
         return letype;
     }
 
-    public void create(TypeCours obj) {
+    public TypeCours create(TypeCours obj) {
+        return new TypeCours();
 
     }
 
@@ -43,7 +43,8 @@ public class TypeCoursDAO extends DAO<TypeCours> {
 
     }
 
-    public void update(TypeCours obj) {
+    public TypeCours update(TypeCours obj) {
+        return new TypeCours();
 
     }
 

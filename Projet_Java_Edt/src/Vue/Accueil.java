@@ -11,8 +11,10 @@ import Modele.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import Observer.*;
+
 import Controlleur.*;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  *
@@ -20,17 +22,21 @@ import Controlleur.*;
  */
 
 /** Page connexion*/
-public class Accueil extends JFrame implements Observer,ActionListener {
+public class Accueil extends JFrame implements Observer, ActionListener {
     
     private final JButton connexion;
     private final JTextField id,mdp;
     private final JLabel label_id,label_mdp;
     private AccueilControleur control_accueil;
+    Utilisateur user = new Utilisateur();
     
     /**Construcetur initialisant les objets graphiques*/
     public Accueil()
     {
+        
         super("Connectez-vous");
+        
+        //user.addObserver(this);
         
         this.setSize(400,400); //Taille
         this.setLocationRelativeTo(null); //Centre
@@ -66,7 +72,7 @@ public class Accueil extends JFrame implements Observer,ActionListener {
         
         connexion.addActionListener(this);  //Si on clique on va vers le controleur AccueilControleur
 
-        this.setVisible(true);
+        this.setVisible(true); //Affichage
          
  
     }
@@ -76,6 +82,21 @@ public class Accueil extends JFrame implements Observer,ActionListener {
         this.control_accueil = new AccueilControleur();
         this.control_accueil.control_accueil(this.id.getText(),this.mdp.getText()); //On envoie les données des champs remplies ou pas
            
+    }
+    
+    public void update(Observable o, Object obj)
+    {
+        
+    }
+    
+    public String getIdField()
+    {
+        return this.id.toString();
+    }
+    
+    public String getMdpField()
+    {
+        return this.mdp.toString();
     }
 
 }

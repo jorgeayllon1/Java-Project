@@ -17,8 +17,7 @@ public class PromotionDAO extends DAO<Promotion> {
     public Promotion find(int id) {
         Promotion lapromo = new Promotion();
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            this.conn = DriverManager.getConnection(this.urlBdd + "projet_java_edt", "root", "");
+            this.conn=Connexion.seConnecter();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM promotion WHERE id=" + id);
 
             if (rset.first())
@@ -35,7 +34,8 @@ public class PromotionDAO extends DAO<Promotion> {
     }
 
     @Override
-    public void create(Promotion obj) {
+    public Promotion create(Promotion obj) {
+        return new Promotion();
 
     }
 
@@ -45,7 +45,8 @@ public class PromotionDAO extends DAO<Promotion> {
     }
 
     @Override
-    public void update(Promotion obj) {
+    public Promotion update(Promotion obj) {
+        return new Promotion();
 
     }
 

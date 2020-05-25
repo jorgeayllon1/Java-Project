@@ -31,8 +31,7 @@ public class EtudiantDao extends UtilisateurDao{
         {
              try
             {            
-                Class.forName("com.mysql.jdbc.Driver");
-                this.conn = DriverManager.getConnection(this.urlBdd+"projet_java_edt", "root", "");       
+                this.conn=Connexion.seConnecter();      
                 this.rset = this.conn.createStatement(
                 this.rset.TYPE_SCROLL_INSENSITIVE,                      
                 this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM etudiant WHERE id_utilisateur = " + id);

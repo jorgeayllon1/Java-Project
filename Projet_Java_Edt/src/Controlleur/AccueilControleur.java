@@ -8,7 +8,8 @@ package Controlleur;
 import Modele.DAO;
 import Modele.*;
 import Modele.UtilisateurDao;
-import Vue.Edt;
+import Vue.*;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 /**
@@ -17,9 +18,18 @@ import java.util.ArrayList;
  */
 public class AccueilControleur extends Controleur {
     
+    Utilisateur user;
+    Accueil accueil;
+    
     public AccueilControleur()
     {
         super();
+    }
+    
+    public AccueilControleur(Utilisateur user, Accueil accueil)
+    {
+        this.user=user;
+        this.accueil=accueil;
     }
     
     public void control_accueil(String identifiant, String mdp)
@@ -54,17 +64,23 @@ public class AccueilControleur extends Controleur {
                         break;
                     case 4: //C'est un etudiant
                         System.out.println("Eleve");
-                        //On cree un nouveau etudiant avec l'id de l'utilisateur car id_utilisateur clé etrangere dans etudiant
-                        DAO<Utilisateur> etudiantDao = new EtudiantDao(); //********************
-                        Etudiant etudiant =(Etudiant) etudiantDao.find(mesUsers.get(i).getID());//*****************
-                        System.out.println(etudiant.getNumEtudiant());
+                        
                         
                         //On affichera les cours et séances relatifs à cet etudiant (classe edt abstraite héritage edt_etudiant, edt_prof...)
                         Edt edt = new Edt(mesUsers.get(i));
                         break;                      
                 }
             }
+            
           
         }
     }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
+        
+    }
+    
+    
 }

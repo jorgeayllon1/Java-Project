@@ -30,9 +30,13 @@ public class Projet_Java_Edt {
 
         DAO<Utilisateur> userDao = new UtilisateurDao();
 
-        for (int i = 1; i < 11; i++) {
+        for (int i = 1; i < 12; i++) {
             Utilisateur user = userDao.find(i);
             System.out.println("id: " + user.getID() + " email: " + user.getMail() + " nom: " + user.getNom() + " prenom: " + user.getPrenom());
+            if(i==11)
+            {
+                userDao.delete(user);
+            }
         }
         
         userDao.afficherChampTable("utilisateur");
