@@ -6,6 +6,7 @@
 package Modele;
 
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
@@ -57,8 +58,35 @@ public class SeanceDao extends DAO<Seance> {
     
     @Override
     public Seance create(Seance obj) {
-        return new Seance();
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        int id=this.trouverIdDispo(); //Trouver id dispo
+        
+        try {		
+			if(rset.first()){
+				
+    			PreparedStatement prepare = this.conn
+                                                    .prepareStatement(
+                                                    	"INSERT INTO seance (id, semaine,date,heure_debut,heure_fin,id_cours,id_type) VALUES(?,?,?,?,?,?,?)"
+                                                    );
+                                ///On insère les données 
+				prepare.setInt(1, id);
+				prepare.setInt(2, obj.getSemaine());
+                                prepare.setDate(3,obj.getDate());
+                                prepare.setTimestamp(4,obj.getHeureDebut());
+                                prepare.setTimestamp(5,obj.getHeureFin());
+                                prepare.setInt(6,obj.getIdCours());
+                                prepare.setInt(7, obj.getIdType());
+				
+                                //On éxécute 
+				prepare.executeUpdate();
+				obj = this.find(id);	
+				
+			}
+	    } catch (SQLException e) {
+	            e.printStackTrace();
+	    }
+        
+            return obj; 
     }
 
     @Override
@@ -82,8 +110,26 @@ public class SeanceDao extends DAO<Seance> {
 
     @Override
     public Seance update(Seance obj) {
-        return new Seance();
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       try {
+	
+                this .conn	
+                     .createStatement(
+                    	rset.TYPE_SCROLL_INSENSITIVE, 
+                        rset.CONCUR_UPDATABLE
+                     ).executeUpdate(
+                    	"UPDATE seance SET date = '" + obj.getDate() + "'"+
+                    	" WHERE id = " + obj.getID()
+                     );
+			
+			obj = this.find(obj.getID());
+	    } catch (SQLException e) {
+	            e.printStackTrace();
+	    }
+        
+      return obj;
+    
     }
+    
+    
     
 }

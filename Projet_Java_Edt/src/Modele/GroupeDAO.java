@@ -1,6 +1,7 @@
 package Modele;
 
 import java.sql.*;
+import java.util.*;
 
 /**
  * @author jorge
@@ -51,6 +52,86 @@ public class GroupeDAO extends DAO<Groupe> {
         return  new Groupe();
 
     }
-
     
+    
+
+    public ArrayList<Integer> trouverIdSeance(Groupe groupe)
+    {
+        
+        ArrayList<Integer> mes_id_seances = new ArrayList();
+        try
+        {
+             try
+            {      
+                
+                this.conn=Connexion.seConnecter();  
+                
+                this.rset = this.conn.createStatement(
+                this.rset.TYPE_SCROLL_INSENSITIVE,                      
+                this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id_seance FROM seance_groupes WHERE id_groupe = " + groupe.getId()); //On cherche tout les ID des séances de ce groupe
+                
+                
+                while(rset.next())
+                {
+                    mes_id_seances.add(rset.getInt("id_seance"));
+                }
+                
+
+            }
+            catch(ClassNotFoundException cnfe)
+            {
+                    System.out.println("Connexion echouee : probleme de classe");
+                    cnfe.printStackTrace();
+            }
+        }
+        catch(SQLException e) 
+        {
+                System.out.println("Connexion echouee : probleme SQL");
+                e.printStackTrace();
+        }
+        return mes_id_seances;
+    }
+    
+    public ArrayList<Seance> trouverAllSeances(ArrayList<Integer> array)
+    {
+        ArrayList<Seance> seance_groupe = new ArrayList();
+        
+        try
+        {
+             try
+            {      
+                this.conn=Connexion.seConnecter();  
+                for(int i=0;i<array.size();i++)
+                {
+                    this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,                      
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM seance WHERE id="+array.get(i));//On cherche toutes les séances avec le même id_seance
+
+                    if(rset.next())
+                    {
+                       seance_groupe.add(new Seance(array.get(i), rset.getInt("semaine"),
+                  rset.getDate("date"),                 
+                  rset.getTimestamp("heure_debut"),
+                  rset.getTimestamp("heure_fin"),
+                  rset.getInt("id_cours"),
+                  rset.getInt("id_type")));
+                    }   
+                }
+                
+                
+
+            }
+            catch(ClassNotFoundException cnfe)
+            {
+                    System.out.println("Connexion echouee : probleme de classe");
+                    cnfe.printStackTrace();
+            }
+        }
+        catch(SQLException e) 
+        {
+                System.out.println("Connexion echouee : probleme SQL");
+                e.printStackTrace();
+        }
+        return seance_groupe;
+    }
 }

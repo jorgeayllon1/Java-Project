@@ -56,4 +56,19 @@ public class Seance {
     {
         return this.id;
     }
+    
+    public int getSemaine()
+    {
+        return this.semaine;
+    }
+    
+    public int getIdCours()
+    {
+        return this.id_cours;
+    }
+    
+    public int getIdType()
+    {
+        return this.id_type;
+    }
 }

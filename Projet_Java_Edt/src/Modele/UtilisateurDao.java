@@ -6,7 +6,7 @@
 package Modele;
 
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.*;
 
 
 /**
@@ -15,6 +15,7 @@ import java.util.ArrayList;
  */
 public class UtilisateurDao extends DAO<Utilisateur> {
     
+    /**Constructeur*/
     public UtilisateurDao(){};
     
     public UtilisateurDao(Connection conn) 
@@ -22,26 +23,7 @@ public class UtilisateurDao extends DAO<Utilisateur> {
         super(conn);
     }
 
-    public int trouverIdDispo()
-    {
-        int max=0;
-        try 
-        {
-            this.rset = this.conn.createStatement(
-            this.rset.TYPE_SCROLL_INSENSITIVE,                      
-            this.rset.CONCUR_READ_ONLY).executeQuery("SELECT max(id) FROM utilisateur");
-            
-            if(rset.first())
-            {
-                max=rset.getInt("max(id)")+1;
-            }
-            System.out.println(max);
-        }
-	     catch (SQLException e) {
-	            e.printStackTrace();
-	}
-        return max;
-    }
+    
     
     public Utilisateur find(int id)
     {
@@ -94,6 +76,7 @@ public class UtilisateurDao extends DAO<Utilisateur> {
                                                     .prepareStatement(
                                                     	"INSERT INTO utilisateur (id, email,passwd,nom,prenom,droit) VALUES(?,?,?,?,?,?)"
                                                     );
+                                ///On insère les données 
 				prepare.setInt(1, id);
 				prepare.setString(2, user.getMail());
                                 prepare.setString(3,user.getMdp());
@@ -101,18 +84,21 @@ public class UtilisateurDao extends DAO<Utilisateur> {
                                 prepare.setString(5,user.getPrenom());
                                 prepare.setInt(6, user.getDroit());
 				
+                                //On éxécute 
 				prepare.executeUpdate();
-				user = this.find(13);	
+				user = this.find(id);	//On trouve le nouvel utilisateur qui a été crée pour le retourner
 				
 			}
 	    } catch (SQLException e) {
 	            e.printStackTrace();
 	    }
         
-            return user;
+            return user; //On retourne le nouvel utilisateur
     }
     
-    //Supprimer un élément dans la table
+    /**Supprimer un élément dans la table
+     * @param user
+     */
     public void delete(Utilisateur user)
     {
         try{

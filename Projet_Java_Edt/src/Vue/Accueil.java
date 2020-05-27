@@ -85,9 +85,7 @@ public class Accueil extends JFrame implements Observer, ActionListener {
     }
     
     public void update(Observable o, Object obj)
-    {
-        
-    }
+    {  }
     
     public String getIdField()
     {

@@ -26,10 +26,10 @@ public class AccueilControleur extends Controleur {
         super();
     }
     
-    public AccueilControleur(Utilisateur user, Accueil accueil)
+    public AccueilControleur(Utilisateur user)
     {
         this.user=user;
-        this.accueil=accueil;
+        
     }
     
     public void control_accueil(String identifiant, String mdp)
@@ -45,10 +45,12 @@ public class AccueilControleur extends Controleur {
             mesUsers.add(user);
         }
   
+        
         for(int i=0;i<mesUsers.size();i++) //On parcourt toute la liste des utilisateurs dans la bdd
         {
             if( (identifiant.equals(mesUsers.get(i).getNom())) && (mdp.equals(mesUsers.get(i).getMdp()))) //Si id et mdp juste
             {
+                
                 System.out.println("Connexion réussie !");
                 int droit=mesUsers.get(i).getDroit();
                 switch(droit)

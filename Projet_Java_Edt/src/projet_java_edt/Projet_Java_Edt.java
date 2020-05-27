@@ -10,8 +10,7 @@ import Controlleur.*;
 import Vue.*;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.zip.GZIPOutputStream;
+import java.util.*;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
@@ -27,37 +26,40 @@ public class Projet_Java_Edt {
      */
     public static void main(String[] args) throws UnsupportedLookAndFeelException {
         // TODO code application logic here
+        
+        ///MAIN POUR FAIRE DES TEST///
 
         DAO<Utilisateur> userDao = new UtilisateurDao();
 
         for (int i = 1; i < 13; i++) {
             Utilisateur user = userDao.find(i);
             System.out.println("id: " + user.getID() + " email: " + user.getMail() + " nom: " + user.getNom() + " prenom: " + user.getPrenom());
-            if(i==12)
+            /*if(i==12) //erreur
             {
-                userDao.delete(user); //Test pour delete un user
-            }
+                userDao.delete(user); //Test pour delete un user (marche)
+            }*/
         }
         
-        userDao.afficherChampTable("utilisateur");
+       userDao.afficherChampTable("utilisateur"); //Afficher champ table
         
-       //Test get date et heure en JAVA
+       //Test get date et heure en JAVA (marche)
        DAO<Seance> seanceDao = new SeanceDao();
-       
-       
+            
        Seance seance = seanceDao.find(1);
        System.out.println(seance.getDate()+" " + seance.getHeureDebut() + " " + seance.getHeureFin());
        
-       
+       ///AFFICHAGE OAGE CONNEXION///
        //Affichage page connexion OK
        UIManager.setLookAndFeel(new NimbusLookAndFeel ());
        Accueil accueil = new Accueil();
        
-       //Test pour ajouter un nouvel user en trouvant l'id max
-       Utilisateur david = new Utilisateur("ghjgjh","mail.fr","wang","david",4);
-       userDao.create(david);
+       
+       //Test pour ajouter un nouvel user en trouvant l'id max (marche)
+       //Utilisateur david = new Utilisateur("ghjgjh","mail.fr","wang","david",4);
+       //userDao.create(david);
        
   
+       ///------Tout ce qui en bas marche------///
         /*DAO<Cours> coursDao = new CoursDao();
         for (int i = 1; i < 11; i++) {
             Cours cours = coursDao.find(i);

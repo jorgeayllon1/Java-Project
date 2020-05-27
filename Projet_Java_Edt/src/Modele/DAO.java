@@ -6,7 +6,7 @@
 package Modele;
 
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.*;
 import javafx.beans.Observable;
 
 
@@ -16,15 +16,14 @@ import javafx.beans.Observable;
  */
 public abstract class DAO<T>  {
     
-    
+    ///Attributs
     protected Connection conn = null ;
     protected Statement stmt = null;
     protected ResultSet rset;
     protected ResultSetMetaData rsetMeta;
     protected String urlBdd = "jdbc:mysql://localhost:3306/";
-    
-    
-    
+     
+    /**Constructeur avec connexion*/
     public DAO(Connection conn)
     {
         this.conn = conn;   
@@ -40,6 +39,32 @@ public abstract class DAO<T>  {
     public abstract void delete(T obj);
     
     public abstract T update(T obj);
+    
+    /**Méthode qui va trouver l'id le plus haut disponible*/
+    public int trouverIdDispo()
+    {
+        int max=0;
+        try 
+        {
+            this.rset = this.conn.createStatement(
+            this.rset.TYPE_SCROLL_INSENSITIVE,                      
+            this.rset.CONCUR_READ_ONLY).executeQuery("SELECT max(id) FROM utilisateur");
+            
+            if(rset.first())
+            {
+                max=rset.getInt("max(id)")+1; //On prend le prochain id
+            }
+            //System.out.println(max);
+        }
+	     catch (SQLException e) {
+	            e.printStackTrace();
+	}
+        return max; //On retourne le max
+    }
+    
+    /**Méthode pour afficher les champs d'une table en prenant en param le nom de la table
+     * @param nomTable
+     */
     
     public void afficherChampTable(String nomTable)  //Pas besoin abstract  En revanche, une classe contenant une méthode abstraite doit être déclarée abstraite
     {
@@ -70,6 +95,7 @@ public abstract class DAO<T>  {
                 e.printStackTrace();
         }
     }
+    
     
     
 }

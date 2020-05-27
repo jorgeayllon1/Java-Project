@@ -10,6 +10,7 @@ import Modele.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.*;
@@ -64,15 +65,31 @@ public class Edt extends JFrame implements Observer, ActionListener{
         panel.add(grille_edt);
   
         this.setVisible(true);
+        
         //On cree un nouveau etudiant avec l'id de l'utilisateur car id_utilisateur clé etrangere dans etudiant
         DAO<Utilisateur> etudiantDao = new EtudiantDao(); //********************
         Etudiant etudiant =(Etudiant) etudiantDao.find(user.getID());//*****************
         System.out.println(etudiant.getNumEtudiant());
         
         //Récupération données groupe
-        DAO<Groupe> groupeDao = new GroupeDAO();
+        GroupeDAO groupeDao = new GroupeDAO();
         Groupe groupe = groupeDao.find(etudiant.getIdGroupe());
-        System.out.println(groupe.getNom());
+        System.out.println(groupe.getNom()+" "+groupe.getId());
+        
+        ArrayList<Integer> mes_id = new ArrayList();
+        mes_id = groupeDao.trouverIdSeance(groupe);
+        
+        
+        ArrayList<Seance> mes_seances = new ArrayList();
+        mes_seances = groupeDao.trouverAllSeances(mes_id);
+        
+        System.out.println("Nombre de séances prevues pour cet eleve : " +mes_seances.size());
+        for(int i=0;i<mes_seances.size();i++)
+        {
+            System.out.println("Mes seances:\n date : " +mes_seances.get(i).getDate()+ "\nheure debut : " + mes_seances.get(i).getHeureDebut() +"\nheure fin : " +mes_seances.get(i).getHeureFin());
+        }
+       
+        
         
         
     }
