@@ -19,15 +19,15 @@ public class SalleDAO extends DAO<Salle> {
     public Salle find(int id) {
         Salle lasalle = new Salle();
         try {
-            this.conn=Connexion.seConnecter();
+            this.conn = Connexion.seConnecter();
+            //this.rset = this.conn.prepareStatement("SELECT * FROM salle WHERE id=" + id).executeQuery();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM salle WHERE id=" + id);
 
-            if (rset.first())
-            {
-                
+            if (rset.first()) {
+
                 lasalle = new Salle(id, rset.getString("nom"), rset.getInt("capacite"), rset.getInt("id_site"));
             }
-                
+
         } catch (ClassNotFoundException cnfe) {
             System.out.println("Connexion echouée : problème de classe");
             cnfe.printStackTrace();
@@ -53,5 +53,5 @@ public class SalleDAO extends DAO<Salle> {
         return new Salle();
     }
 
-    
+
 }
