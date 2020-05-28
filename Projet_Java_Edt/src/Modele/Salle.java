@@ -9,14 +9,13 @@ public class Salle {
     private int id = 0;
     private String nom = "";
     private int capacite = 0;
-    private int id_site = 0;
-    //private Site site=null;
+    private Site site=null;
 
-    public Salle(int id, String nom, int capacite, int id_site) {
+    public Salle(int id, String nom, int capacite, Site site) {
         this.id = id;
         this.nom = nom;
         this.capacite = capacite;
-        this.id_site = id_site;
+        this.site = site;
     }
 
     public Salle() {
@@ -34,8 +33,9 @@ public class Salle {
         return this.capacite;
     }
 
-    public int getId_site() {
-        return this.id_site;
+    public Site getSite()
+    {
+        return this.site;
     }
 }
 

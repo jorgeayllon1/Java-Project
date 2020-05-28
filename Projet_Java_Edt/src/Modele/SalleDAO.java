@@ -18,14 +18,18 @@ public class SalleDAO extends DAO<Salle> {
     @Override
     public Salle find(int id) {
         Salle lasalle = new Salle();
+        int id_site=0;
+        Site site = new Site();
+        SiteDAO siteDao = new SiteDAO();
         try {
             this.conn=Connexion.seConnecter();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM salle WHERE id=" + id);
 
             if (rset.first())
             {
-                
-                lasalle = new Salle(id, rset.getString("nom"), rset.getInt("capacite"), rset.getInt("id_site"));
+                id_site=rset.getInt("id_site");
+                site = siteDao.find(id_site);
+                lasalle = new Salle(id, rset.getString("nom"), rset.getInt("capacite"), site);
             }
                 
         } catch (ClassNotFoundException cnfe) {
