@@ -16,8 +16,8 @@ public class Utilisateur extends Observable {
     protected int id=0;
     private String email="";
     private String mdp="";
-    private String nom="";
-    private String prenom="";
+    protected String nom="";
+    protected String prenom="";
     private int droit=0;
     
     
@@ -29,6 +29,7 @@ public class Utilisateur extends Observable {
         this.nom=nom;
         this.prenom=prenom;
         this.droit=droit;
+        
     
     }
     public Utilisateur(String mdp, String email,String nom, String prenom,int droit)

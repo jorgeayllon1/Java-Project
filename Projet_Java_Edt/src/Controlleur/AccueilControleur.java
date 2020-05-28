@@ -62,14 +62,19 @@ public class AccueilControleur extends Controleur {
                         System.out.println("Referent");
                         break;
                     case 3:
-                        System.out.println("Enseignant");
+                        System.out.println("Droit : Enseignant");
+                        EnseignantDAO profDao = new EnseignantDAO();
+                        Enseignant prof = (Enseignant)profDao.find(mesUsers.get(i).getID());
+                        
+                        Edt_Enseignant edt_prof = new Edt_Enseignant(mesUsers.get(i),prof);
                         break;
                     case 4: //C'est un etudiant
-                        System.out.println("Eleve");
-                        
-                        
+                        System.out.println("Droit : Eleve");
+                        DAO<Utilisateur> etudiantDao = new EtudiantDao(); //********************
+                        Etudiant etudiant =(Etudiant) etudiantDao.find(mesUsers.get(i).getID());//*****************
+                                             
                         //On affichera les cours et séances relatifs à cet etudiant (classe edt abstraite héritage edt_etudiant, edt_prof...)
-                        Edt edt = new Edt(mesUsers.get(i));
+                        Edt_Etudiant edt_etudiant = new Edt_Etudiant(mesUsers.get(i),etudiant);
                         break;                      
                 }
             }

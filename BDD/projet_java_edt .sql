@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  lun. 18 mai 2020 à 13:54
+-- Généré le :  jeu. 28 mai 2020 à 10:15
 -- Version du serveur :  5.7.26
 -- Version de PHP :  7.2.18
 
@@ -96,7 +96,9 @@ INSERT INTO `etudiant` (`id_utilisateur`, `numero`, `id_groupe`) VALUES
 (4, '777', 1),
 (5, '111', 1),
 (7, '123', 3),
-(8, '321', 4);
+(8, '321', 4),
+(11, '222', 2),
+(12, '1212', 2);
 
 -- --------------------------------------------------------
 
@@ -185,14 +187,24 @@ CREATE TABLE IF NOT EXISTS `seance` (
   `id` int(100) NOT NULL AUTO_INCREMENT,
   `semaine` int(50) NOT NULL,
   `date` date NOT NULL,
-  `heure_debut` time NOT NULL,
-  `heure_fin` time NOT NULL,
+  `heure_debut` timestamp NOT NULL,
+  `heure_fin` timestamp NOT NULL,
   `id_cours` int(100) NOT NULL,
   `id_type` int(100) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_cours` (`id_cours`),
   KEY `id_type` (`id_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `seance`
+--
+
+INSERT INTO `seance` (`id`, `semaine`, `date`, `heure_debut`, `heure_fin`, `id_cours`, `id_type`) VALUES
+(1, 1, '2020-06-02', '2020-06-02 06:00:00', '2020-06-02 08:00:00', 1, 2),
+(2, 1, '2020-06-02', '2020-06-02 08:00:00', '2020-06-02 10:00:00', 4, 3),
+(3, 2, '2020-05-28', '2020-05-27 22:10:00', '2020-05-27 22:12:00', 3, 3),
+(4, 2, '2020-05-27', '2020-05-26 22:10:00', '2020-05-26 22:12:00', 6, 2);
 
 -- --------------------------------------------------------
 
@@ -208,6 +220,13 @@ CREATE TABLE IF NOT EXISTS `seance_enseignants` (
   KEY `id_seance` (`id_seance`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Déchargement des données de la table `seance_enseignants`
+--
+
+INSERT INTO `seance_enseignants` (`id_seance`, `id_enseignant`) VALUES
+(1, 3);
+
 -- --------------------------------------------------------
 
 --
@@ -221,6 +240,16 @@ CREATE TABLE IF NOT EXISTS `seance_groupes` (
   KEY `id_groupe` (`id_groupe`),
   KEY `id_seance` (`id_seance`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `seance_groupes`
+--
+
+INSERT INTO `seance_groupes` (`id_seance`, `id_groupe`) VALUES
+(1, 1),
+(2, 1),
+(3, 2),
+(4, 3);
 
 -- --------------------------------------------------------
 
@@ -299,7 +328,7 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
   `prenom` tinytext NOT NULL,
   `droit` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `utilisateur`
@@ -315,7 +344,9 @@ INSERT INTO `utilisateur` (`id`, `email`, `passwd`, `nom`, `prenom`, `droit`) VA
 (7, 'eleve1@mail.com', 'eleve1', 'eleve1_nom', 'eleve1_prenom', 4),
 (8, 'eleve2@mail.com', 'eleve2', 'eleve2_nom', 'eleve2_prenom', 4),
 (9, 'profmaths@mail.com', 'profmaths', 'profmaths_nom', 'profmaths_prenom', 3),
-(10, 'profelec@mail.com', 'profelec', 'profelec_nom', 'profelec_prenom', 3);
+(10, 'profelec@mail.com', 'profelec', 'profelec_nom', 'profelec_prenom', 3),
+(11, 'eleve3@mail.com', 'eleve3', 'eleve3_nom', 'eleve3_prenom', 4),
+(12, 'eleve4@mail.com', 'eleve4', 'eleve4_nom', 'eleve4_prenom', 4);
 
 --
 -- Contraintes pour les tables déchargées

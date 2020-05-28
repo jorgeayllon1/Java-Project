@@ -27,6 +27,16 @@ public class Etudiant extends Utilisateur{
         this.id_groupe=id_groupe;
     }
     
+    public String getNom()
+    {
+        return this.nom;
+    }
+    
+    public String getPrenom()
+    {
+        return this.prenom;
+    }
+    
     public String getNumEtudiant()
     {
         return this.num_etudiant;

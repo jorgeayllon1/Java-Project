@@ -10,6 +10,7 @@ public class Salle {
     private String nom = "";
     private int capacite = 0;
     private int id_site = 0;
+    //private Site site=null;
 
     public Salle(int id, String nom, int capacite, int id_site) {
         this.id = id;

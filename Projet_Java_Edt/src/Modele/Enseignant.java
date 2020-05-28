@@ -4,7 +4,7 @@ package Modele;
  * @author jorge
  */
 
-public class Enseignant {
+public class Enseignant extends Utilisateur{
     private int id_utilisateur = 0;
     private int id_cours = 0;
 
@@ -23,4 +23,5 @@ public class Enseignant {
     public int getId_cours() {
         return id_cours;
     }
+    
 }
