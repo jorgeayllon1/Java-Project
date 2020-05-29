@@ -29,9 +29,7 @@ public class SdzConnection {
     public static Connection getInstance() {
         if (connect == null) {
             new SdzConnection();
-            System.out.println("INSTANCIATION DE LA CONNEXION SQL ! ");
         } else {
-            System.out.println("CONNEXION SQL EXISTANTE ! ");
         }
         return connect;
     }

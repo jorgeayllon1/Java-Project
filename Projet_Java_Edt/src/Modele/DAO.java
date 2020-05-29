@@ -22,7 +22,7 @@ public abstract class DAO<T> {
     protected ResultSet rset;
     protected ResultSetMetaData rsetMeta;
     protected String urlBdd = "jdbc:mysql://localhost:3306/";
-    protected int taille = 0;
+    protected int taille = -1;/// valeur impossible mise expres
 
     /**
      * Constructeur avec connexion
@@ -75,20 +75,18 @@ public abstract class DAO<T> {
     {
         System.out.println("Affichage des champs de la table : ");
         try {
-            try {
-                this.conn = Connexion.seConnecter();
-                this.stmt = conn.createStatement();
-                this.rset = this.stmt.executeQuery("SELECT * FROM " + nomTable);
-                this.rsetMeta = rset.getMetaData();
+            this.conn = Connexion.seConnecter();
+            this.stmt = conn.createStatement();
+            this.rset = this.stmt.executeQuery("SELECT * FROM " + nomTable);
+            this.rsetMeta = rset.getMetaData();
 
-                for (int i = 1; i <= rsetMeta.getColumnCount(); i++)
-                    System.out.print(rsetMeta.getColumnName(i) + " ");
-                System.out.println("\n");
+            for (int i = 1; i <= rsetMeta.getColumnCount(); i++)
+                System.out.print(rsetMeta.getColumnName(i) + " ");
+            System.out.println("\n");
 
-            } catch (ClassNotFoundException cnfe) {
-                System.out.println("Connexion echouee : probleme de classe");
-                cnfe.printStackTrace();
-            }
+        } catch (ClassNotFoundException cnfe) {
+            System.out.println("Connexion echouee : probleme de classe");
+            cnfe.printStackTrace();
         } catch (SQLException e) {
             System.out.println("Connexion echouee : probleme SQL");
             e.printStackTrace();
@@ -96,4 +94,27 @@ public abstract class DAO<T> {
     }
 
 
+    public int getTaille(String nomTable) {
+
+        try {
+            this.conn = Connexion.seConnecter();
+            this.stmt = this.conn.createStatement();
+            this.rset = this.stmt.executeQuery("select * from " + nomTable);
+            this.rsetMeta = rset.getMetaData();
+
+            rset.last();
+           
+            taille = rset.getRow();
+
+            return taille;
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("Erreur lors du retour de getTaille");
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+
 }
+

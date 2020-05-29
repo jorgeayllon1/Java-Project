@@ -24,11 +24,6 @@ public class Edt_Admin extends Edt {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-
-        /// Vasy je fait taffer du swing
-
-        System.out.println("je suis la");
-
         JPanel schear = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
 
         JTextField texte = new JTextField();

@@ -50,6 +50,7 @@ public class UtilisateurDao extends DAO<Utilisateur> {
                         rset.getString("prenom"),
                         rset.getInt("droit")
                 );
+            else user = null;
 
         } catch (ClassNotFoundException cnfe) {
             System.out.println("Connexion echouee : probleme de classe");
@@ -109,6 +110,8 @@ public class UtilisateurDao extends DAO<Utilisateur> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        //this.taille--;
 
     }
 
