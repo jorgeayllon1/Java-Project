@@ -6,7 +6,7 @@
 package Vue;
 
 
-import Controlleur.Recherche.RechercheControleur;
+import Controlleur.RechercheControleur;
 import Modele.*;
 
 import java.awt.*;
@@ -29,6 +29,7 @@ public class Edt extends JFrame implements ActionListener {
     protected Graphics ligneh = getGraphics();
     protected JPanel panel;
     protected final JButton rechercher = new JButton("Rechercher");
+    protected final JButton annule = new JButton("Cours annulé(s)");
     protected RechercheControleur control_recherche;
 
 
@@ -46,7 +47,7 @@ public class Edt extends JFrame implements ActionListener {
         menu.add(new JButton("Cours"));
         //menu.add(new JButton("Rechercher"));
         menu.add(this.rechercher);
-        menu.add(new JButton("Cours annulé(s)"));
+        menu.add(this.annule);
         menu.add(new JButton("Reporting"));
 
         panel = (JPanel) this.getContentPane();
@@ -61,7 +62,7 @@ public class Edt extends JFrame implements ActionListener {
 
         this.setVisible(true);
 
-        rechercher.addActionListener(this);
+        
 
     }
 

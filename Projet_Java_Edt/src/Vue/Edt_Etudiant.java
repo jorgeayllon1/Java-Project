@@ -7,7 +7,9 @@ package Vue;
 
 import Modele.*;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -70,7 +72,15 @@ public class Edt_Etudiant extends Edt{
             salle = etudiantDao.trouverSalle(mes_seances.get(i));
             System.out.println("Salle : " + salle.getNom() + " Capacite : " + salle.getCapacite() + " Site : " + salle.getSite().getNom()  );
         }
+        
+        this.annule.addActionListener(this);
        
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        this.panel.add(new JButton("hjgjhjgh"));
     }
     
     
