@@ -5,6 +5,7 @@
  */
 package Vue;
 
+import Controlleur.RechercheControleur;
 import Modele.*;
 
 import javax.swing.*;
@@ -21,34 +22,47 @@ public class Edt_Admin extends Edt {
 
     
 
-    public Edt_Admin(Utilisateur user, int droit) {
-        super(user);
-        
-        if (droit == 1)
-            System.out.println("Admin !");
-        else if (droit == 2)
-            System.out.println("Referent !");
-        
-        
-        
-    }
+   
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        
-        
-        JTextField zone = new JTextField();
-        zone.setPreferredSize(new Dimension(200,50));
-        
-        
-        this.panel.add(zone);             
-        this.panel.setVisible(true);
-        
+
 
         /// Vasy je fait taffer du swing
 
         System.out.println("je suis la");
 
+        JPanel schear = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+
+        JTextField texte = new JTextField();
+        texte.setPreferredSize(new Dimension(200, 100));
+
+        schear.add(texte);
+
+        JButton lancerrecherche = new JButton(new AbstractAction("Rechercher") {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                control_recherche = new RechercheControleur();
+                control_recherche.rechercher_controleur(texte.getText());
+            }
+        });
+
+
+        schear.add(lancerrecherche);
+        panel.add(schear);
+        this.setVisible(true);
     }
+
+
+    public Edt_Admin(Utilisateur user, int droit) {
+        super(user);
+        if (droit == 1)
+            System.out.println("Admin !");
+        else if (droit == 2)
+            System.out.println("Referent !");
+
+        this.rechercher.addActionListener(this);
+    }
+
 
 }
