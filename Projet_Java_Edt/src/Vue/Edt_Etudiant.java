@@ -25,21 +25,8 @@ public class Edt_Etudiant extends Edt{
     {
         
         super(user);
-        JPanel grille_edt = new JPanel(new GridLayout(7,6,1,1));
         
-        //Grille d'edt
-        for(int i=1;i<8;i++)
-        {
-            grille_edt.add(new JLabel("8h-10h"));
-            for(int j=1;j<7;j++)
-            {
-                grille_edt.add(new JLabel(String.valueOf(i*j),JLabel.CENTER));
-
-            }
-            
-        }
         
-        this.panel.add(grille_edt);
        //On cree un nouveau etudiant avec l'id de l'utilisateur car id_utilisateur clé etrangere dans etudiant
         EtudiantDao etudiantDao = new EtudiantDao(); //********************
         etudiant =(Etudiant) etudiantDao.find(etudiant.getID());//*****************
@@ -66,21 +53,35 @@ public class Edt_Etudiant extends Edt{
             System.out.println("Mes seances: \n"
                     +"Intitule du cours : " + mes_seances.get(i).getCours().getNom()
                     +"\n date : " +mes_seances.get(i).getDate()
-                    +"\nheure debut : "  + mes_seances.get(i).getHeureDebut() 
+                    +"\nheure debut : "  + mes_seances.get(i).getHeureDebut()
                     +"\nheure fin : " +mes_seances.get(i).getHeureFin()
                     +"\nType :" + mes_seances.get(i).getType().getNom());
             salle = etudiantDao.trouverSalle(mes_seances.get(i));
             System.out.println("Salle : " + salle.getNom() + " Capacite : " + salle.getCapacite() + " Site : " + salle.getSite().getNom()  );
         }
         
-        this.annule.addActionListener(this);
+        JPanel grille_edt = new JPanel(new GridLayout(7,6,1,1));
+        
+        //Grille d'edt
+        for(int i=1;i<8;i++)
+        {
+            grille_edt.add(new JLabel("8h-10h"));
+            for(int j=1;j<7;j++)
+            {
+                grille_edt.add(new JLabel(String.valueOf(i*j),JLabel.CENTER));
+
+            }
+            
+        }
+        this.panel.add(grille_edt);
+  
        
     }
     
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        this.panel.add(new JButton("hjgjhjgh"));
+        
     }
     
     
