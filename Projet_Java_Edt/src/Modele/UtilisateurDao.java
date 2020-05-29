@@ -18,6 +18,7 @@ public class UtilisateurDao extends DAO<Utilisateur> {
      * Constructeur
      */
     public UtilisateurDao() {
+
     }
 
     ;
