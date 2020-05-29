@@ -26,7 +26,7 @@ public class AccueilControleur extends Controleur {
     }
 
     @Override
-    public void rechercher_controleur(String text) {
+    public void rechercher_controleur(String text, String semaine) {
 
     }
 

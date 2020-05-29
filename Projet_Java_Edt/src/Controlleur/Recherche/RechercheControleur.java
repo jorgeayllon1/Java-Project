@@ -13,7 +13,7 @@ public class RechercheControleur extends Controleur {
     }
 
     @Override
-    public void rechercher_controleur(String text) {
+    public void rechercher_controleur(String nom, String semain) {
 
         DAO<Utilisateur> userDAO = DAOFactory.getUtilisateur();
 
@@ -26,7 +26,7 @@ public class RechercheControleur extends Controleur {
         Utilisateur leusersouhaiter = new Utilisateur();
 
         for (int i = 0; i < mesUsers.size(); i++) {
-            if (mesUsers.get(i).getNom().equals(text)) {
+            if (mesUsers.get(i).getNom().equals(nom)) {
                 leusersouhaiter = new Utilisateur(mesUsers.get(i));
                 break;
             }
@@ -37,7 +37,7 @@ public class RechercheControleur extends Controleur {
             System.out.println(leusersouhaiter.getID() + " " + leusersouhaiter.getNom() + " " + leusersouhaiter.getPrenom()
                     + " " + leusersouhaiter.getMail() + " " + leusersouhaiter.getDroit());
             System.out.println("Il faut modifier la vu pour les afficher correctement");
-        } else System.out.println("Personne non trouvé dans la BDD : " + text);
+        } else System.out.println("Personne non trouvé dans la BDD : " + nom);
 
 
     }

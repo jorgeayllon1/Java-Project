@@ -26,16 +26,20 @@ public class Edt_Admin extends Edt {
 
         JPanel schear = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
 
-        JTextField texte = new JTextField();
-        texte.setPreferredSize(new Dimension(200, 100));
+        JTextField nom = new JTextField();
+        nom.setPreferredSize(new Dimension(100, 200));
 
-        schear.add(texte);
+        JTextField semaine = new JTextField();
+        semaine.setPreferredSize(new Dimension(100, 200));
+
+        schear.add(nom);
+        schear.add(semaine);
 
         JButton lancerrecherche = new JButton(new AbstractAction("Rechercher") {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 control_recherche = new RechercheControleur();
-                control_recherche.rechercher_controleur(texte.getText());
+                control_recherche.rechercher_controleur(nom.getText(), semaine.getText());
             }
         });
 

@@ -39,5 +39,5 @@ public abstract class Controleur implements ActionListener {
 
     }
 
-    public abstract void rechercher_controleur(String text);
+    public abstract void rechercher_controleur(String nom, String semaine);
 }
