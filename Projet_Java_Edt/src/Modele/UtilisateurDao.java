@@ -30,31 +30,29 @@ public class UtilisateurDao extends DAO<Utilisateur> {
     public Utilisateur find(int id) {
         Utilisateur user = new Utilisateur();
         try {
-            try {
-                this.conn = Connexion.seConnecter();
+            this.conn = Connexion.seConnecter();
 
 
-                this.rset = this.conn.createStatement(
-                        this.rset.TYPE_SCROLL_INSENSITIVE,
-                        this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM utilisateur WHERE id = " + id);
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM utilisateur WHERE id = " + id);
 
 
-                //this.rset = this.conn.prepareStatement("SELECT * FROM utilisateur WHERE id = " + id).executeQuery();
+            //this.rset = this.conn.prepareStatement("SELECT * FROM utilisateur WHERE id = " + id).executeQuery();
 
-                if (rset.first())
-                    user = new Utilisateur(
-                            id,
-                            rset.getString("passwd"),
-                            rset.getString("email"),
-                            rset.getString("nom"),
-                            rset.getString("prenom"),
-                            rset.getInt("droit")
-                    );
+            if (rset.first())
+                user = new Utilisateur(
+                        id,
+                        rset.getString("passwd"),
+                        rset.getString("email"),
+                        rset.getString("nom"),
+                        rset.getString("prenom"),
+                        rset.getInt("droit")
+                );
 
-            } catch (ClassNotFoundException cnfe) {
-                System.out.println("Connexion echouee : probleme de classe");
-                cnfe.printStackTrace();
-            }
+        } catch (ClassNotFoundException cnfe) {
+            System.out.println("Connexion echouee : probleme de classe");
+            cnfe.printStackTrace();
         } catch (SQLException e) {
             System.out.println("Connexion echouee : probleme SQL");
             e.printStackTrace();

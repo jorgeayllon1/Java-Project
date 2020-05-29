@@ -27,6 +27,7 @@ public class Edt extends JFrame implements Observer, ActionListener{
     private JLabel info;
     private Graphics ligneh = getGraphics();
     protected JPanel panel;
+    private final JButton rechercher=new JButton("Rechercher");
     
     
     public Edt(){}
@@ -41,7 +42,8 @@ public class Edt extends JFrame implements Observer, ActionListener{
         
         
         menu.add(new JButton("Cours"));
-        menu.add(new JButton("Rechercher"));
+        //menu.add(new JButton("Rechercher"));
+        menu.add(this.rechercher);
         menu.add(new JButton("Cours annulé(s)"));
         menu.add(new JButton("Reporting"));
       
@@ -56,12 +58,15 @@ public class Edt extends JFrame implements Observer, ActionListener{
         panel.add(this.info, BorderLayout.SOUTH);
 
         this.setVisible(true);
+
+        rechercher.addActionListener(this);
    
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("je suis la");
     }
     
     public void update(Observable o,Object obj)
