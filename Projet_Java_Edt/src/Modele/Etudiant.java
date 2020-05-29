@@ -12,19 +12,19 @@ package Modele;
 public class Etudiant extends Utilisateur{
     
     private String num_etudiant="";
-    private int id_groupe=0; 
-    //private Groupe groupe;
+    //private int id_groupe=0; 
+    private Groupe groupe;
     
     public Etudiant()
     {
         
     }
     
-    public Etudiant(int id, String num_etudiant, int id_groupe)
+    public Etudiant(int id,String mdp, String email,String nom, String prenom, int droit , String num_etudiant , Groupe groupe)
     {
-        this.id=id;
+        super(id,mdp,email,nom,prenom,droit);
         this.num_etudiant=num_etudiant;
-        this.id_groupe=id_groupe;
+        this.groupe=groupe;
     }
     
     public String getNom()
@@ -42,9 +42,9 @@ public class Etudiant extends Utilisateur{
         return this.num_etudiant;
     }
     
-    public int getIdGroupe()
+    public Groupe getGroupe()
     {
-        return this.id_groupe;
+        return this.groupe;
     }
     
 }

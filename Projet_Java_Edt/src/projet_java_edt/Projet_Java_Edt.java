@@ -32,25 +32,25 @@ public class Projet_Java_Edt {
         DAO<Utilisateur> userDao = new UtilisateurDao();
 
 
-        for (int i = 1; i < 13; i++) {
+        /*for (int i = 1; i < 13; i++) {
             Utilisateur user = userDao.find(i);
             System.out.println("id: " + user.getID() + " email: " + user.getMail() + " nom: " + user.getNom() + " prenom: " + user.getPrenom());
             // if(i==12) //erreur
             //{
             //  userDao.delete(user); //Test pour delete un user (marche)
             //}
-        }
+        }*/
 
-        userDao.afficherChampTable("utilisateur"); //Afficher champ table
+        //userDao.afficherChampTable("utilisateur"); //Afficher champ table
 
         //Test get date et heure en JAVA (marche)
 
-        System.out.println("salut");
+        /*
 
         DAO<Seance> seanceDao = new SeanceDao();
 
         Seance seance = seanceDao.find(1);
-        System.out.println(seance.getDate() + " " + seance.getHeureDebut() + " " + seance.getHeureFin());
+        System.out.println(seance.getDate() + " " + seance.getHeureDebut() + " " + seance.getHeureFin());*/
 
         ///AFFICHAGE OAGE CONNEXION///
         //Affichage page connexion OK

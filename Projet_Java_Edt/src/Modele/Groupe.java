@@ -7,12 +7,13 @@ package Modele;
 public class Groupe {
     private int id = 0;
     private String nom = "";
-    private int id_promotion = 0;
+    //private int id_promotion = 0;
+    private Promotion promo=null;
 
-    public Groupe(int id, String nom, int id_promotion) {
+    public Groupe(int id, String nom, Promotion promo) {
         this.id = id;
         this.nom = nom;
-        this.id_promotion = id_promotion;
+        this.promo=promo;
     }
 
     public Groupe() {
@@ -26,8 +27,9 @@ public class Groupe {
         return this.nom;
     }
 
-    public int getId_promotion() {
-        return this.id_promotion;
+    public Promotion getPromo()
+    {
+        return this.promo;
     }
 
 }

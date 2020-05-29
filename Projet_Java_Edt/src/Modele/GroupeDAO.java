@@ -19,12 +19,21 @@ public class GroupeDAO extends DAO<Groupe> {
     @Override
     public Groupe find(int id) {
         Groupe legroupe = new Groupe();
+        
+        int id_promo=0;
+        Promotion promo = new Promotion();
+        PromotionDAO promoDao = new PromotionDAO();
         try {
             this.conn=Connexion.seConnecter();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM groupe WHERE id=" + id);
 
             if (rset.first())
-                legroupe = new Groupe(id, rset.getString("nom"), rset.getInt("id_promotion"));
+            {
+                id_promo=rset.getInt("id_promotion");
+                promo = promoDao.find(id_promo);
+                legroupe = new Groupe(id, rset.getString("nom"), promo);
+            }
+                
         } catch (ClassNotFoundException cnfe) {
             System.out.println("Connexion echouée : problème de classe");
             cnfe.printStackTrace();

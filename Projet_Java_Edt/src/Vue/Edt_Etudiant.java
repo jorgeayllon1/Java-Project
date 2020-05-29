@@ -39,14 +39,14 @@ public class Edt_Etudiant extends Edt{
         
         this.panel.add(grille_edt);
        //On cree un nouveau etudiant avec l'id de l'utilisateur car id_utilisateur clé etrangere dans etudiant
-        DAO<Utilisateur> etudiantDao = new EtudiantDao(); //********************
+        EtudiantDao etudiantDao = new EtudiantDao(); //********************
         etudiant =(Etudiant) etudiantDao.find(etudiant.getID());//*****************
-        System.out.println("Numero etudiant : "+etudiant.getNumEtudiant());
+        System.out.print("Numero etudiant :"+etudiant.getNumEtudiant());
         
         //Récupération données groupe
         GroupeDAO groupeDao = new GroupeDAO();
-        Groupe groupe = groupeDao.find(etudiant.getIdGroupe());
-        System.out.println(groupe.getNom());
+        Groupe groupe = groupeDao.find(etudiant.getGroupe().getId());
+        System.out.println(" Groupe :" +groupe.getNom() + " Promotion :" + groupe.getPromo().getAnnee());
         
         ///Affichage des séances relatives à cet eleve
         
@@ -58,11 +58,21 @@ public class Edt_Etudiant extends Edt{
         mes_seances = groupeDao.trouverAllSeances(mes_id);
         
         System.out.println("Nombre de séances prevues pour cet eleve : " +mes_seances.size());
+        Salle salle =new Salle();
         for(int i=0;i<mes_seances.size();i++)
         {
-            System.out.println("Mes seances:\n date : " +mes_seances.get(i).getDate()+ "\nheure debut : " + mes_seances.get(i).getHeureDebut() +"\nheure fin : " +mes_seances.get(i).getHeureFin());
+            System.out.println("Mes seances: \n"
+                    +"Intitule du cours : " + mes_seances.get(i).getCours().getNom()
+                    +"\n date : " +mes_seances.get(i).getDate()
+                    +"\nheure debut : "  + mes_seances.get(i).getHeureDebut() 
+                    +"\nheure fin : " +mes_seances.get(i).getHeureFin()
+                    +"\nType :" + mes_seances.get(i).getType().getNom());
+            salle = etudiantDao.trouverSalle(mes_seances.get(i));
+            System.out.println("Salle : " + salle.getNom() + " Capacite : " + salle.getCapacite() + " Site : " + salle.getSite().getNom()  );
         }
        
     }
+    
+    
     
 }
