@@ -7,12 +7,14 @@ package Vue;
 
 import Modele.*;
 
+import javax.swing.*;
+
 /**
  *
  * @author Wang David
  */
 public class Edt_Admin extends Edt{
-    
+
     public Edt_Admin(){}
     
     public Edt_Admin(Utilisateur user, int droit)
@@ -22,7 +24,7 @@ public class Edt_Admin extends Edt{
             System.out.println("Admin !");
         else if(droit==2)
             System.out.println("Referent !");
-        
+
 
                         
     }
