@@ -5,6 +5,7 @@
  */
 package Vue;
 
+import Controlleur.Recherche.RechercheControleur;
 import Modele.*;
 
 import javax.swing.*;
@@ -21,18 +22,24 @@ public class Edt_Admin extends Edt {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        JPanel schear = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
 
-        JTextField zone = new JTextField();
-        setPreferredSize(new Dimension(200, 100));
+        JTextField texte = new JTextField();
+        texte.setPreferredSize(new Dimension(200, 100));
 
-        panel.add(zone);
+        schear.add(texte);
 
-        panel.setVisible(true);
+        JButton lancerrecherche = new JButton(new AbstractAction("Rechercher") {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                control_recherche = new RechercheControleur();
+                control_recherche.rechercher_controleur(texte.getText());
+            }
+        });
 
-        /// Vasy je fait taffer du swing
-
-        System.out.println("je suis la");
-
+        schear.add(lancerrecherche);
+        panel.add(schear);
+        this.setVisible(true);
     }
 
     public Edt_Admin(Utilisateur user, int droit) {
@@ -41,6 +48,8 @@ public class Edt_Admin extends Edt {
             System.out.println("Admin !");
         else if (droit == 2)
             System.out.println("Referent !");
+
+        this.rechercher.addActionListener(this);
     }
 
 }

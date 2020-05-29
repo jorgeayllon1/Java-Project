@@ -1,6 +1,6 @@
 package Controlleur.Recherche;
 
-import Controlleur.Controleur;
+import Controlleur.*;
 
 import java.awt.event.ActionEvent;
 
@@ -10,8 +10,8 @@ public class RechercheControleur extends Controleur {
         super();
     }
 
-    public void rechercher_controleur(String texte) {
-        System.out.println(texte);
+    public void rechercher_controleur(String nom) {
+        System.out.println(nom);
     }
 
     @Override
