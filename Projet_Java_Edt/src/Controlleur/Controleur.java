@@ -4,38 +4,40 @@
  * and open the template in the editor.
  */
 package Controlleur;
+
 import Vue.*;
 import Modele.*;
+
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
 import static javafx.scene.input.KeyCode.T;
+
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.*;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 /**
- *
  * @author Wang David
  */
-public abstract class Controleur implements ActionListener{
-    
+public abstract class Controleur implements ActionListener {
+
     protected DAO dao;
-    
-    
-    public Controleur(){}
-    
-    public Controleur(DAO dao)
-    {
-        this.dao=dao;
+
+
+    public Controleur() {
     }
-    
-    
-    
-    public static void main(String args[]) throws UnsupportedLookAndFeelException
-    {
-        
-        
+
+    public Controleur(DAO dao) {
+        this.dao = dao;
     }
-    
+
+
+    public static void main(String args[]) throws UnsupportedLookAndFeelException {
+
+
+    }
+
+    public abstract void rechercher_controleur(String text);
 }

@@ -10,9 +10,13 @@ public class RechercheControleur extends Controleur {
         super();
     }
 
-    public void control_rechercher(String nom) {
-        System.out.println(nom);
+    @Override
+    public void rechercher_controleur(String text) {
+
+        System.out.println(text);
+
     }
+
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {

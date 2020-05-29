@@ -25,7 +25,12 @@ public class AccueilControleur extends Controleur {
     {
         super();
     }
-    
+
+    @Override
+    public void rechercher_controleur(String text) {
+
+    }
+
     public AccueilControleur(Utilisateur user)
     {
         this.user=user;

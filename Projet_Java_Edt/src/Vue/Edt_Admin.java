@@ -5,7 +5,7 @@
  */
 package Vue;
 
-import Controlleur.RechercheControleur;
+import Controlleur.Recherche.RechercheControleur;
 import Modele.*;
 
 import javax.swing.*;
@@ -20,10 +20,7 @@ public class Edt_Admin extends Edt {
     public Edt_Admin() {
     }
 
-    
 
-   
-    
     @Override
     public void actionPerformed(ActionEvent e) {
 

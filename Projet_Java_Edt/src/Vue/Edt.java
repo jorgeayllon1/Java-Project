@@ -6,7 +6,7 @@
 package Vue;
 
 
-import Controlleur.RechercheControleur;
+import Controlleur.Recherche.RechercheControleur;
 import Modele.*;
 
 import java.awt.*;
