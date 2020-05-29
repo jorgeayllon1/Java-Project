@@ -25,6 +25,13 @@ public class SeanceDao extends DAO<Seance> {
     @Override
     public Seance find(int id) {
         Seance seance = new Seance();
+        Cours cours=new Cours();
+        CoursDao coursDao=new CoursDao();
+        int id_cours=0;
+        
+        TypeCours type=new TypeCours();
+        TypeCoursDAO typeDao = new TypeCoursDAO();
+        int id_type=0;
         try {
             try {
                 this.conn = Connexion.seConnecter();
@@ -33,15 +40,22 @@ public class SeanceDao extends DAO<Seance> {
                         this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM seance WHERE id = " + id);
 
                 if (rset.first())
-                    seance = new Seance(
+                {
+                    id_cours=rset.getInt("id_cours");
+                        cours = coursDao.find(id_cours);
+                        id_type=rset.getInt("id_type");
+                        type = typeDao.find(id_type);
+                        seance = new Seance(
                             id,
                             rset.getInt("semaine"),
                             rset.getDate("date"),
                             rset.getTimestamp("heure_debut"),
                             rset.getTimestamp("heure_fin"),
-                            rset.getInt("id_cours"),
-                            rset.getInt("id_type")
+                            cours,
+                            type
                     );
+                }
+                    
 
             } catch (ClassNotFoundException cnfe) {
                 System.out.println("Connexion echouee : probleme de classe");
@@ -74,8 +88,9 @@ public class SeanceDao extends DAO<Seance> {
                 prepare.setDate(3, obj.getDate());
                 prepare.setTimestamp(4, obj.getHeureDebut());
                 prepare.setTimestamp(5, obj.getHeureFin());
-                prepare.setInt(6, obj.getIdCours());
-                prepare.setInt(7, obj.getIdType());
+                prepare.setInt(6, obj.getCours().getID());
+                prepare.setInt(7, obj.getType().getId());
+                
 
                 //On éxécute
                 prepare.executeUpdate();

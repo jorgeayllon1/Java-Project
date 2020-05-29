@@ -95,6 +95,13 @@ public class GroupeDAO extends DAO<Groupe> {
     public ArrayList<Seance> trouverAllSeances(ArrayList<Integer> array)
     {
         ArrayList<Seance> seance_groupe = new ArrayList();
+        Cours cours=new Cours();
+        CoursDao coursDao=new CoursDao();
+        int id_cours=0;
+        
+        TypeCours type=new TypeCours();
+        TypeCoursDAO typeDao = new TypeCoursDAO();
+        int id_type=0;
         
         try
         {
@@ -109,12 +116,16 @@ public class GroupeDAO extends DAO<Groupe> {
 
                     if(rset.next())
                     {
+                        id_cours=rset.getInt("id_cours");
+                        cours = coursDao.find(id_cours);
+                        id_type=rset.getInt("id_type");
+                        type = typeDao.find(id_type);
                        seance_groupe.add(new Seance(array.get(i), rset.getInt("semaine"),
                   rset.getDate("date"),                 
                   rset.getTimestamp("heure_debut"),
                   rset.getTimestamp("heure_fin"),
-                  rset.getInt("id_cours"),
-                  rset.getInt("id_type")));
+                  cours,
+                  type));
                     }   
                 }
                 

@@ -6,7 +6,10 @@
 package Vue;
 
 import Modele.*;
+import java.awt.GridLayout;
 import java.util.ArrayList;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  *
@@ -20,6 +23,21 @@ public class Edt_Etudiant extends Edt{
     {
         
         super(user);
+        JPanel grille_edt = new JPanel(new GridLayout(7,6,1,1));
+        
+        //Grille d'edt
+        for(int i=1;i<8;i++)
+        {
+            grille_edt.add(new JLabel("8h-10h"));
+            for(int j=1;j<7;j++)
+            {
+                grille_edt.add(new JLabel(String.valueOf(i*j),JLabel.CENTER));
+
+            }
+            
+        }
+        
+        this.panel.add(grille_edt);
        //On cree un nouveau etudiant avec l'id de l'utilisateur car id_utilisateur clé etrangere dans etudiant
         DAO<Utilisateur> etudiantDao = new EtudiantDao(); //********************
         etudiant =(Etudiant) etudiantDao.find(etudiant.getID());//*****************

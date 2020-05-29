@@ -19,12 +19,26 @@ public class EnseignantDAO extends DAO<Enseignant> {
     @Override
     public Enseignant find(int id_utilisateur) {
         Enseignant leprof = new Enseignant();
+        int id_user=0;
+        int id_cours=0;
+        Utilisateur user = new Utilisateur();
+        UtilisateurDao userDao = new UtilisateurDao();
+        Cours cours = new Cours();
+        CoursDao coursDao = new CoursDao();
+        
         try {
             this.conn=Connexion.seConnecter();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM enseignant WHERE id_utilisateur=" + id_utilisateur);
 
             if (rset.first())
-                leprof = new Enseignant(id_utilisateur, rset.getInt("id_utilisateur"));
+            {
+                id_user = rset.getInt("id_utilisateur");
+                id_cours = rset.getInt("id_cours");
+                user = userDao.find(id_user);
+                cours = coursDao.find(id_cours);
+                leprof = new Enseignant(id_utilisateur, user.getMdp(), user.getMail(),user.getNom(),user.getPrenom(),user.getDroit(),cours);
+            }
+                
         } catch (ClassNotFoundException cnfe) {
             System.out.println("Connexion echouée : problème de classe");
             cnfe.printStackTrace();
@@ -64,7 +78,7 @@ public class EnseignantDAO extends DAO<Enseignant> {
                 this.conn=Connexion.seConnecter();                
                 this.rset = this.conn.createStatement(
                 this.rset.TYPE_SCROLL_INSENSITIVE,                      
-                this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id_seance FROM seance_enseignants WHERE id_enseignant = " + prof.getId_utilisateur()); //On cherche tout les ID des séances de ce groupe
+                this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id_seance FROM seance_enseignants WHERE id_enseignant = " + prof.id); //On cherche tout les ID des séances de ce groupe
                 
                 
                 while(rset.next())
@@ -90,6 +104,13 @@ public class EnseignantDAO extends DAO<Enseignant> {
     public ArrayList<Seance> trouverAllSeances(ArrayList<Integer> array)
     {
         ArrayList<Seance> seance_prof = new ArrayList();
+        Cours cours=new Cours();
+        CoursDao coursDao=new CoursDao();
+        int id_cours=0;
+        
+        TypeCours type=new TypeCours();
+        TypeCoursDAO typeDao = new TypeCoursDAO();
+        int id_type=0;
         
         try
         {
@@ -104,12 +125,16 @@ public class EnseignantDAO extends DAO<Enseignant> {
 
                     if(rset.next())
                     {
+                        id_cours=rset.getInt("id_cours");
+                        cours = coursDao.find(id_cours);
+                        id_type=rset.getInt("id_type");
+                        type = typeDao.find(id_type);
                        seance_prof.add(new Seance(array.get(i), rset.getInt("semaine"),
                         rset.getDate("date"),                 
                         rset.getTimestamp("heure_debut"),
                         rset.getTimestamp("heure_fin"),
-                        rset.getInt("id_cours"),
-                        rset.getInt("id_type")));
+                        cours,
+                        type));
                     }   
                 }               
 
@@ -180,5 +205,57 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return salle;
     }
 
+    
+    public ArrayList<Enseignant> listeEnseignant()
+    {
+        ArrayList<Enseignant> liste_prof = new ArrayList();
+        ArrayList<Integer> deja_compte = new ArrayList();
+        int id_cours=0;
+        Cours cours = new Cours();
+        CoursDao coursDao = new CoursDao();
+        int id_user=0;
+        Utilisateur user = new Utilisateur();
+        UtilisateurDao userDao = new UtilisateurDao();
+        try
+        {
+             try
+            {      
+                    this.conn=Connexion.seConnecter();  
+                
+                    this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,                      
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM enseignant" );
+
+                    while(rset.next())
+                    {
+                        
+                            if(!deja_compte.contains(rset.getInt("id_utilisateur"))) //S'il est deja dans notre tableau d'int on ne l'ajoute plus sinon on l'ajoute
+                            {                              
+                                id_cours=rset.getInt("id_cours");
+                                cours = coursDao.find(id_cours);
+                                id_user = rset.getInt("id_utilisateur");
+                                user = userDao.find(id_user);
+                                deja_compte.add(rset.getInt("id_utilisateur"));
+                                liste_prof.add(new Enseignant(rset.getInt("id_utilisateur"), user.getMdp(), user.getMail(),user.getNom(),user.getPrenom(),user.getDroit(),cours));
+                            }
+                   
+                    }   
+                              
+
+            }
+            catch(ClassNotFoundException cnfe)
+            {
+                    System.out.println("Connexion echouee : probleme de classe");
+                    cnfe.printStackTrace();
+            }
+        }
+        catch(SQLException e) 
+        {
+                System.out.println("Connexion echouee : probleme SQL");
+                e.printStackTrace();
+        }
+        
+        return liste_prof;
+    }
     
 }

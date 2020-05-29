@@ -26,10 +26,6 @@ public class UtilisateurDao extends DAO<Utilisateur> {
         super(conn);
     }
 
-    
-    
-
-
 
     public Utilisateur find(int id) {
         Utilisateur user = new Utilisateur();

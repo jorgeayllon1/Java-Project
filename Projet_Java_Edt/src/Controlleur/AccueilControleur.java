@@ -56,10 +56,13 @@ public class AccueilControleur extends Controleur {
                 switch(droit)
                 {
                     case 1:
-                        System.out.println("Admin");
+                        System.out.println("Droit : Admin");
+                        Edt_Admin edt_admin = new Edt_Admin(mesUsers.get(i),mesUsers.get(i).getDroit());
                         break;
                     case 2:
-                        System.out.println("Referent");
+                        System.out.println("Droit : Referent");
+                        Edt_Admin edt_ref = new Edt_Admin(mesUsers.get(i),mesUsers.get(i).getDroit());
+                        
                         break;
                     case 3:
                         System.out.println("Droit : Enseignant");

@@ -33,9 +33,17 @@ public class Edt_Enseignant extends Edt{
         for(int i=0;i<mes_seances.size();i++)
         {
             System.out.println("Mes seances:\n date : " +mes_seances.get(i).getDate()+ "\nheure debut : " 
-                    + mes_seances.get(i).getHeureDebut() +"\nheure fin : " +mes_seances.get(i).getHeureFin());
+                    + mes_seances.get(i).getHeureDebut() +"\nheure fin : " +mes_seances.get(i).getHeureFin() +" \nType : " + mes_seances.get(i).getType().getNom());
             Salle salle = profDao.trouverSalle(mes_seances.get(i));
-            System.out.println("Salle : " + salle.getNom() + " Capacite : " + salle.getCapacite() + " Site : " + salle.getSite().getNom());
+            System.out.println("Salle : " + salle.getNom() + " Capacite : " + salle.getCapacite() + " Site : " + salle.getSite().getNom()  );
+        }
+        
+        System.out.println("Voici la liste de tous les enseignants : ");
+        ArrayList<Enseignant> mes_profs = new ArrayList();
+        mes_profs = profDao.listeEnseignant();
+        for(int i=0;i<mes_profs.size();i++)
+        {
+            System.out.println(mes_profs.get(i).getNom());
         }
         
         

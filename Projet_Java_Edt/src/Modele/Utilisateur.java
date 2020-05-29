@@ -20,6 +20,10 @@ public class Utilisateur extends Observable {
     protected String prenom="";
     private int droit=0;
     
+    public Utilisateur(int id)
+    {
+        this.id=id;
+    }
     
     public Utilisateur(int id,String mdp, String email,String nom, String prenom,int droit)
     {

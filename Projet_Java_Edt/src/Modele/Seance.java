@@ -19,22 +19,24 @@ public class Seance {
     private Date date=null;
     private Timestamp heure_debut=null;
     private Timestamp heure_fin=null;
-    private int id_cours=0;
-    private int id_type=0;
+    private Cours cours=null;
+    private TypeCours type=null;
+    //private int id_cours=0;
+    //private int id_type=0;
     
     
     
     public Seance(){};
     
-    public Seance(int id, int semaine, Date date, Timestamp heure_debut, Timestamp heure_fin, int id_cours, int id_type)
+    public Seance(int id, int semaine, Date date, Timestamp heure_debut, Timestamp heure_fin, Cours cours, TypeCours type)
     {
         this.id=id;
         this.semaine=semaine;
         this.date=date;
         this.heure_debut=heure_debut;
         this.heure_fin=heure_fin;
-        this.id_cours=id_cours;
-        this.id_type=id_type;
+        this.cours=cours;
+        this.type=type;
     }
     
     public Date getDate()
@@ -62,13 +64,13 @@ public class Seance {
         return this.semaine;
     }
     
-    public int getIdCours()
+    public Cours getCours()
     {
-        return this.id_cours;
+        return this.cours;
     }
     
-    public int getIdType()
+    public TypeCours getType()
     {
-        return this.id_type;
+        return this.type;
     }
 }

@@ -26,6 +26,7 @@ public class Edt extends JFrame implements Observer, ActionListener{
     private final JToolBar menu = new JToolBar();
     private JLabel info;
     private Graphics ligneh = getGraphics();
+    protected JPanel panel;
     
     public Edt(){}
     public Edt(Utilisateur user)
@@ -41,7 +42,7 @@ public class Edt extends JFrame implements Observer, ActionListener{
         menu.add(new JButton("Cours annulé(s)"));
         menu.add(new JButton("Reporting"));
       
-        JPanel panel = (JPanel)this.getContentPane();
+        panel = (JPanel)this.getContentPane();
         panel.setLayout(new BorderLayout());
         
         panel.add(this.menu, BorderLayout.NORTH);
@@ -50,21 +51,7 @@ public class Edt extends JFrame implements Observer, ActionListener{
         
         info = new JLabel(mesInfos);
         panel.add(this.info, BorderLayout.SOUTH);
-        
-        JPanel grille_edt = new JPanel(new GridLayout(7,6,1,1));
-        
-        for(int i=1;i<8;i++)
-        {
-            grille_edt.add(new JLabel("8h-10h"));
-            for(int j=1;j<7;j++)
-            {
-                grille_edt.add(new JLabel(String.valueOf(i*j),JLabel.CENTER));
 
-            }
-            
-        }
-        panel.add(grille_edt);
-  
         this.setVisible(true);
    
     }
@@ -77,6 +64,11 @@ public class Edt extends JFrame implements Observer, ActionListener{
     public void update(Observable o,Object obj)
     {
         
+    }
+    
+    public JPanel getPanel()
+    {
+        return this.panel;
     }
     
 }
