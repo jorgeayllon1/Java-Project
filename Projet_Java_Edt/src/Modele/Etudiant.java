@@ -12,7 +12,6 @@ package Modele;
 public class Etudiant extends Utilisateur{
     
     private String num_etudiant="";
-    //private int id_groupe=0; 
     private Groupe groupe;
     
     public Etudiant()

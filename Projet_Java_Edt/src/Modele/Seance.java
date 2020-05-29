@@ -21,8 +21,7 @@ public class Seance {
     private Timestamp heure_fin=null;
     private Cours cours=null;
     private TypeCours type=null;
-    //private int id_cours=0;
-    //private int id_type=0;
+
     
     
     

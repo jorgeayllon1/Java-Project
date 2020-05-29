@@ -28,7 +28,9 @@ public class Edt extends JFrame implements Observer, ActionListener{
     private Graphics ligneh = getGraphics();
     protected JPanel panel;
     
+    
     public Edt(){}
+    
     public Edt(Utilisateur user)
     {
         super("Votre emploi du temps - " + user.getNom().toUpperCase()+" "+user.getPrenom().toUpperCase());
@@ -36,6 +38,7 @@ public class Edt extends JFrame implements Observer, ActionListener{
         this.setSize(1400,800); //Taille
         this.setLocationRelativeTo(null); //Centre
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Stop run quand la dernière fenetre est fermé
+        
         
         menu.add(new JButton("Cours"));
         menu.add(new JButton("Rechercher"));
