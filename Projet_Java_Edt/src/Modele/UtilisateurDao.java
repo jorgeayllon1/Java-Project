@@ -147,19 +147,16 @@ public class UtilisateurDao extends DAO<Utilisateur> {
 
             this.conn = Connexion.seConnecter();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE,
-                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM seance\n" +
-                    "INNER JOIN seance_groupes\n" +
-                    "on seance.id=seance_groupes.id_groupe\n" +
-                    "INNER JOIN groupe\n" +
-                    "on groupe.id = seance_groupes.id_groupe\n" +
-                    "INNER join etudiant\n" +
-                    "on etudiant.id_groupe=groupe.id\n" +
-                    "WHERE etudiant.id_utilisateur=4");///mettre le bon id
+                    this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT * FROM `seance` INNER JOIN seance_groupes ON seance_groupes.id_seance=seance.id" +
+                            " INNER JOIN groupe ON groupe.id = seance_groupes.id_groupe INNER JOIN etudiant ON " +
+                            "etudiant.id_groupe=groupe.id WHERE etudiant.id_utilisateur=4");
+
 
             while (rset.next()) {
                 lesseances.add(new Seance(rset.getInt("id"), rset.getInt("semaine"), rset.getDate("date"), rset.getTimestamp("heure_debut"), rset.getTimestamp("heure_fin"),
-                        new Cours(rset.getInt("id_cours"), "ssdf"),
-                        new TypeCours(rset.getInt("id_type"), "sdfsdf")));
+                        new Cours(rset.getInt("id_cours"), ""),
+                        new TypeCours(rset.getInt("id_type"), "")));
             }
 
         } catch (SQLException | ClassNotFoundException e) {
