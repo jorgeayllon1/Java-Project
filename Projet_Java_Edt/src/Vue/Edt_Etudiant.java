@@ -6,9 +6,16 @@
 package Vue;
 
 import Modele.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -60,19 +67,158 @@ public class Edt_Etudiant extends Edt{
             System.out.println("Salle : " + salle.getNom() + " Capacite : " + salle.getCapacite() + " Site : " + salle.getSite().getNom()  );
         }
         
-        JPanel grille_edt = new JPanel(new GridLayout(7,6,1,1));
+        JPanel grille_edt = new JPanel(new GridBagLayout());
         
-        //Grille d'edt
-        for(int i=1;i<8;i++)
+        GridBagConstraints grille = new GridBagConstraints();
+        grille.fill = GridBagConstraints.HORIZONTAL;
+        grille.gridx=0;
+        grille.gridy=0;
+        grille.weightx=0.1;
+        grille.weighty=0.1;
+        
+        grille_edt.add(new JLabel("Heures "),grille);
+        
+        grille.gridx=1;
+        grille.gridy=0;
+        grille.weightx=0.15;
+        grille.weighty=0.1;
+        grille_edt.add(new JLabel("Lundi "),grille);
+        
+        grille.gridx=2;
+        grille.gridy=0;
+        grille.weightx=0.1;
+        grille.weighty=0.1;
+        grille_edt.add(new JLabel("Mardi "),grille);
+        
+        grille.gridx=3;
+        grille.gridy=0;
+        grille.weightx=0.1;
+        grille.weighty=0.1;
+        grille_edt.add(new JLabel("Mercredi "),grille);
+        
+        grille.gridx=4;
+        grille.gridy=0;
+        grille.weightx=0.1;
+        grille.weighty=0.1;
+        grille_edt.add(new JLabel("jeudi "),grille);
+        
+        grille.gridx=5;
+        grille.gridy=0;
+        grille.weightx=0.1;
+        grille.weighty=0.1;
+        grille_edt.add(new JLabel("Vendredi "),grille);
+        
+        grille.gridx=6;
+        grille.gridy=0;
+        grille.weightx=0.1;
+        grille.weighty=0.1;
+        grille_edt.add(new JLabel("Samedi "),grille);
+        
+        int j=8;
+        int k =j+2;
+        for(int i=0;i<6;i++)
         {
-            grille_edt.add(new JLabel("8h-10h"));
-            for(int j=1;j<7;j++)
-            {
-                grille_edt.add(new JLabel(String.valueOf(i*j),JLabel.CENTER));
-
-            }
             
+            grille.gridx=0;
+            grille.gridy=i+1;
+            grille.weightx=0.1;
+            grille.weighty=0.15;
+            grille_edt.add(new JLabel(j+"H-" +k+"H"),grille);
+            j+=2;
+            k+=2;
         }
+        
+        /*Date date = new Date(mes_seances.get(1).getHeureDebut().getTime());
+        SimpleDateFormat sdf = new SimpleDateFormat("h");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        String formattedDate = sdf.format(date);
+        System.out.println(formattedDate);
+        
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);  //1 sunday 2 monday 3 tuesday...
+        System.out.println(dayOfWeek);   */
+      
+        for(int i=0;i<mes_seances.size();i++) //On parcourt toutes séances relatives à cet etudiant
+        {
+            if(mes_seances.get(i).getSemaine()==this.num_semaine)//Si il y a un cours dans la semaine actuelle
+            {
+                    Date date = mes_seances.get(i).getDate();
+                    Calendar c = Calendar.getInstance();
+                    c.setTime(date);
+                    int dayOfWeek = c.get(Calendar.DAY_OF_WEEK); //On get le jour de la semaine 1 sunday 2 monday 3 tuesday...
+                    for(int jour_semaine=2;jour_semaine<7;jour_semaine++)
+                    {
+                            if(dayOfWeek==jour_semaine) //Si c un vendredi
+                            {                       
+                            /*SimpleDateFormat sdf = new SimpleDateFormat("h");
+                            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+                            String str = sdf.format(mes_seances.get(i).getHeureDebut()); //On stocke dans un string l'entier de l'heure de début*/
+                            String str = mes_seances.get(i).getHeureDebut().toString();
+                            char str2 = str.charAt(11);
+                            char str3 = str.charAt(12);
+                            StringBuilder str4 = new StringBuilder();
+                                if(str2=='0')
+                                {
+                                    str4.append(str3);
+                                }
+                                else
+                                {
+                                    str4.append(str2).append(str3);
+                                }
+
+                                int n=0;
+                                String heure="";
+                                for(int m=0;m<7;m++)
+                                {
+                                    if(m==0)
+                                    {
+                                        heure = Integer.toString(m+8+n);
+                                    }
+                                    else
+                                    {
+                                        if((m+n)%2==0)
+                                        {
+                                            n+=2;
+                                            heure = Integer.toString(m+8+n);
+                                        }
+                                        else if((m+n)%2!=0)
+                                        {
+                                            n++;
+                                            heure = Integer.toString(m+8+n);        
+                                        }
+                                    }
+
+                                    grille.gridx=jour_semaine-1;
+                                    if(str4.toString().equals( heure )) //Si ca commence à 10h
+                                    {
+                                        if(heure.contains("8"))
+                                            grille.gridy=1;
+                                        if(heure.contains("10"))
+                                            grille.gridy=2;                             
+                                        if(heure.contains("12"))
+                                           grille.gridy=3;
+                                        if(heure.contains("14"))
+                                            grille.gridy=4;
+                                        if(heure.contains("16"))
+                                            grille.gridy=5;
+                                        if(heure.contains("18"))
+                                            grille.gridy=6;
+                                        if(heure.contains("20"))
+                                            grille.gridy=7;
+
+                                        grille_edt.add(new JLabel(mes_seances.get(i).getCours().getNom()+ "\n"+salle.getNom()+"\n"+salle.getSite().getNom()),grille);
+                                    }
+                            }
+
+                        }
+                    }
+                    
+            }
+        }
+        
+        
         this.panel.add(grille_edt);
   
        

@@ -37,6 +37,7 @@ public class Edt extends JFrame implements ActionListener {
     protected  JButton annule = new JButton("Cours annulé(s)");
     protected  JButton recap = new JButton("Récapitulatif des cours");
     protected RechercheControleur control_recherche;
+    protected int num_semaine;
 
 
     public Edt() {
@@ -78,7 +79,7 @@ public class Edt extends JFrame implements ActionListener {
         System.out.println("Week number:" + 
         cal.get(Calendar.WEEK_OF_YEAR));
         
-        int num_semaine= cal.get(Calendar.WEEK_OF_YEAR);
+        this.num_semaine= cal.get(Calendar.WEEK_OF_YEAR);
         
         
         JLabel week = new JLabel("SEMAINE");
