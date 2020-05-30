@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  jeu. 28 mai 2020 à 10:15
+-- Généré le :  sam. 30 mai 2020 à 17:30
 -- Version du serveur :  5.7.26
 -- Version de PHP :  7.2.18
 
@@ -71,7 +71,8 @@ CREATE TABLE IF NOT EXISTS `enseignant` (
 
 INSERT INTO `enseignant` (`id_utilisateur`, `id_cours`) VALUES
 (3, 1),
-(3, 5);
+(3, 5),
+(9, 3);
 
 -- --------------------------------------------------------
 
@@ -201,10 +202,10 @@ CREATE TABLE IF NOT EXISTS `seance` (
 --
 
 INSERT INTO `seance` (`id`, `semaine`, `date`, `heure_debut`, `heure_fin`, `id_cours`, `id_type`) VALUES
-(1, 1, '2020-06-02', '2020-06-02 06:00:00', '2020-06-02 08:00:00', 1, 2),
-(2, 1, '2020-06-02', '2020-06-02 08:00:00', '2020-06-02 10:00:00', 4, 3),
-(3, 2, '2020-05-28', '2020-05-27 22:10:00', '2020-05-27 22:12:00', 3, 3),
-(4, 2, '2020-05-27', '2020-05-26 22:10:00', '2020-05-26 22:12:00', 6, 2);
+(1, 23, '2020-06-02', '2020-06-02 06:00:00', '2020-06-02 08:00:00', 1, 2),
+(2, 23, '2020-06-02', '2020-06-02 08:00:00', '2020-06-02 10:00:00', 4, 3),
+(3, 22, '2020-05-28', '2020-05-27 22:10:00', '2020-05-27 22:12:00', 3, 3),
+(4, 22, '2020-05-27', '2020-05-26 22:10:00', '2020-05-26 22:12:00', 6, 2);
 
 -- --------------------------------------------------------
 
@@ -225,7 +226,8 @@ CREATE TABLE IF NOT EXISTS `seance_enseignants` (
 --
 
 INSERT INTO `seance_enseignants` (`id_seance`, `id_enseignant`) VALUES
-(1, 3);
+(1, 3),
+(3, 3);
 
 -- --------------------------------------------------------
 
@@ -264,6 +266,16 @@ CREATE TABLE IF NOT EXISTS `seance_salles` (
   KEY `id_salle` (`id_salle`),
   KEY `id_seance` (`id_seance`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `seance_salles`
+--
+
+INSERT INTO `seance_salles` (`id_seance`, `id_salle`) VALUES
+(1, 4),
+(2, 1),
+(3, 2),
+(4, 3);
 
 -- --------------------------------------------------------
 
