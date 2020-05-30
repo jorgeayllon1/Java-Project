@@ -13,11 +13,11 @@ public class RechercheControleur extends Controleur {
     }
 
     @Override
-    public void rechercher_controleur(String nom, String semain) {
+    public void rechercher_controleur(String nom, String semaine) {
 
-        DAO<Utilisateur> userDAO = DAOFactory.getUtilisateur();
-
+        UtilisateurDao userDAO = new UtilisateurDao();
         ArrayList<Utilisateur> mesUsers = new ArrayList<>();
+
 
         for (int i = 1; i < userDAO.getTaille("utilisateur") + 1; i++) {
             mesUsers.add(userDAO.find(i));
@@ -39,6 +39,13 @@ public class RechercheControleur extends Controleur {
             System.out.println("Il faut modifier la vu pour les afficher correctement");
         } else System.out.println("Personne non trouvé dans la BDD : " + nom);
 
+        ArrayList<Seance> lesSeances = userDAO.listedeSeance();
+
+        for (Seance uneseance :
+                lesSeances) {
+            System.out.println(uneseance.getID() + " " + uneseance.getSemaine() + " " + uneseance.getDate().toString() + " " + uneseance.getHeureDebut()
+                    + " " + uneseance.getHeureFin() + " " + uneseance.getCours().getNom() + " " + uneseance.getType().getNom());
+        }
 
     }
 

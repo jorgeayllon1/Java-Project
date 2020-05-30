@@ -25,7 +25,7 @@ public class CoursDao extends DAO<Cours> {
         Cours cours = new Cours();
         try {
             try {
-                this.conn=Connexion.seConnecter();
+                this.conn = Connexion.seConnecter();
                 this.rset = this.conn.createStatement(
                         this.rset.TYPE_SCROLL_INSENSITIVE,
                         this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM cours WHERE id = " + id);
@@ -57,10 +57,6 @@ public class CoursDao extends DAO<Cours> {
 
     public Cours update(Cours cours) {
         return new Cours();
-    }
-
-    public void afficherChampTable(String nomTable) {
-
     }
 
 

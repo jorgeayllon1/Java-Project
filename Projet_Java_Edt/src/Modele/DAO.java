@@ -93,7 +93,10 @@ public abstract class DAO<T> {
         }
     }
 
-
+    /**
+     * @param nomTable
+     * @return La taille de la table
+     */
     public int getTaille(String nomTable) {
 
         try {
@@ -103,7 +106,7 @@ public abstract class DAO<T> {
             this.rsetMeta = rset.getMetaData();
 
             rset.last();
-           
+
             taille = rset.getRow();
 
             return taille;
@@ -114,7 +117,6 @@ public abstract class DAO<T> {
             return -1;
         }
     }
-
 
 }
 

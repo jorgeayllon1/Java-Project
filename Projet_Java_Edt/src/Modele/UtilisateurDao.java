@@ -18,10 +18,9 @@ public class UtilisateurDao extends DAO<Utilisateur> {
      * Constructeur
      */
     public UtilisateurDao() {
+        super();
 
     }
-
-    ;
 
     public UtilisateurDao(Connection conn) {
         super(conn);
@@ -134,6 +133,41 @@ public class UtilisateurDao extends DAO<Utilisateur> {
         }
 
         return user;
+    }
+
+    /**
+     * Retourne les seances de l'utilisateur
+     */
+    public ArrayList<Seance> listedeSeance() {
+
+        ArrayList<Seance> lesseances = new ArrayList<>();
+
+        try {
+
+
+            this.conn = Connexion.seConnecter();
+            this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM seance\n" +
+                    "INNER JOIN seance_groupes\n" +
+                    "on seance.id=seance_groupes.id_groupe\n" +
+                    "INNER JOIN groupe\n" +
+                    "on groupe.id = seance_groupes.id_groupe\n" +
+                    "INNER join etudiant\n" +
+                    "on etudiant.id_groupe=groupe.id\n" +
+                    "WHERE etudiant.id_utilisateur=4");///mettre le bon id
+
+            while (rset.next()) {
+                lesseances.add(new Seance(rset.getInt("id"), rset.getInt("semaine"), rset.getDate("date"), rset.getTimestamp("heure_debut"), rset.getTimestamp("heure_fin"),
+                        new Cours(rset.getInt("id_cours"), "ssdf"),
+                        new TypeCours(rset.getInt("id_type"), "sdfsdf")));
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("Erreur SQL");
+            e.printStackTrace();
+        }
+
+        return lesseances;
     }
 
 }

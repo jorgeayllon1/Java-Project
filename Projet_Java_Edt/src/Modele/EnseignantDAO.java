@@ -225,4 +225,8 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return liste_prof;
     }
 
+    public void coucou() {
+        System.out.println("coucou");
+    }
+
 }
