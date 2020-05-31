@@ -208,16 +208,17 @@ public class GroupeDAO extends DAO<Groupe> {
                 le_id = rset.getInt("id");
             }
         } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("Probème SQL");
+            System.err.println("Probème SQL");
             e.printStackTrace();
         }
 
-        return le_id;
+        if (le_id != 0) return le_id;
+        else {
+            System.err.println("Nom de groupe inconnu");
+            return 0;
+        }
     }
 
-    /**
-     * @return les séances du groupe
-     */
     public ArrayList<Seance> lesSeances(int id_groupe, int numero_semaine) {
 
         ArrayList<Seance> lesseances = new ArrayList<>();

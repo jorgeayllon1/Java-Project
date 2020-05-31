@@ -54,7 +54,7 @@ public class Edt_Admin extends Edt {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 control_recherche = new RechercheControleur();
-                control_recherche.rechercher_groupe(nom.getText(), semaine.getText(), 1);
+                control_recherche.rechercher_groupe(nom.getText(), semaine.getText());
             }
         });
 

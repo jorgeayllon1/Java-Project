@@ -4,6 +4,7 @@ import Controlleur.Controleur;
 import Modele.*;
 
 import java.awt.event.ActionEvent;
+import java.nio.charset.IllegalCharsetNameException;
 import java.util.ArrayList;
 
 /**
@@ -18,7 +19,6 @@ public class RechercheControleur extends Controleur {
 
     /**
      * Recherche l'emplois du temps d'une personne celon la semaine choisie
-     * Celon votre droit cette classe change de comportement (heritage)
      */
     public void rechercher_utilisateur(String nom, String semaine, int droit) {
 
@@ -88,14 +88,14 @@ public class RechercheControleur extends Controleur {
     /**
      * Recherche de l'emplois du temps d'un groupe
      */
-    public void rechercher_groupe(String nom_groupe, String semaine, int droit) {
+    public void rechercher_groupe(String nom_groupe, String semaine) {
 
         int numero_semaine = 0;
         int id_groupe = 0;
         try {
             numero_semaine = Integer.parseInt(semaine);
         } catch (NumberFormatException e) {
-            System.out.println("Numero de semaine non valide");
+            System.err.println("Numero de semaine non valide");
             return;
         }
 
@@ -103,14 +103,37 @@ public class RechercheControleur extends Controleur {
 
         id_groupe = groupeDAO.idCelonNom(nom_groupe);
 
-        ArrayList<Seance> lesseances = groupeDAO.lesSeances(id_groupe, numero_semaine);
+        if (id_groupe != 0) {/// Si le id_groupe = 0 alors le groupe n'existe pas
 
-        System.out.println("les seances sont :");
-        for (int i = 0; i < lesseances.size(); i++) {
-            System.out.println(lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
-                    + lesseances.get(i).getCours().getNom());
+            ArrayList<Seance> lesseances = groupeDAO.lesSeances(id_groupe, numero_semaine);
+
+            if (lesseances.size() != 0) {/// Si le nombre de seance = 0 alors il n'y a pas d'emplois du temps
+
+                System.out.println("les seances sont :");
+
+                for (int i = 0; i < lesseances.size(); i++) {
+                    System.out.println(lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
+                            + lesseances.get(i).getCours().getNom());
+                }
+            } else System.out.println("Pas de séance cette semaine");
         }
 
+
+    }
+
+    public void rechercher_promotion(String anne_promotion, String semaine) {
+
+        int numero_semaine = 0;
+        int id_promotion = 0;
+        try {
+            numero_semaine = Integer.parseInt(semaine);
+        } catch (NumberFormatException e) {
+            System.err.println("Numero de semaine non valide");
+            return;
+        }
+
+        PromotionDAO promotionDAO = new PromotionDAO();
+        //anne_promotion = promotionDAO.idCelonAnne(anne_promotion)
 
     }
 
