@@ -66,9 +66,18 @@ public class Edt_Admin extends Edt {
             }
         });
 
+        JButton chercher_salle = new JButton(new AbstractAction("Chercher Salle") {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                control_recherche = new RechercheControleur();
+                control_recherche.rechercher_salle(nom.getText(), semaine.getText());
+            }
+        });
+
         schear.add(chercher_utilisateur);
         schear.add(chercher_groupe);
         schear.add(chercher_promotion);
+        schear.add(chercher_salle);
         panel.add(schear);
         this.setVisible(true);
     }

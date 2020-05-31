@@ -155,6 +155,38 @@ public class RechercheControleur extends Controleur {
 
     }
 
+    public void rechercher_salle(String nom_salle, String semaine) {
+
+        int numero_semaine = 0;
+        int id_salle = 0;
+        try {
+            numero_semaine = Integer.parseInt(semaine);
+        } catch (NumberFormatException e) {
+            System.err.println("Numero de semaine non valide");
+            return;
+        }
+
+        SalleDAO salleDAO = new SalleDAO();
+
+        id_salle = salleDAO.idCelonNom(nom_salle);
+
+        if (id_salle != 0) {/// Si le id_groupe = 0 alors le groupe n'existe pas
+
+            ArrayList<Seance> lesseances = salleDAO.lesSeances(id_salle, numero_semaine);
+
+            if (lesseances.size() != 0) {/// Si le nombre de seance = 0 alors il n'y a pas d'emplois du temps
+
+                System.out.println("les seances sont :");
+
+                for (int i = 0; i < lesseances.size(); i++) {
+                    System.out.println(lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
+                            + lesseances.get(i).getCours().getNom());
+                }
+            } else System.out.println("Pas de séance cette semaine");
+        } else System.out.println("Cette salle n'existe pas n'existe pas");
+
+    }
+
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
 

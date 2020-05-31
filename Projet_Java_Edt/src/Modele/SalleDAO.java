@@ -1,6 +1,7 @@
 package Modele;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * @author jorge
@@ -18,7 +19,7 @@ public class SalleDAO extends DAO<Salle> {
     @Override
     public Salle find(int id) {
         Salle lasalle = new Salle();
-        int id_site=0;
+        int id_site = 0;
         Site site = new Site();
         SiteDAO siteDao = new SiteDAO();
         try {
@@ -27,9 +28,8 @@ public class SalleDAO extends DAO<Salle> {
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM salle WHERE id=" + id);
 
 
-            if (rset.first())
-            {
-                id_site=rset.getInt("id_site");
+            if (rset.first()) {
+                id_site = rset.getInt("id_site");
                 site = siteDao.find(id_site);
                 lasalle = new Salle(id, rset.getString("nom"), rset.getInt("capacite"), site);
             }
@@ -60,5 +60,71 @@ public class SalleDAO extends DAO<Salle> {
         return new Salle();
     }
 
+    public int idCelonNom(String nom) {
+        int le_id = 0;
+
+        try {
+            this.conn = Connexion.seConnecter();
+            this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT id FROM salle\n" +
+                            "WHERE nom=" + nom
+            );
+            while (rset.next()) {
+                le_id = rset.getInt("id");
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println("Probème SQL");
+            e.printStackTrace();
+        }
+
+        if (le_id != 0) return le_id;
+        else {
+            System.err.println("Nom de salle inconnu");
+            return 0;
+        }
+
+    }
+
+    public ArrayList<Seance> lesSeances(int id_salle, int numero_semaine) {
+
+        ArrayList<Seance> lesseances = new ArrayList<>();
+        DAO<Cours> coursDAO = DAOFactory.getCours();
+        DAO<TypeCours> typeCoursDAO = DAOFactory.getTypeCours();
+
+        try {
+            this.conn = Connexion.seConnecter();
+            this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT * FROM seance\n" +
+                            "INNER JOIN seance_salles\n" +
+                            "ON seance_salles.id_seance = seance.id\n" +
+                            "INNER JOIN salle\n" +
+                            "on salle.id=seance_salles.id_salle\n" +
+                            "WHERE salle.id=" + id_salle + "\n" +
+                            "AND seance.semaine=" + numero_semaine
+            );
+
+            while (rset.next()) {
+
+                int id = rset.getInt("id");
+                int semaine = rset.getInt("semaine");
+                Date date = rset.getDate("date");
+                Timestamp heure_debut = rset.getTimestamp("heure_debut");
+                Timestamp heure_fin = rset.getTimestamp("heure_fin");
+                int id_cours = rset.getInt("id_cours");
+                Cours cours = coursDAO.find(id_cours);
+                int id_type = rset.getInt("id_type");
+                TypeCours typeCours = typeCoursDAO.find(id_type);
+
+                lesseances.add(new Seance(id, semaine, date, heure_debut, heure_fin, cours, typeCours));
+
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println("Erreur SQL");
+            e.printStackTrace();
+        }
+        return lesseances;
+    }
 
 }
+
