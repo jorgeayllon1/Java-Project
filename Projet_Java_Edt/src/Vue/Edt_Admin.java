@@ -39,7 +39,7 @@ public class Edt_Admin extends Edt {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 control_recherche = new RechercheControleur();
-                control_recherche.rechercher_controleur(nom.getText(), semaine.getText());
+                control_recherche.rechercher_controleur(nom.getText(), semaine.getText(), 1);
             }
         });
 
@@ -50,14 +50,11 @@ public class Edt_Admin extends Edt {
     }
 
 
-    public Edt_Admin(Utilisateur user, int droit) {
+    public Edt_Admin(Utilisateur user) {
         super(user);
-        if (droit == 1)
-            System.out.println("Admin !");
-        else if (droit == 2)
-            System.out.println("Referent !");
 
         this.rechercher.addActionListener(this);
+
     }
 
 

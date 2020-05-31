@@ -6,6 +6,7 @@
 package Modele;
 
 import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 
 
@@ -138,9 +139,11 @@ public class UtilisateurDao extends DAO<Utilisateur> {
     /**
      * Retourne les seances de l'utilisateur
      */
-    public ArrayList<Seance> listedeSeance() {
+    public ArrayList<Seance> listedeSeance(int id_utilisateur, int numero_semaine) {
 
         ArrayList<Seance> lesseances = new ArrayList<>();
+        DAO<Cours> coursDAO = DAOFactory.getCours();
+        DAO<TypeCours> typeCoursDAO = DAOFactory.getTypeCours();
 
         try {
 
@@ -150,13 +153,24 @@ public class UtilisateurDao extends DAO<Utilisateur> {
                     this.rset.CONCUR_READ_ONLY).executeQuery(
                     "SELECT * FROM `seance` INNER JOIN seance_groupes ON seance_groupes.id_seance=seance.id" +
                             " INNER JOIN groupe ON groupe.id = seance_groupes.id_groupe INNER JOIN etudiant ON " +
-                            "etudiant.id_groupe=groupe.id WHERE etudiant.id_utilisateur=4");
+                            "etudiant.id_groupe=groupe.id WHERE etudiant.id_utilisateur=" + id_utilisateur +
+                            " AND seance.semaine = " + numero_semaine);
 
 
             while (rset.next()) {
-                lesseances.add(new Seance(rset.getInt("id"), rset.getInt("semaine"), rset.getDate("date"), rset.getTimestamp("heure_debut"), rset.getTimestamp("heure_fin"),
-                        new Cours(rset.getInt("id_cours"), ""),
-                        new TypeCours(rset.getInt("id_type"), "")));
+
+                int id = rset.getInt("id");
+                int semaine = rset.getInt("semaine");
+                Date date = rset.getDate("date");
+                Timestamp heure_debut = rset.getTimestamp("heure_debut");
+                Timestamp heure_fin = rset.getTimestamp("heure_fin");
+                int id_cours = rset.getInt("id_cours");
+                Cours cours = coursDAO.find(id_cours);
+                int id_type = rset.getInt("id_type");
+                TypeCours typeCours = typeCoursDAO.find(id_type);
+
+                lesseances.add(new Seance(id, semaine, date, heure_debut, heure_fin, cours, typeCours));
+
             }
 
         } catch (SQLException | ClassNotFoundException e) {

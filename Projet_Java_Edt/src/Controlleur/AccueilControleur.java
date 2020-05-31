@@ -26,9 +26,10 @@ public class AccueilControleur extends Controleur {
     }
 
     @Override
-    public void rechercher_controleur(String text, String semaine) {
+    public void rechercher_controleur(String nom, String semaine, int droit) {
 
     }
+
 
     public AccueilControleur(Utilisateur user) {
         this.user = user;
@@ -57,11 +58,11 @@ public class AccueilControleur extends Controleur {
                 switch (droit) {
                     case 1:
                         System.out.println("Droit : Admin");
-                        Edt_Admin edt_admin = new Edt_Admin(mesUsers.get(i), mesUsers.get(i).getDroit());
+                        Edt_Admin edt_admin = new Edt_Admin(mesUsers.get(i));
                         break;
                     case 2:
                         System.out.println("Droit : Referent");
-                        Edt_Admin edt_ref = new Edt_Admin(mesUsers.get(i), mesUsers.get(i).getDroit());
+                        Edt_Admin edt_ref = new Edt_Admin(mesUsers.get(i));
 
                         break;
                     case 3:

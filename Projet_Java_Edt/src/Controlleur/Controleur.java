@@ -36,8 +36,11 @@ public abstract class Controleur implements ActionListener {
 
     public static void main(String args[]) throws UnsupportedLookAndFeelException {
 
-
     }
 
-    public abstract void rechercher_controleur(String nom, String semaine);
+    /**
+     * Recherche l'emplois du temps d'une personne celon la semaine choisie
+     * Celon votre droit cette classe change de comportement (heritage)
+     */
+    public abstract void rechercher_controleur(String nom, String semaine,int droit);
 }
