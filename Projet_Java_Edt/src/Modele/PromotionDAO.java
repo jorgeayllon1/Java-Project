@@ -1,8 +1,6 @@
 package Modele;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class PromotionDAO extends DAO<Promotion> {
@@ -89,7 +87,7 @@ public class PromotionDAO extends DAO<Promotion> {
             this.conn = Connexion.seConnecter();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
                     "SELECT id FROM promotion\n" +
-                            "WHERE anne=\"" + anne + "\""
+                            "WHERE annee=" + anne
             );
             while (rset.next()) {
                 le_id = rset.getInt("id");
@@ -108,9 +106,44 @@ public class PromotionDAO extends DAO<Promotion> {
     }
 
     public ArrayList<Seance> lesSeances(int id_promotion, int numero_semaine) {
-
         ArrayList<Seance> lesseances = new ArrayList<>();
+        DAO<Cours> coursDAO = DAOFactory.getCours();
+        DAO<TypeCours> typeCoursDAO = DAOFactory.getTypeCours();
 
+        try {
+            this.conn = Connexion.seConnecter();
+            this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT * FROM seance\n" +
+                            "INNER JOIN seance_groupes\n" +
+                            "ON seance.id = seance_groupes.id_seance\n" +
+                            "INNER JOIN groupe\n" +
+                            "ON groupe.id = seance_groupes.id_groupe\n" +
+                            "INNER JOIN promotion\n" +
+                            "ON promotion.id = groupe.id_promotion\n" +
+                            "WHERE promotion.id=" + id_promotion + "\n" +
+                            "AND seance.semaine=" + numero_semaine
+            );
+
+            while (rset.next()) {
+
+                int id = rset.getInt("id");
+                int semaine = rset.getInt("semaine");
+                Date date = rset.getDate("date");
+                Timestamp heure_debut = rset.getTimestamp("heure_debut");
+                Timestamp heure_fin = rset.getTimestamp("heure_fin");
+                int id_cours = rset.getInt("id_cours");
+                Cours cours = coursDAO.find(id_cours);
+                int id_type = rset.getInt("id_type");
+                TypeCours typeCours = typeCoursDAO.find(id_type);
+
+                lesseances.add(new Seance(id, semaine, date, heure_debut, heure_fin, cours, typeCours));
+
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println("Erreur SQL");
+            e.printStackTrace();
+        }
         return lesseances;
     }
 }

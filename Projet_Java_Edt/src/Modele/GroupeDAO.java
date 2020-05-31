@@ -254,7 +254,7 @@ public class GroupeDAO extends DAO<Groupe> {
             }
 
         } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("Erreur SQL");
+            System.err.println("Erreur SQL");
             e.printStackTrace();
         }
 

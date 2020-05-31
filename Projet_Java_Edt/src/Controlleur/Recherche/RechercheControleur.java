@@ -116,24 +116,42 @@ public class RechercheControleur extends Controleur {
                             + lesseances.get(i).getCours().getNom());
                 }
             } else System.out.println("Pas de séance cette semaine");
-        }
+        } else System.out.println("Ce groupe n'existe pas");
 
 
     }
 
     public void rechercher_promotion(String anne_promotion, String semaine) {
 
-        int numero_semaine = 0;
+        int numero_semaine = 0;//Valeur temp pour gestion erreur
+        int numero_promotion = 0;//Valeur temp pour gestion erreur
+
         int id_promotion = 0;
+
         try {
             numero_semaine = Integer.parseInt(semaine);
+            numero_promotion = Integer.parseInt(anne_promotion);
         } catch (NumberFormatException e) {
-            System.err.println("Numero de semaine non valide");
+            System.err.println("Numero de semaine ou de année non valide");
             return;
         }
 
         PromotionDAO promotionDAO = new PromotionDAO();
-        //anne_promotion = promotionDAO.idCelonAnne(anne_promotion)
+        id_promotion = promotionDAO.idCelonAnne(numero_promotion);
+
+        if (id_promotion != 0) {
+            ArrayList<Seance> lesseances = promotionDAO.lesSeances(id_promotion, numero_semaine);
+            if (lesseances.size() != 0) {/// Si le nombre de seance = 0 alors il n'y a pas d'emplois du temps
+
+                System.out.println("les seances sont :");
+
+                for (int i = 0; i < lesseances.size(); i++) {
+                    System.out.println(lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
+                            + lesseances.get(i).getCours().getNom());
+                }
+            } else System.out.println("Pas de séance cette semaine");
+
+        } else System.out.println("Cette promotion n'existe pas");
 
     }
 
