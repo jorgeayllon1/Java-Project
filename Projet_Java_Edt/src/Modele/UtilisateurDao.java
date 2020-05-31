@@ -56,7 +56,7 @@ public class UtilisateurDao extends DAO<Utilisateur> {
             System.out.println("Connexion echouee : probleme de classe");
             cnfe.printStackTrace();
         } catch (SQLException e) {
-            System.out.println("Connexion echouee : probleme SQL");
+            System.out.println("Connexion echouee : probleme SQL UtilisateurDao");
             e.printStackTrace();
         }
 
@@ -172,7 +172,7 @@ public class UtilisateurDao extends DAO<Utilisateur> {
             }
 
         } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("Erreur SQL");
+            System.out.println("Erreur SQL UtilisateurDao");
             e.printStackTrace();
         }
 

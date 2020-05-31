@@ -41,7 +41,7 @@ public class CoursDao extends DAO<Cours> {
                 cnfe.printStackTrace();
             }
         } catch (SQLException e) {
-            System.out.println("Connexion echouee : probleme SQL");
+            System.out.println("Connexion echouee : probleme SQL CoursDao");
             e.printStackTrace();
         }
 

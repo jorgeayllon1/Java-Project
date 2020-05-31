@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * @author Wang David
@@ -62,7 +63,7 @@ public class SeanceDao extends DAO<Seance> {
                 cnfe.printStackTrace();
             }
         } catch (SQLException e) {
-            System.out.println("Connexion echouee : probleme SQL");
+            System.out.println("Connexion echouee : probleme SQL SeanceDAO");
             e.printStackTrace();
         }
 
@@ -139,6 +140,45 @@ public class SeanceDao extends DAO<Seance> {
 
         return obj;
 
+    }
+    
+    public Enseignant trouverEnseignant(Seance seance)
+    {
+        Enseignant prof = new Enseignant();
+        EnseignantDAO profDao = new EnseignantDAO();
+        int id_prof=0;
+        
+        try {
+            try {
+
+                this.conn = Connexion.seConnecter();
+
+                this.rset = this.conn.createStatement(
+                        this.rset.TYPE_SCROLL_INSENSITIVE,
+                        this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id_enseignant FROM seance_enseignants WHERE id_seance = " + seance.getID()); //On cherche tout les ID des séances de ce groupe
+
+
+                while (rset.next()) 
+                {
+                    
+                    id_prof=rset.getInt("id_enseignant");
+                    prof = profDao.find(id_prof);
+                    
+                    
+                }
+
+
+            } catch (ClassNotFoundException cnfe) {
+                System.out.println("Connexion echouee : probleme de classe");
+                cnfe.printStackTrace();
+            }
+        } catch (SQLException e) {
+            
+            System.out.println("Connexion echouee : probleme SQL SeanceDAO");
+            e.printStackTrace();
+        }
+        
+        return prof;
     }
 
 

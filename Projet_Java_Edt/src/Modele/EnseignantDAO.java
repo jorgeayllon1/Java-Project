@@ -42,7 +42,7 @@ public class EnseignantDAO extends DAO<Enseignant> {
             System.out.println("Connexion echouée : problème de classe");
             cnfe.printStackTrace();
         } catch (SQLException sqle) {
-            System.out.println("Connexion echouee : probleme SQL");
+            System.out.println("Connexion echouee : probleme SQL EnseignantDao");
             sqle.printStackTrace();
         }
 
@@ -86,7 +86,7 @@ public class EnseignantDAO extends DAO<Enseignant> {
                 cnfe.printStackTrace();
             }
         } catch (SQLException e) {
-            System.out.println("Connexion echouee : probleme SQL");
+            System.out.println("Connexion echouee : probleme SQL EnseignantDao");
             e.printStackTrace();
         }
         return mes_id_seances;
@@ -129,7 +129,7 @@ public class EnseignantDAO extends DAO<Enseignant> {
                 cnfe.printStackTrace();
             }
         } catch (SQLException e) {
-            System.out.println("Connexion echouee : probleme SQL");
+            System.out.println("Connexion echouee : probleme SQL EnseignantDao");
             e.printStackTrace();
         }
         return seance_prof;
@@ -173,7 +173,7 @@ public class EnseignantDAO extends DAO<Enseignant> {
             }
 
         } catch (SQLException e) {
-            System.out.println("Connexion echouee : probleme SQL");
+            System.out.println("Connexion echouee : probleme SQL EnseignantDao");
             e.printStackTrace();
         }
 
@@ -218,7 +218,7 @@ public class EnseignantDAO extends DAO<Enseignant> {
                 cnfe.printStackTrace();
             }
         } catch (SQLException e) {
-            System.out.println("Connexion echouee : probleme SQL");
+            System.out.println("Connexion echouee : probleme SQL EnseignantDao");
             e.printStackTrace();
         }
 

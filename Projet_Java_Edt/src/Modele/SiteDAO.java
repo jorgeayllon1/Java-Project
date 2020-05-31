@@ -28,7 +28,7 @@ public class SiteDAO extends DAO<Site> {
             System.out.println("Connexion echouée : problème de classe");
             cnfe.printStackTrace();
         } catch (SQLException sqle) {
-            System.out.println("Connexion echouee : probleme SQL");
+            System.out.println("Connexion echouee : probleme SQL SiteDao");
             sqle.printStackTrace();
         }
 

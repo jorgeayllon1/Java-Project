@@ -65,7 +65,7 @@ public class EtudiantDao extends UtilisateurDao{
         }
         catch(SQLException e) 
         {
-                System.out.println("Connexion echouee : probleme SQL");
+                System.out.println("Connexion echouee : probleme SQL EtudiantDao");
                 e.printStackTrace();
         }
            
@@ -91,7 +91,7 @@ public class EtudiantDao extends UtilisateurDao{
                     this.rset.TYPE_SCROLL_INSENSITIVE,                      
                     this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id_salle FROM seance_salles WHERE id_seance="+seance.getID());//On cherche toutes les séances avec le même id_seance
 
-                    if(rset.next())
+                    while(rset.next())
                     {
                        id_salle=rset.getInt("id_salle"); //On trouve l'id de la salle
                     }                   
@@ -100,7 +100,7 @@ public class EtudiantDao extends UtilisateurDao{
                     this.rset.TYPE_SCROLL_INSENSITIVE,                      
                     this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM salle WHERE id="+id_salle);//On cherche toutes les séances avec le même id_seance
                     
-                    if(rset.next())
+                    while(rset.next())
                     {
                        id_site=rset.getInt("id_site"); //On get l'id du site
                        site = siteDao.find(id_site); //On créee un objet site en cherchant dans la bdd en fonction de cet id
@@ -118,7 +118,7 @@ public class EtudiantDao extends UtilisateurDao{
         }
         catch(SQLException e) 
         {
-                System.out.println("Connexion echouee : probleme SQL");
+                System.out.println("Connexion echouee : probleme SQL EtudiantDao");
                 e.printStackTrace();
         }
         

@@ -55,9 +55,12 @@ public class Projet_Java_Edt {
 
         ///AFFICHAGE OAGE CONNEXION///
         //Affichage page connexion OK
+        
 
         UIManager.setLookAndFeel(new NimbusLookAndFeel());
         Accueil accueil = new Accueil();
+        
+        
 
 
         //Test pour ajouter un nouvel user en trouvant l'id max (marche)

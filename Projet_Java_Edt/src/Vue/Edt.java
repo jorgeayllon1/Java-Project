@@ -10,6 +10,7 @@ import Controlleur.Recherche.RechercheControleur;
 import Modele.*;
 
 import java.awt.*;
+import static java.awt.Color.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -35,8 +36,9 @@ public class Edt extends JFrame implements ActionListener {
     protected JPanel panel;
     protected JButton rechercher = new JButton("Rechercher");
     protected JButton annule = new JButton("Cours annulé(s)");
-    protected JButton recap = new JButton("Récapitulatif des cours");
-    protected JButton cours = new JButton("Cours");
+    protected JButton summary = new JButton("Récapitulatif des cours");
+    protected JButton mes_cours = new JButton("Cours");
+    protected JButton report = new JButton("Reporting");
     protected RechercheControleur control_recherche;
     protected int num_semaine;
     protected ArrayList<JButton> week_button;
@@ -61,26 +63,52 @@ public class Edt extends JFrame implements ActionListener {
     
     public void infoBase()
     {
+        this.menu.setBackground(new java.awt.Color(179, 204, 204));
+        this.menu.setOpaque(true);
+        
+        this.semaine.setBackground(new java.awt.Color(224, 235, 235));
+        this.semaine.setOpaque(true);
+        
+  
         ImageIcon cours_icon = new ImageIcon(new ImageIcon("src/Icones/book.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
-        menu.add(new JButton("Cours", cours_icon));
+        mes_cours = new JButton("Cours", cours_icon);
+        mes_cours.setPreferredSize(new Dimension(150,50));
+        Font f = mes_cours.getFont();
+        mes_cours.setFont(f.deriveFont(f.getStyle() | Font.BOLD));
+        menu.add(this.mes_cours);
 
         ImageIcon search_icon = new ImageIcon(new ImageIcon("src/Icones/search.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
         rechercher = new JButton("Rechercher", search_icon);
+        rechercher.setPreferredSize(new Dimension(150,50));
+        f = rechercher.getFont();
+        rechercher.setFont(f.deriveFont(f.getStyle() | Font.BOLD));
         menu.add(this.rechercher);
 
         ImageIcon delete_icon = new ImageIcon(new ImageIcon("src/Icones/quit.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
         this.annule = new JButton("Cours annulé(s)", delete_icon);
+        annule.setPreferredSize(new Dimension(150,50));
+         f = annule.getFont();
+        annule.setFont(f.deriveFont(f.getStyle() | Font.BOLD));
         menu.add(this.annule);
 
         ImageIcon report_icon = new ImageIcon(new ImageIcon("src/Icones/report.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
-        menu.add(new JButton("Reporting", report_icon));
+        this.report =  new JButton("Reporting", report_icon);
+        f = report.getFont();
+        report.setFont(f.deriveFont(f.getStyle() | Font.BOLD));
+        report.setPreferredSize(new Dimension(150,50));
+        menu.add(report);
 
         ImageIcon recap_icon = new ImageIcon(new ImageIcon("src/Icones/news-admin.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
-        this.recap = new JButton("Récapitulatif des cours", recap_icon);
-        menu.add(this.recap);
+        this.summary = new JButton("Récapitulatif des cours", recap_icon);
+        f = summary.getFont();
+        summary.setFont(f.deriveFont(f.getStyle() | Font.BOLD));
+        summary.setPreferredSize(new Dimension(200,50));
+        menu.add(this.summary);
 
         panel = (JPanel) this.getContentPane();
         panel.setLayout(new BorderLayout());
+              this.panel.setBackground(Color.red);
+        this.panel.setOpaque(true);
 
         ///Affiche le numéro de semaine
         Calendar cal = new GregorianCalendar();
@@ -92,6 +120,8 @@ public class Edt extends JFrame implements ActionListener {
         this.num_semaine = cal.get(Calendar.WEEK_OF_YEAR);
 
         JLabel week = new JLabel("SEMAINE");
+        f = week.getFont();
+        week.setFont(f.deriveFont(f.getStyle() | Font.BOLD));
         semaine.add(week);
         this.week_button = new ArrayList();
         for (int i = 0; i < 52; i++) {

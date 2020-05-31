@@ -38,7 +38,7 @@ public class GroupeDAO extends DAO<Groupe> {
             System.out.println("Connexion echouée : problème de classe");
             cnfe.printStackTrace();
         } catch (SQLException sqle) {
-            System.out.println("Connexion echouee : probleme SQL");
+            System.out.println("Connexion echouee : probleme SQL GroupeDAO");
             sqle.printStackTrace();
         }
 
@@ -86,7 +86,7 @@ public class GroupeDAO extends DAO<Groupe> {
                 cnfe.printStackTrace();
             }
         } catch (SQLException e) {
-            System.out.println("Connexion echouee : probleme SQL");
+            System.out.println("Connexion echouee : probleme SQL GroupeDAO");
             e.printStackTrace();
         }
         return mes_id_seances;
@@ -110,7 +110,7 @@ public class GroupeDAO extends DAO<Groupe> {
                             this.rset.TYPE_SCROLL_INSENSITIVE,
                             this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM seance WHERE id=" + array.get(i));//On cherche toutes les séances avec le même id_seance
 
-                    if (rset.next()) {
+                    while (rset.next()) {
                         id_cours = rset.getInt("id_cours");
                         cours = coursDao.find(id_cours);
                         id_type = rset.getInt("id_type");
@@ -130,7 +130,7 @@ public class GroupeDAO extends DAO<Groupe> {
                 cnfe.printStackTrace();
             }
         } catch (SQLException e) {
-            System.out.println("Connexion echouee : probleme SQL");
+            System.out.println("Connexion echouee : probleme SQL GroupeDAO");
             e.printStackTrace();
         }
         return seance_groupe;
@@ -182,7 +182,7 @@ public class GroupeDAO extends DAO<Groupe> {
                 cnfe.printStackTrace();
             }
         } catch (SQLException e) {
-            System.out.println("Connexion echouee : probleme SQL");
+            System.out.println("Connexion echouee : probleme SQL GroupeDAO");
             e.printStackTrace();
         }
         return seance_groupe;
@@ -208,7 +208,7 @@ public class GroupeDAO extends DAO<Groupe> {
                 le_id = rset.getInt("id");
             }
         } catch (SQLException | ClassNotFoundException e) {
-            System.err.println("Probème SQL");
+            System.err.println("Probème SQL GroupeDAO");
             e.printStackTrace();
         }
 
@@ -254,7 +254,7 @@ public class GroupeDAO extends DAO<Groupe> {
             }
 
         } catch (SQLException | ClassNotFoundException e) {
-            System.err.println("Erreur SQL");
+            System.err.println("Erreur SQL GroupeDAO");
             e.printStackTrace();
         }
 

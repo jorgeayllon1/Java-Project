@@ -18,6 +18,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
 
 /**
  * @author Wang David
@@ -39,11 +40,11 @@ public class Edt_Etudiant extends Edt {
 
         super(user);
         this.etudiant=etudiant;
-        afficherEdtAccueil();       
+        afficherEdtAccueil();   
+        this.mes_cours.addActionListener(this);
         this.rechercher.addActionListener(this);
-        this.cours.addActionListener((ActionEvent e) -> {
-            afficherEdtAccueil();
-        });
+        
+
         
         etudiantDao = new EtudiantDao(); //********************
         etudiant = (Etudiant) etudiantDao.find(etudiant.getID());//*****************
@@ -53,8 +54,7 @@ public class Edt_Etudiant extends Edt {
             for(int nb_week=0; nb_week<this.week_button.size();nb_week++)
             {
                 this.week_button.get(nb_week).addActionListener(this);
-  
-                
+                 
             }
   
 
@@ -84,6 +84,9 @@ public class Edt_Etudiant extends Edt {
 
         ArrayList<Seance> mes_seances = new ArrayList();
         mes_seances = groupeDao.trouverAllSeances(mes_id);
+        SeanceDao seanceDao = new SeanceDao();
+        Enseignant prof = new Enseignant();
+                                
 
         System.out.println("Nombre de séances prevues pour cet eleve : " + mes_seances.size());
         Salle salle = new Salle();
@@ -95,12 +98,14 @@ public class Edt_Etudiant extends Edt {
                     + "\nheure fin : " + mes_seances.get(i).getHeureFin()
                     + "\nType :" + mes_seances.get(i).getType().getNom());
             salle = etudiantDao.trouverSalle(mes_seances.get(i));
-            System.out.println("Salle : " + salle.getNom() + " Capacite : " + salle.getCapacite() + " Site : " + salle.getSite().getNom());
+           System.out.println("Salle : " + salle.getNom() + " Capacite : " + salle.getCapacite() + " Site : " + salle.getSite().getNom());
+            
         }
 
         grille_edt = new JPanel(new GridBagLayout());
 
         grille = new GridBagConstraints();
+
         grille.fill = GridBagConstraints.HORIZONTAL;
         grille.gridx = 0;
         grille.gridy = 0;
@@ -108,6 +113,7 @@ public class Edt_Etudiant extends Edt {
         grille.weighty = 0.1;
 
         grille_edt.add(new JLabel("Heures "), grille);
+        grille_edt.setBorder(new MatteBorder(0, 0, 1, 1, Color.black));
 
         grille.gridx = 1;
         grille.gridy = 0;
@@ -157,6 +163,7 @@ public class Edt_Etudiant extends Edt {
             j += 2;
             k += 2;
         }
+        System.out.println("hjjjh");
 
         for (int i = 0; i < mes_seances.size(); i++) //On parcourt toutes séances relatives à cet etudiant
         {
@@ -217,9 +224,11 @@ public class Edt_Etudiant extends Edt {
                                     grille.gridy = 6;
                                 if (heure.contains("20"))
                                     grille.gridy = 7;
+                                prof = seanceDao.trouverEnseignant(mes_seances.get(i));
                                 
                                 String myString = 
-                                "<html><p>" + mes_seances.get(i).getCours().getNom() + "<br>Salle :"+
+                                "<html><p>" + mes_seances.get(i).getCours().getNom() + "<br>Prof :"+
+                                prof.getNom() + "<br>Salle :"+
                                 salle.getNom()  + "<br>Site :"+
                                 salle.getSite().getNom()+"</p></html>";
 
@@ -237,6 +246,7 @@ public class Edt_Etudiant extends Edt {
 
         
         this.panel.add(grille_edt);
+        this.setVisible(true);
     }
     
     
@@ -244,6 +254,10 @@ public class Edt_Etudiant extends Edt {
     @Override
     public void actionPerformed(ActionEvent e) {
         
+        if(e.getSource()==this.mes_cours)
+        {
+            afficherEdtAccueil();
+        }
         //Si on clique sur rechercher
         if(e.getSource()==this.rechercher)
         {
@@ -270,15 +284,16 @@ public class Edt_Etudiant extends Edt {
             panel.add(schear);
             this.setVisible(true);
         }
+        
         ///Si onclique sur un des boutons de la grille de semaine
         for(int s=1;s<this.week_button.size();s++)
         {
             //Si c'est cliqué
              if(e.getActionCommand().equals(this.week_button.get(s).getText()))
              {
-                 System.out.println(this.week_button.get(s).getText()); //On affiche le texte du bouton cliqué
+                    System.out.println(this.week_button.get(s).getText()); //On affiche le texte du bouton cliqué
                     
-                    grille_edt = new JPanel(new GridBagLayout());//Initialisations
+                    /*grille_edt = new JPanel(new GridBagLayout());//Initialisations
 
                     ///Ajout des jours de la semaine
                     grille = new GridBagConstraints();
@@ -338,6 +353,7 @@ public class Edt_Etudiant extends Edt {
                         j += 2;
                         k += 2;
                     }
+                    
                     
                     String string_semaine = this.week_button.get(s).getText(); //On get le string du numero de semaine
                     
@@ -424,9 +440,9 @@ public class Edt_Etudiant extends Edt {
 
 
 
-                        }
+                        }*/
 
-                System.out.println(string_semaine);
+                grille_edt.add(new JButton(this.week_button.get(s).getText()));
                 panel.add(grille_edt);
                 this.setVisible(true);
                  

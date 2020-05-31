@@ -25,7 +25,7 @@ public class PromotionDAO extends DAO<Promotion> {
             System.out.println("Connexion echouée : problème de classe");
             cnfe.printStackTrace();
         } catch (SQLException sqle) {
-            System.out.println("Connexion echouee : probleme SQL");
+            System.out.println("Connexion echouee : probleme SQL PromotionDao");
             sqle.printStackTrace();
         }
 
@@ -67,7 +67,7 @@ public class PromotionDAO extends DAO<Promotion> {
             System.out.println("Connexion echouee : probleme de classe");
             e.printStackTrace();
         } catch (SQLException throwables) {
-            System.out.println("Connexion echouee : probleme SQL");
+            System.out.println("Connexion echouee : probleme SQL PromotionDao");
             throwables.printStackTrace();
 
         }
@@ -141,7 +141,7 @@ public class PromotionDAO extends DAO<Promotion> {
             }
 
         } catch (SQLException | ClassNotFoundException e) {
-            System.err.println("Erreur SQL");
+            System.err.println("Erreur SQL PromotionDao");
             e.printStackTrace();
         }
         return lesseances;

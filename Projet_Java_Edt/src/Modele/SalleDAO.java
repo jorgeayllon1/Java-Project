@@ -39,7 +39,7 @@ public class SalleDAO extends DAO<Salle> {
             System.out.println("Connexion echouée : problème de classe");
             cnfe.printStackTrace();
         } catch (SQLException sqle) {
-            System.out.println("Connexion echouee : probleme SQL");
+            System.out.println("Connexion echouee : probleme SQL SalleDao");
             sqle.printStackTrace();
         }
 
@@ -120,7 +120,7 @@ public class SalleDAO extends DAO<Salle> {
             }
 
         } catch (SQLException | ClassNotFoundException e) {
-            System.err.println("Erreur SQL");
+            System.err.println("Erreur SQL SalleDao");
             e.printStackTrace();
         }
         return lesseances;
