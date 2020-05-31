@@ -6,14 +6,21 @@ import Modele.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
+/**
+ * @author jorge
+ */
+
 public class RechercheControleur extends Controleur {
 
     public RechercheControleur() {
         super();
     }
 
-    @Override
-    public void rechercher_controleur(String nom, String semaine, int droit) {
+    /**
+     * Recherche l'emplois du temps d'une personne celon la semaine choisie
+     * Celon votre droit cette classe change de comportement (heritage)
+     */
+    public void rechercher_utilisateur(String nom, String semaine, int droit) {
 
         int numero_semaine = 0;
         boolean validationdacces = false;
@@ -63,7 +70,7 @@ public class RechercheControleur extends Controleur {
                         + " " + leusersouhaiter.getMail() + " " + leusersouhaiter.getDroit());
 
                 // On recupère les information de l'utilisateur si possible
-                ArrayList<Seance> lesSeances = userDAO.listedeSeance(leusersouhaiter.getID(), numero_semaine);
+                ArrayList<Seance> lesSeances = userDAO.lesSeance(leusersouhaiter.getID(), numero_semaine);
 
                 System.out.println("Sont emplois du temps est le suivant :");
                 for (Seance uneseance :
@@ -75,6 +82,35 @@ public class RechercheControleur extends Controleur {
             } else System.out.println("Accés non autorisé");
         } else
             System.out.println("Personne non trouvé dans la BDD : " + nom);
+
+    }
+
+    /**
+     * Recherche de l'emplois du temps d'un groupe
+     */
+    public void rechercher_groupe(String nom_groupe, String semaine, int droit) {
+
+        int numero_semaine = 0;
+        int id_groupe = 0;
+        try {
+            numero_semaine = Integer.parseInt(semaine);
+        } catch (NumberFormatException e) {
+            System.out.println("Numero de semaine non valide");
+            return;
+        }
+
+        GroupeDAO groupeDAO = new GroupeDAO();
+
+        id_groupe = groupeDAO.idCelonNom(nom_groupe);
+
+        ArrayList<Seance> lesseances = groupeDAO.lesSeances(id_groupe, numero_semaine);
+
+        System.out.println("les seances sont :");
+        for (int i = 0; i < lesseances.size(); i++) {
+            System.out.println(lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
+                    + lesseances.get(i).getCours().getNom());
+        }
+
 
     }
 

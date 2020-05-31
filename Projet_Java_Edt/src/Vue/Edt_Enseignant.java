@@ -73,7 +73,7 @@ public class Edt_Enseignant extends Edt {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 control_recherche = new RechercheControleur();
-                control_recherche.rechercher_controleur(nom.getText(), semaine.getText(),3);
+                control_recherche.rechercher_utilisateur(nom.getText(), semaine.getText(), 3);
             }
         });
 

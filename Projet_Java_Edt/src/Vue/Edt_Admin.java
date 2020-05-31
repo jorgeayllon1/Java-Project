@@ -21,6 +21,13 @@ public class Edt_Admin extends Edt {
     }
 
 
+    public Edt_Admin(Utilisateur user) {
+        super(user);
+
+        this.rechercher.addActionListener(this);
+
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -35,26 +42,27 @@ public class Edt_Admin extends Edt {
         schear.add(nom);
         schear.add(semaine);
 
-        JButton lancerrecherche = new JButton(new AbstractAction("Rechercher") {
+        JButton chercher_utilisateur = new JButton(new AbstractAction("Chercher Utilisateur") {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 control_recherche = new RechercheControleur();
-                control_recherche.rechercher_controleur(nom.getText(), semaine.getText(), 1);
+                control_recherche.rechercher_utilisateur(nom.getText(), semaine.getText(), 1);
+            }
+        });
+
+        JButton chercher_groupe = new JButton(new AbstractAction("Chercher Groupe") {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                control_recherche = new RechercheControleur();
+                control_recherche.rechercher_groupe(nom.getText(), semaine.getText(), 1);
             }
         });
 
 
-        schear.add(lancerrecherche);
+        schear.add(chercher_utilisateur);
+        schear.add(chercher_groupe);
         panel.add(schear);
         this.setVisible(true);
-    }
-
-
-    public Edt_Admin(Utilisateur user) {
-        super(user);
-
-        this.rechercher.addActionListener(this);
-
     }
 
 
