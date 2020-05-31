@@ -36,8 +36,10 @@ public class Edt extends JFrame implements ActionListener {
     protected JButton rechercher = new JButton("Rechercher");
     protected JButton annule = new JButton("Cours annulé(s)");
     protected JButton recap = new JButton("Récapitulatif des cours");
+    protected JButton cours = new JButton("Cours");
     protected RechercheControleur control_recherche;
     protected int num_semaine;
+    protected ArrayList<JButton> week_button;
 
 
     public Edt() {
@@ -49,8 +51,16 @@ public class Edt extends JFrame implements ActionListener {
         this.setSize(1400, 800); //Taille
         this.setLocationRelativeTo(null); //Centre
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Stop run quand la dernière fenetre est fermé
+        infoBase();
 
 
+        
+
+
+    }
+    
+    public void infoBase()
+    {
         ImageIcon cours_icon = new ImageIcon(new ImageIcon("src/Icones/book.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
         menu.add(new JButton("Cours", cours_icon));
 
@@ -83,7 +93,7 @@ public class Edt extends JFrame implements ActionListener {
 
         JLabel week = new JLabel("SEMAINE");
         semaine.add(week);
-        ArrayList<JButton> week_button = new ArrayList();
+        this.week_button = new ArrayList();
         for (int i = 0; i < 52; i++) {
             week_button.add(new JButton(Integer.toString(i + 1)));
             semaine.add(week_button.get(i));
@@ -104,8 +114,6 @@ public class Edt extends JFrame implements ActionListener {
         panel.add(this.info, BorderLayout.SOUTH);
 
         this.setVisible(true);
-
-
     }
 
     @Override
