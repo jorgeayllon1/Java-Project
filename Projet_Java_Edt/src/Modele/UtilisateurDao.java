@@ -139,15 +139,13 @@ public class UtilisateurDao extends DAO<Utilisateur> {
     /**
      * Retourne les seances de l'utilisateur
      */
-    public ArrayList<Seance> listedeSeance(int id_utilisateur, int numero_semaine) {
+    public ArrayList<Seance> lesSeance(int id_utilisateur, int numero_semaine) {
 
         ArrayList<Seance> lesseances = new ArrayList<>();
         DAO<Cours> coursDAO = DAOFactory.getCours();
         DAO<TypeCours> typeCoursDAO = DAOFactory.getTypeCours();
 
         try {
-
-
             this.conn = Connexion.seConnecter();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE,
                     this.rset.CONCUR_READ_ONLY).executeQuery(

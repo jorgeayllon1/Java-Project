@@ -3,6 +3,7 @@ package Modele;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class PromotionDAO extends DAO<Promotion> {
 
@@ -17,7 +18,7 @@ public class PromotionDAO extends DAO<Promotion> {
     public Promotion find(int id) {
         Promotion lapromo = new Promotion();
         try {
-            this.conn=Connexion.seConnecter();
+            this.conn = Connexion.seConnecter();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM promotion WHERE id=" + id);
 
             if (rset.first())
@@ -73,5 +74,43 @@ public class PromotionDAO extends DAO<Promotion> {
 
         }
 
+    }
+
+    /**
+     * Retourne le id correspondant à l'année de la promotion
+     *
+     * @param anne
+     * @return Id de la promotion
+     */
+    public int idCelonAnne(int anne) {
+        int le_id = 0;
+
+        try {
+            this.conn = Connexion.seConnecter();
+            this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT id FROM promotion\n" +
+                            "WHERE anne=\"" + anne + "\""
+            );
+            while (rset.next()) {
+                le_id = rset.getInt("id");
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println("Probème SQL");
+            e.printStackTrace();
+        }
+
+        if (le_id != 0) return le_id;
+        else {
+            System.err.println("Nom de groupe inconnu");
+            return 0;
+        }
+
+    }
+
+    public ArrayList<Seance> lesSeances(int id_promotion, int numero_semaine) {
+
+        ArrayList<Seance> lesseances = new ArrayList<>();
+
+        return lesseances;
     }
 }

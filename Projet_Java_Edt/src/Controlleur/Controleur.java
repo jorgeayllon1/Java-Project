@@ -38,9 +38,4 @@ public abstract class Controleur implements ActionListener {
 
     }
 
-    /**
-     * Recherche l'emplois du temps d'une personne celon la semaine choisie
-     * Celon votre droit cette classe change de comportement (heritage)
-     */
-    public abstract void rechercher_controleur(String nom, String semaine,int droit);
 }
