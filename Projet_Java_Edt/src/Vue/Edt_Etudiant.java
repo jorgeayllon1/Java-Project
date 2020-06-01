@@ -56,7 +56,6 @@ public class Edt_Etudiant extends Edt {
                 this.week_button.get(nb_week).addActionListener(this);
                  
             }
-  
 
     }
 
@@ -84,6 +83,8 @@ public class Edt_Etudiant extends Edt {
 
         ArrayList<Seance> mes_seances = new ArrayList();
         mes_seances = groupeDao.trouverAllSeances(mes_id);
+        
+        System.out.println("bug  bug bug");
         SeanceDao seanceDao = new SeanceDao();
         Enseignant prof = new Enseignant();
                                 
@@ -101,6 +102,7 @@ public class Edt_Etudiant extends Edt {
            System.out.println("Salle : " + salle.getNom() + " Capacite : " + salle.getCapacite() + " Site : " + salle.getSite().getNom());
             
         }
+        
 
         grille_edt = new JPanel(new GridBagLayout());
 
@@ -163,7 +165,7 @@ public class Edt_Etudiant extends Edt {
             j += 2;
             k += 2;
         }
-        System.out.println("hjjjh");
+        
 
         for (int i = 0; i < mes_seances.size(); i++) //On parcourt toutes séances relatives à cet etudiant
         {
@@ -293,7 +295,7 @@ public class Edt_Etudiant extends Edt {
              {
                     System.out.println(this.week_button.get(s).getText()); //On affiche le texte du bouton cliqué
                     
-                    /*grille_edt = new JPanel(new GridBagLayout());//Initialisations
+                    grille_edt = new JPanel(new GridBagLayout());//Initialisations
 
                     ///Ajout des jours de la semaine
                     grille = new GridBagConstraints();
@@ -365,7 +367,7 @@ public class Edt_Etudiant extends Edt {
 
 
                       ArrayList<Seance> mes_seances = new ArrayList();
-                      mes_seances = groupeDao.allSeancesAvecSemaine(mes_id,int_semaine); //On recup toutes les  séances relatives à cet etudiant dans cette semaine
+                      mes_seances = groupeDao.trouverAllSeancesSemaine(groupe.getId(),int_semaine); //On recup toutes les  séances relatives à cet etudiant dans cette semaine
                       for(int i=0;i<mes_seances.size();i++) //On parcourt les séances
                       {
                               
@@ -438,11 +440,9 @@ public class Edt_Etudiant extends Edt {
                                   }
                               }
 
+                        }
 
-
-                        }*/
-
-                grille_edt.add(new JButton(this.week_button.get(s).getText()));
+                
                 panel.add(grille_edt);
                 this.setVisible(true);
                  

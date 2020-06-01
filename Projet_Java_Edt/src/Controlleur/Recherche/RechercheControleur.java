@@ -105,7 +105,7 @@ public class RechercheControleur extends Controleur {
 
         if (id_groupe != 0) {/// Si le id_groupe = 0 alors le groupe n'existe pas
 
-            ArrayList<Seance> lesseances = groupeDAO.lesSeances(id_groupe, numero_semaine);
+            ArrayList<Seance> lesseances = groupeDAO.trouverAllSeancesSemaine(id_groupe, numero_semaine);
 
             if (lesseances.size() != 0) {/// Si le nombre de seance = 0 alors il n'y a pas d'emplois du temps
 

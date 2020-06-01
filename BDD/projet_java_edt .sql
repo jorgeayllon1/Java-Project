@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  sam. 30 mai 2020 à 17:30
+-- Généré le :  lun. 01 juin 2020 à 19:31
 -- Version du serveur :  5.7.26
 -- Version de PHP :  7.2.18
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `cours` (
   `id` int(100) NOT NULL AUTO_INCREMENT,
   `nom` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `cours`
@@ -49,7 +49,9 @@ INSERT INTO `cours` (`id`, `nom`) VALUES
 (7, 'Electromagnetisme'),
 (8, 'Algebre lineaire'),
 (9, 'C# '),
-(10, 'Ondes electromagnetiques');
+(10, 'Ondes electromagnetiques'),
+(11, 'Initiation réseaux'),
+(12, 'English 6');
 
 -- --------------------------------------------------------
 
@@ -72,7 +74,10 @@ CREATE TABLE IF NOT EXISTS `enseignant` (
 INSERT INTO `enseignant` (`id_utilisateur`, `id_cours`) VALUES
 (3, 1),
 (3, 5),
-(9, 3);
+(9, 3),
+(10, 6),
+(13, 10),
+(3, 11);
 
 -- --------------------------------------------------------
 
@@ -195,7 +200,7 @@ CREATE TABLE IF NOT EXISTS `seance` (
   PRIMARY KEY (`id`),
   KEY `id_cours` (`id_cours`),
   KEY `id_type` (`id_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `seance`
@@ -205,7 +210,15 @@ INSERT INTO `seance` (`id`, `semaine`, `date`, `heure_debut`, `heure_fin`, `id_c
 (1, 23, '2020-06-02', '2020-06-02 06:00:00', '2020-06-02 08:00:00', 1, 2),
 (2, 23, '2020-06-02', '2020-06-02 08:00:00', '2020-06-02 10:00:00', 4, 3),
 (3, 22, '2020-05-28', '2020-05-27 22:10:00', '2020-05-27 22:12:00', 3, 3),
-(4, 22, '2020-05-27', '2020-05-26 22:10:00', '2020-05-26 22:12:00', 6, 2);
+(4, 22, '2020-05-27', '2020-05-26 22:10:00', '2020-05-26 22:12:00', 6, 2),
+(5, 22, '2020-05-29', '2020-05-29 06:00:00', '2020-05-29 10:00:00', 2, 4),
+(6, 22, '2020-05-25', '2020-05-25 08:00:00', '2020-05-25 10:00:00', 3, 3),
+(7, 22, '2020-05-28', '2020-05-28 16:00:00', '2020-05-28 18:00:00', 1, 4),
+(8, 22, '2020-05-26', '2020-05-26 10:00:00', '2020-05-26 12:00:00', 10, 2),
+(9, 23, '2020-06-03', '2020-06-03 12:00:00', '2020-06-03 14:00:00', 1, 4),
+(10, 22, '2020-05-27', '2020-05-27 14:00:00', '2020-05-27 16:00:00', 11, 2),
+(11, 24, '2020-06-08', '2020-06-08 08:00:00', '2020-06-08 10:00:00', 3, 2),
+(12, 24, '2020-06-09', '2020-06-09 06:00:00', '2020-06-09 08:00:00', 2, 3);
 
 -- --------------------------------------------------------
 
@@ -227,7 +240,14 @@ CREATE TABLE IF NOT EXISTS `seance_enseignants` (
 
 INSERT INTO `seance_enseignants` (`id_seance`, `id_enseignant`) VALUES
 (1, 3),
-(3, 3);
+(3, 3),
+(6, 9),
+(7, 3),
+(8, 13),
+(9, 3),
+(10, 3),
+(11, 9),
+(12, 10);
 
 -- --------------------------------------------------------
 
@@ -251,7 +271,15 @@ INSERT INTO `seance_groupes` (`id_seance`, `id_groupe`) VALUES
 (1, 1),
 (2, 1),
 (3, 2),
-(4, 3);
+(4, 3),
+(5, 1),
+(6, 1),
+(7, 1),
+(8, 1),
+(9, 1),
+(10, 1),
+(11, 1),
+(12, 1);
 
 -- --------------------------------------------------------
 
@@ -275,7 +303,15 @@ INSERT INTO `seance_salles` (`id_seance`, `id_salle`) VALUES
 (1, 4),
 (2, 1),
 (3, 2),
-(4, 3);
+(4, 3),
+(5, 3),
+(6, 4),
+(7, 2),
+(8, 5),
+(9, 1),
+(10, 3),
+(11, 1),
+(12, 3);
 
 -- --------------------------------------------------------
 
@@ -358,7 +394,8 @@ INSERT INTO `utilisateur` (`id`, `email`, `passwd`, `nom`, `prenom`, `droit`) VA
 (9, 'profmaths@mail.com', 'profmaths', 'profmaths_nom', 'profmaths_prenom', 3),
 (10, 'profelec@mail.com', 'profelec', 'profelec_nom', 'profelec_prenom', 3),
 (11, 'eleve3@mail.com', 'eleve3', 'eleve3_nom', 'eleve3_prenom', 4),
-(12, 'eleve4@mail.com', 'eleve4', 'eleve4_nom', 'eleve4_prenom', 4);
+(12, 'eleve4@mail.com', 'eleve4', 'eleve4_nom', 'eleve4_prenom', 4),
+(13, 'profphysique@mail.com', 'profphysique', 'profphysique_nom', 'profphysique_prenom', 3);
 
 --
 -- Contraintes pour les tables déchargées

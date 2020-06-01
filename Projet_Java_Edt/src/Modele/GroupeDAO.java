@@ -132,7 +132,7 @@ public class GroupeDAO extends DAO<Groupe> {
      * @param semaine
      */
 
-    public ArrayList<Seance> allSeancesAvecSemaine(ArrayList<Integer> array, int semaine) {
+    /*public ArrayList<Seance> allSeancesAvecSemaine(ArrayList<Integer> array, int semaine) {
         ArrayList<Seance> seance_groupe = new ArrayList();
         Cours cours = new Cours();
         CoursDao coursDao = new CoursDao();
@@ -147,9 +147,9 @@ public class GroupeDAO extends DAO<Groupe> {
             for (int i = 0; i < array.size(); i++) {
                 this.rset = this.conn.createStatement(
                         this.rset.TYPE_SCROLL_INSENSITIVE,
-                        this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM seance WHERE semaine=" + semaine);//On cherche toutes les séances avec le même id_seance
+                        this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM seance WHERE semaine=" + semaine+ "AND id="+array.get(i));//On cherche toutes les séances avec le même id_seance
 
-                if (rset.next()) {
+                while (rset.next()) {
                     id_cours = rset.getInt("id_cours");
                     cours = coursDao.find(id_cours);
                     id_type = rset.getInt("id_type");
@@ -169,7 +169,7 @@ public class GroupeDAO extends DAO<Groupe> {
             e.printStackTrace();
         }
         return seance_groupe;
-    }
+    }*/
 
     /**
      * Retourne le id celon le nom de groupe rechercher
@@ -202,9 +202,9 @@ public class GroupeDAO extends DAO<Groupe> {
         }
     }
 
-    public ArrayList<Seance> lesSeances(int id_groupe, int numero_semaine) {
+    public ArrayList<Seance> trouverAllSeancesSemaine(int id_groupe, int numero_semaine) {
 
-        ArrayList<Seance> lesseances = new ArrayList<>();
+        ArrayList<Seance> les_seances = new ArrayList<>();
         DAO<Cours> coursDAO = DAOFactory.getCours();
         DAO<TypeCours> typeCoursDAO = DAOFactory.getTypeCours();
 
@@ -232,7 +232,7 @@ public class GroupeDAO extends DAO<Groupe> {
                 int id_type = rset.getInt("id_type");
                 TypeCours typeCours = typeCoursDAO.find(id_type);
 
-                lesseances.add(new Seance(id, semaine, date, heure_debut, heure_fin, cours, typeCours));
+                les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, cours, typeCours));
 
             }
 
@@ -241,6 +241,6 @@ public class GroupeDAO extends DAO<Groupe> {
             e.printStackTrace();
         }
 
-        return lesseances;
+        return les_seances;
     }
 }

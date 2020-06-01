@@ -30,15 +30,11 @@ public class UtilisateurDao extends DAO<Utilisateur> {
     public Utilisateur find(int id) {
         Utilisateur user = new Utilisateur();
         try {
-            //  this.conn = Connexion.seConnecter();
-
 
             this.rset = this.conn.createStatement(
                     this.rset.TYPE_SCROLL_INSENSITIVE,
                     this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM utilisateur WHERE id = " + id);
 
-
-            //this.rset = this.conn.prepareStatement("SELECT * FROM utilisateur WHERE id = " + id).executeQuery();
 
             if (rset.first())
                 user = new Utilisateur(
@@ -137,7 +133,7 @@ public class UtilisateurDao extends DAO<Utilisateur> {
      */
     public ArrayList<Seance> lesSeance(int id_utilisateur, int numero_semaine) {
 
-        ArrayList<Seance> lesseances = new ArrayList<>();
+        ArrayList<Seance> les_seances = new ArrayList<>();
         DAO<Cours> coursDAO = DAOFactory.getCours();
         DAO<TypeCours> typeCoursDAO = DAOFactory.getTypeCours();
 
@@ -163,7 +159,7 @@ public class UtilisateurDao extends DAO<Utilisateur> {
                 int id_type = rset.getInt("id_type");
                 TypeCours typeCours = typeCoursDAO.find(id_type);
 
-                lesseances.add(new Seance(id, semaine, date, heure_debut, heure_fin, cours, typeCours));
+                les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, cours, typeCours));
 
             }
 
@@ -172,7 +168,7 @@ public class UtilisateurDao extends DAO<Utilisateur> {
             e.printStackTrace();
         }
 
-        return lesseances;
+        return les_seances;
     }
 
 }
