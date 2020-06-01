@@ -30,11 +30,10 @@ public abstract class DAO<T> {
 
     public DAO(Connection conn) {
         this.conn = conn; // pas besoin de conn
-
     }
 
     public DAO() {
-
+        this.conn = SdzConnection.getInstance();
     }
 
     public abstract T find(int id);
@@ -75,7 +74,7 @@ public abstract class DAO<T> {
     {
         System.out.println("Affichage des champs de la table : ");
         try {
-            this.conn = Connexion.seConnecter();
+            this.conn = SdzConnection.getInstance();
             this.stmt = conn.createStatement();
             this.rset = this.stmt.executeQuery("SELECT * FROM " + nomTable);
             this.rsetMeta = rset.getMetaData();
@@ -84,9 +83,6 @@ public abstract class DAO<T> {
                 System.out.print(rsetMeta.getColumnName(i) + " ");
             System.out.println("\n");
 
-        } catch (ClassNotFoundException cnfe) {
-            System.out.println("Connexion echouee : probleme de classe");
-            cnfe.printStackTrace();
         } catch (SQLException e) {
             System.out.println("Connexion echouee : probleme SQL");
             e.printStackTrace();
@@ -100,7 +96,6 @@ public abstract class DAO<T> {
     public int getTaille(String nomTable) {
 
         try {
-            this.conn = Connexion.seConnecter();
             this.stmt = this.conn.createStatement();
             this.rset = this.stmt.executeQuery("select * from " + nomTable);
             this.rsetMeta = rset.getMetaData();
@@ -111,7 +106,7 @@ public abstract class DAO<T> {
 
             return taille;
 
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             System.out.println("Erreur lors du retour de getTaille");
             e.printStackTrace();
             return -1;

@@ -15,6 +15,7 @@ import java.sql.SQLException;
 public class CoursDao extends DAO<Cours> {
 
     public CoursDao() {
+        super();
     }
 
     public CoursDao(Connection conn) {
@@ -24,22 +25,17 @@ public class CoursDao extends DAO<Cours> {
     public Cours find(int id) {
         Cours cours = new Cours();
         try {
-            try {
-                this.conn = Connexion.seConnecter();
-                this.rset = this.conn.createStatement(
-                        this.rset.TYPE_SCROLL_INSENSITIVE,
-                        this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM cours WHERE id = " + id);
+            //this.conn = Connexion.seConnecter();
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM cours WHERE id = " + id);
 
-                if (rset.first())
-                    cours = new Cours(
-                            id,
-                            rset.getString("nom")
-                    );
+            if (rset.first())
+                cours = new Cours(
+                        id,
+                        rset.getString("nom")
+                );
 
-            } catch (ClassNotFoundException cnfe) {
-                System.out.println("Connexion echouee : probleme de classe");
-                cnfe.printStackTrace();
-            }
         } catch (SQLException e) {
             System.out.println("Connexion echouee : probleme SQL CoursDao");
             e.printStackTrace();

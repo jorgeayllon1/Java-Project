@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class SalleDAO extends DAO<Salle> {
 
     public SalleDAO() {
+        super();
     }
 
     public SalleDAO(Connection conn) {
@@ -23,7 +24,7 @@ public class SalleDAO extends DAO<Salle> {
         Site site = new Site();
         SiteDAO siteDao = new SiteDAO();
         try {
-            this.conn = Connexion.seConnecter();
+            //this.conn = Connexion.seConnecter();
             //this.rset = this.conn.prepareStatement("SELECT * FROM salle WHERE id=" + id).executeQuery();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM salle WHERE id=" + id);
 
@@ -35,9 +36,6 @@ public class SalleDAO extends DAO<Salle> {
             }
 
 
-        } catch (ClassNotFoundException cnfe) {
-            System.out.println("Connexion echouée : problème de classe");
-            cnfe.printStackTrace();
         } catch (SQLException sqle) {
             System.out.println("Connexion echouee : probleme SQL SalleDao");
             sqle.printStackTrace();
@@ -64,7 +62,7 @@ public class SalleDAO extends DAO<Salle> {
         int le_id = 0;
 
         try {
-            this.conn = Connexion.seConnecter();
+            //this.conn = Connexion.seConnecter();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
                     "SELECT id FROM salle\n" +
                             "WHERE nom=" + nom
@@ -72,7 +70,7 @@ public class SalleDAO extends DAO<Salle> {
             while (rset.next()) {
                 le_id = rset.getInt("id");
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             System.err.println("Probème SQL");
             e.printStackTrace();
         }
@@ -92,7 +90,7 @@ public class SalleDAO extends DAO<Salle> {
         DAO<TypeCours> typeCoursDAO = DAOFactory.getTypeCours();
 
         try {
-            this.conn = Connexion.seConnecter();
+            //this.conn = Connexion.seConnecter();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
                     "SELECT * FROM seance\n" +
                             "INNER JOIN seance_salles\n" +
@@ -119,7 +117,7 @@ public class SalleDAO extends DAO<Salle> {
 
             }
 
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             System.err.println("Erreur SQL SalleDao");
             e.printStackTrace();
         }

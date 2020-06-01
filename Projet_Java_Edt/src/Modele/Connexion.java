@@ -17,7 +17,7 @@ import java.util.Properties;
 /**
  * Connexion a votre BDD locale ou à distance sur le serveur de l'ECE via le tunnel SSH
  *
- * @author segado
+ * @author moi
  */
 public class Connexion {
 
@@ -27,7 +27,7 @@ public class Connexion {
      */
     private static Connection conn;
 
-
+/*
     public static Connection seConnecter() throws SQLException, ClassNotFoundException {
 
 
@@ -52,5 +52,7 @@ public class Connexion {
 
         return conn;
     }
+
+ */
 }
 

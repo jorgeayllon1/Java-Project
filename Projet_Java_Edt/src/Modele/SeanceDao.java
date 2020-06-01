@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class SeanceDao extends DAO<Seance> {
 
     public SeanceDao() {
+        super();
     }
 
     public SeanceDao(Connection conn) {
@@ -34,34 +35,29 @@ public class SeanceDao extends DAO<Seance> {
         TypeCoursDAO typeDao = new TypeCoursDAO();
         int id_type=0;
         try {
-            try {
-                this.conn = Connexion.seConnecter();
-                this.rset = this.conn.createStatement(
-                        this.rset.TYPE_SCROLL_INSENSITIVE,
-                        this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM seance WHERE id = " + id);
+            //this.conn = Connexion.seConnecter();
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM seance WHERE id = " + id);
 
-                if (rset.first())
-                {
-                    id_cours=rset.getInt("id_cours");
-                        cours = coursDao.find(id_cours);
-                        id_type=rset.getInt("id_type");
-                        type = typeDao.find(id_type);
-                        seance = new Seance(
-                            id,
-                            rset.getInt("semaine"),
-                            rset.getDate("date"),
-                            rset.getTimestamp("heure_debut"),
-                            rset.getTimestamp("heure_fin"),
-                            cours,
-                            type
-                    );
-                }
-                    
-
-            } catch (ClassNotFoundException cnfe) {
-                System.out.println("Connexion echouee : probleme de classe");
-                cnfe.printStackTrace();
+            if (rset.first())
+            {
+                id_cours=rset.getInt("id_cours");
+                    cours = coursDao.find(id_cours);
+                    id_type=rset.getInt("id_type");
+                    type = typeDao.find(id_type);
+                    seance = new Seance(
+                        id,
+                        rset.getInt("semaine"),
+                        rset.getDate("date"),
+                        rset.getTimestamp("heure_debut"),
+                        rset.getTimestamp("heure_fin"),
+                        cours,
+                        type
+                );
             }
+
+
         } catch (SQLException e) {
             System.out.println("Connexion echouee : probleme SQL SeanceDAO");
             e.printStackTrace();
@@ -149,29 +145,21 @@ public class SeanceDao extends DAO<Seance> {
         int id_prof=0;
         
         try {
-            try {
-
-                this.conn = Connexion.seConnecter();
-
-                this.rset = this.conn.createStatement(
-                        this.rset.TYPE_SCROLL_INSENSITIVE,
-                        this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id_enseignant FROM seance_enseignants WHERE id_seance = " + seance.getID()); //On cherche tout les ID des séances de ce groupe
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id_enseignant FROM seance_enseignants WHERE id_seance = " + seance.getID()); //On cherche tout les ID des séances de ce groupe
 
 
-                while (rset.next()) 
-                {
-                    
-                    id_prof=rset.getInt("id_enseignant");
-                    prof = profDao.find(id_prof);
-                    
-                    
-                }
+            while (rset.next())
+            {
+
+                id_prof=rset.getInt("id_enseignant");
+                prof = profDao.find(id_prof);
 
 
-            } catch (ClassNotFoundException cnfe) {
-                System.out.println("Connexion echouee : probleme de classe");
-                cnfe.printStackTrace();
             }
+
+
         } catch (SQLException e) {
             
             System.out.println("Connexion echouee : probleme SQL SeanceDAO");

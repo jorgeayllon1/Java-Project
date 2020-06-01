@@ -20,7 +20,6 @@ public class UtilisateurDao extends DAO<Utilisateur> {
      */
     public UtilisateurDao() {
         super();
-
     }
 
     public UtilisateurDao(Connection conn) {
@@ -31,7 +30,7 @@ public class UtilisateurDao extends DAO<Utilisateur> {
     public Utilisateur find(int id) {
         Utilisateur user = new Utilisateur();
         try {
-            this.conn = Connexion.seConnecter();
+            //  this.conn = Connexion.seConnecter();
 
 
             this.rset = this.conn.createStatement(
@@ -52,9 +51,6 @@ public class UtilisateurDao extends DAO<Utilisateur> {
                 );
             else user = null;
 
-        } catch (ClassNotFoundException cnfe) {
-            System.out.println("Connexion echouee : probleme de classe");
-            cnfe.printStackTrace();
         } catch (SQLException e) {
             System.out.println("Connexion echouee : probleme SQL UtilisateurDao");
             e.printStackTrace();
@@ -146,7 +142,7 @@ public class UtilisateurDao extends DAO<Utilisateur> {
         DAO<TypeCours> typeCoursDAO = DAOFactory.getTypeCours();
 
         try {
-            this.conn = Connexion.seConnecter();
+            // this.conn = Connexion.seConnecter();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE,
                     this.rset.CONCUR_READ_ONLY).executeQuery(
                     "SELECT * FROM `seance` INNER JOIN seance_groupes ON seance_groupes.id_seance=seance.id" +
@@ -171,7 +167,7 @@ public class UtilisateurDao extends DAO<Utilisateur> {
 
             }
 
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             System.out.println("Erreur SQL UtilisateurDao");
             e.printStackTrace();
         }

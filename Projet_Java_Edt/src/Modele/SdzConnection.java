@@ -16,7 +16,7 @@ public class SdzConnection {
     private static Connection connect;
 
     //Constructeur privé
-    private SdzConnection() {
+    public SdzConnection() {
         try {
             connect = DriverManager.getConnection(url, user, passwd);
         } catch (SQLException e) {

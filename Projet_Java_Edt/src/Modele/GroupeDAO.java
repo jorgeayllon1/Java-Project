@@ -11,6 +11,7 @@ import java.util.*;
 public class GroupeDAO extends DAO<Groupe> {
 
     public GroupeDAO() {
+        super();
     }
 
     public GroupeDAO(Connection conn) {
@@ -25,7 +26,7 @@ public class GroupeDAO extends DAO<Groupe> {
         Promotion promo = new Promotion();
         PromotionDAO promoDao = new PromotionDAO();
         try {
-            this.conn = Connexion.seConnecter();
+            //this.conn = Connexion.seConnecter();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM groupe WHERE id=" + id);
 
             if (rset.first()) {
@@ -34,9 +35,6 @@ public class GroupeDAO extends DAO<Groupe> {
                 legroupe = new Groupe(id, rset.getString("nom"), promo);
             }
 
-        } catch (ClassNotFoundException cnfe) {
-            System.out.println("Connexion echouée : problème de classe");
-            cnfe.printStackTrace();
         } catch (SQLException sqle) {
             System.out.println("Connexion echouee : probleme SQL GroupeDAO");
             sqle.printStackTrace();
@@ -67,24 +65,19 @@ public class GroupeDAO extends DAO<Groupe> {
 
         ArrayList<Integer> mes_id_seances = new ArrayList();
         try {
-            try {
 
-                this.conn = Connexion.seConnecter();
+            //this.conn = Connexion.seConnecter();
 
-                this.rset = this.conn.createStatement(
-                        this.rset.TYPE_SCROLL_INSENSITIVE,
-                        this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id_seance FROM seance_groupes WHERE id_groupe = " + groupe.getId()); //On cherche tout les ID des séances de ce groupe
-
-
-                while (rset.next()) {
-                    mes_id_seances.add(rset.getInt("id_seance"));
-                }
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id_seance FROM seance_groupes WHERE id_groupe = " + groupe.getId()); //On cherche tout les ID des séances de ce groupe
 
 
-            } catch (ClassNotFoundException cnfe) {
-                System.out.println("Connexion echouee : probleme de classe");
-                cnfe.printStackTrace();
+            while (rset.next()) {
+                mes_id_seances.add(rset.getInt("id_seance"));
             }
+
+
         } catch (SQLException e) {
             System.out.println("Connexion echouee : probleme SQL GroupeDAO");
             e.printStackTrace();
@@ -103,32 +96,27 @@ public class GroupeDAO extends DAO<Groupe> {
         int id_type = 0;
 
         try {
-            try {
-                this.conn = Connexion.seConnecter();
-                for (int i = 0; i < array.size(); i++) {
-                    this.rset = this.conn.createStatement(
-                            this.rset.TYPE_SCROLL_INSENSITIVE,
-                            this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM seance WHERE id=" + array.get(i));//On cherche toutes les séances avec le même id_seance
+            //this.conn = Connexion.seConnecter();
+            for (int i = 0; i < array.size(); i++) {
+                this.rset = this.conn.createStatement(
+                        this.rset.TYPE_SCROLL_INSENSITIVE,
+                        this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM seance WHERE id=" + array.get(i));//On cherche toutes les séances avec le même id_seance
 
-                    while (rset.next()) {
-                        id_cours = rset.getInt("id_cours");
-                        cours = coursDao.find(id_cours);
-                        id_type = rset.getInt("id_type");
-                        type = typeDao.find(id_type);
-                        seance_groupe.add(new Seance(array.get(i), rset.getInt("semaine"),
-                                rset.getDate("date"),
-                                rset.getTimestamp("heure_debut"),
-                                rset.getTimestamp("heure_fin"),
-                                cours,
-                                type));
-                    }
+                while (rset.next()) {
+                    id_cours = rset.getInt("id_cours");
+                    cours = coursDao.find(id_cours);
+                    id_type = rset.getInt("id_type");
+                    type = typeDao.find(id_type);
+                    seance_groupe.add(new Seance(array.get(i), rset.getInt("semaine"),
+                            rset.getDate("date"),
+                            rset.getTimestamp("heure_debut"),
+                            rset.getTimestamp("heure_fin"),
+                            cours,
+                            type));
                 }
-
-
-            } catch (ClassNotFoundException cnfe) {
-                System.out.println("Connexion echouee : probleme de classe");
-                cnfe.printStackTrace();
             }
+
+
         } catch (SQLException e) {
             System.out.println("Connexion echouee : probleme SQL GroupeDAO");
             e.printStackTrace();
@@ -155,32 +143,27 @@ public class GroupeDAO extends DAO<Groupe> {
         int id_type = 0;
 
         try {
-            try {
-                this.conn = Connexion.seConnecter();
-                for (int i = 0; i < array.size(); i++) {
-                    this.rset = this.conn.createStatement(
-                            this.rset.TYPE_SCROLL_INSENSITIVE,
-                            this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM seance WHERE semaine=" + semaine);//On cherche toutes les séances avec le même id_seance
+            //this.conn = Connexion.seConnecter();
+            for (int i = 0; i < array.size(); i++) {
+                this.rset = this.conn.createStatement(
+                        this.rset.TYPE_SCROLL_INSENSITIVE,
+                        this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM seance WHERE semaine=" + semaine);//On cherche toutes les séances avec le même id_seance
 
-                    if (rset.next()) {
-                        id_cours = rset.getInt("id_cours");
-                        cours = coursDao.find(id_cours);
-                        id_type = rset.getInt("id_type");
-                        type = typeDao.find(id_type);
-                        seance_groupe.add(new Seance(array.get(i), rset.getInt("semaine"),
-                                rset.getDate("date"),
-                                rset.getTimestamp("heure_debut"),
-                                rset.getTimestamp("heure_fin"),
-                                cours,
-                                type));
-                    }
+                if (rset.next()) {
+                    id_cours = rset.getInt("id_cours");
+                    cours = coursDao.find(id_cours);
+                    id_type = rset.getInt("id_type");
+                    type = typeDao.find(id_type);
+                    seance_groupe.add(new Seance(array.get(i), rset.getInt("semaine"),
+                            rset.getDate("date"),
+                            rset.getTimestamp("heure_debut"),
+                            rset.getTimestamp("heure_fin"),
+                            cours,
+                            type));
                 }
-
-
-            } catch (ClassNotFoundException cnfe) {
-                System.out.println("Connexion echouee : probleme de classe");
-                cnfe.printStackTrace();
             }
+
+
         } catch (SQLException e) {
             System.out.println("Connexion echouee : probleme SQL GroupeDAO");
             e.printStackTrace();
@@ -199,7 +182,7 @@ public class GroupeDAO extends DAO<Groupe> {
         int le_id = 0;
 
         try {
-            this.conn = Connexion.seConnecter();
+            //this.conn = Connexion.seConnecter();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
                     "SELECT id FROM groupe\n" +
                             "WHERE nom=\"" + lenom + "\""
@@ -207,7 +190,7 @@ public class GroupeDAO extends DAO<Groupe> {
             while (rset.next()) {
                 le_id = rset.getInt("id");
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             System.err.println("Probème SQL GroupeDAO");
             e.printStackTrace();
         }
@@ -226,7 +209,7 @@ public class GroupeDAO extends DAO<Groupe> {
         DAO<TypeCours> typeCoursDAO = DAOFactory.getTypeCours();
 
         try {
-            this.conn = Connexion.seConnecter();
+            //this.conn = Connexion.seConnecter();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
                     "SELECT * FROM seance\n" +
                             "INNER JOIN seance_groupes\n" +
@@ -253,7 +236,7 @@ public class GroupeDAO extends DAO<Groupe> {
 
             }
 
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             System.err.println("Erreur SQL GroupeDAO");
             e.printStackTrace();
         }

@@ -11,6 +11,7 @@ import Modele.UtilisateurDao;
 import Vue.*;
 
 import java.awt.event.ActionEvent;
+import java.sql.Connection;
 import java.util.ArrayList;
 
 /**
@@ -20,6 +21,7 @@ public class AccueilControleur extends Controleur {
 
     Utilisateur user;
     Accueil accueil;
+    //UtilisateurDao userDao;
 
     public AccueilControleur() {
         super();
@@ -34,7 +36,6 @@ public class AccueilControleur extends Controleur {
         ArrayList<Utilisateur> mesUsers = new ArrayList<>();
 
         DAO<Utilisateur> userDao = new UtilisateurDao();
-
 
         for (int i = 1; i < 11; i++) {
             Utilisateur user = userDao.find(i);

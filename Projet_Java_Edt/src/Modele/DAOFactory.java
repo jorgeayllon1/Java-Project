@@ -32,10 +32,11 @@ public class DAOFactory {
         return new GroupeDAO(conn);
     }
 
+    /*
     public static DAO<Promotion> getPromotion() {
         return new PromotionDAO(conn);
     }
-
+*/
     public static DAO<Site> getSite() {
         return new SiteDAO(conn);
     }

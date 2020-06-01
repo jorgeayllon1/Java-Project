@@ -9,6 +9,7 @@ import java.sql.*;
 public class SiteDAO extends DAO<Site> {
 
     public SiteDAO() {
+        super();
     }
 
     public SiteDAO(Connection conn) {
@@ -19,14 +20,11 @@ public class SiteDAO extends DAO<Site> {
     public Site find(int id) {
         Site lesite = new Site();
         try {
-            this.conn=Connexion.seConnecter();
+            //this.conn=Connexion.seConnecter();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM site WHERE id=" + id);
 
             if (rset.first())
                 lesite = new Site(id, rset.getString("nom"));
-        } catch (ClassNotFoundException cnfe) {
-            System.out.println("Connexion echouée : problème de classe");
-            cnfe.printStackTrace();
         } catch (SQLException sqle) {
             System.out.println("Connexion echouee : probleme SQL SiteDao");
             sqle.printStackTrace();
