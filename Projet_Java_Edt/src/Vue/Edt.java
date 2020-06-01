@@ -107,7 +107,7 @@ public class Edt extends JFrame implements ActionListener {
 
         panel = (JPanel) this.getContentPane();
         panel.setLayout(new BorderLayout());
-              this.panel.setBackground(Color.red);
+        this.panel.setBackground(new java.awt.Color(112, 219, 219));
         this.panel.setOpaque(true);
 
         ///Affiche le numéro de semaine
@@ -140,8 +140,11 @@ public class Edt extends JFrame implements ActionListener {
 
         String mesInfos = "HYPERPLANNING 2019-2020";
 
+        
+        
         info = new JLabel(mesInfos);
-        panel.add(this.info, BorderLayout.SOUTH);
+        info.setPreferredSize(new Dimension(20,50));
+        panel.add(info, BorderLayout.SOUTH);
 
         this.setVisible(true);
     }

@@ -40,7 +40,7 @@ public class Edt_Etudiant extends Edt {
 
         super(user);
         this.etudiant = etudiant;
-        afficherEdtAccueil();
+        afficherEdtEtudiantAccueil();
         this.mes_cours.addActionListener(this);
         this.rechercher.addActionListener(this);
         this.summary.addActionListener(this);
@@ -62,7 +62,7 @@ public class Edt_Etudiant extends Edt {
     /**
      * Méthode qui va afficher l'edt  de l'étudiant en fonction de la semaine actuelle
      */
-    public void afficherEdtAccueil() {
+    public void afficherEdtEtudiantAccueil() {
         //On cree un nouveau etudiant avec l'id de l'utilisateur car id_utilisateur clé etrangere dans etudiant
         EtudiantDao etudiantDao = new EtudiantDao(); //********************
         etudiant = (Etudiant) etudiantDao.find(etudiant.getID());//*****************
@@ -254,7 +254,8 @@ public class Edt_Etudiant extends Edt {
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == this.mes_cours) {
-            afficherEdtAccueil();
+
+            afficherEdtEtudiantAccueil();
         }
         //Si on clique sur rechercher
         if (e.getSource() == this.rechercher) {
