@@ -173,9 +173,6 @@ public class GroupeDAO extends DAO<Groupe> {
 
     /**
      * Retourne le id celon le nom de groupe rechercher
-     *
-     * @param lenom
-     * @return
      */
     public int idCelonNom(String lenom) {
 
@@ -202,6 +199,9 @@ public class GroupeDAO extends DAO<Groupe> {
         }
     }
 
+    /**
+     * Retourne les toutes les seances celons une semaine choisi
+     */
     public ArrayList<Seance> trouverAllSeancesSemaine(int id_groupe, int numero_semaine) {
 
         ArrayList<Seance> les_seances = new ArrayList<>();

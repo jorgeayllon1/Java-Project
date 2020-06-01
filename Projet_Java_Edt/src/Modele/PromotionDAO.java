@@ -49,9 +49,6 @@ public class PromotionDAO extends DAO<Promotion> {
 
     /**
      * Retourne le id correspondant à l'année de la promotion
-     *
-     * @param anne
-     * @return Id de la promotion
      */
     public int idCelonAnne(int anne) {
         int le_id = 0;
@@ -78,6 +75,9 @@ public class PromotionDAO extends DAO<Promotion> {
 
     }
 
+    /**
+     * Retourne la liste de seances d'une promo pour une semaine choisi
+     */
     public ArrayList<Seance> lesSeances(int id_promotion, int numero_semaine) {
         ArrayList<Seance> lesseances = new ArrayList<>();
         DAO<Cours> coursDAO = DAOFactory.getCours();

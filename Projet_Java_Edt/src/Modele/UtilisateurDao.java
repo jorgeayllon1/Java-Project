@@ -129,7 +129,7 @@ public class UtilisateurDao extends DAO<Utilisateur> {
     }
 
     /**
-     * Retourne les seances de l'utilisateur
+     * Retourne les seances de l'utilisateur pour une semaine choisie
      */
     public ArrayList<Seance> lesSeance(int id_utilisateur, int numero_semaine) {
 

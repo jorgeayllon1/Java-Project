@@ -96,7 +96,6 @@ public class EnseignantDAO extends DAO<Enseignant> {
         int id_type = 0;
 
         try {
-            //this.conn = Connexion.seConnecter();
             for (int i = 0; i < array.size(); i++) {
                 this.rset = this.conn.createStatement(
                         this.rset.TYPE_SCROLL_INSENSITIVE,
@@ -200,10 +199,6 @@ public class EnseignantDAO extends DAO<Enseignant> {
         }
 
         return liste_prof;
-    }
-
-    public void coucou() {
-        System.out.println("coucou");
     }
 
 }

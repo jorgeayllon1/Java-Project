@@ -83,6 +83,9 @@ public class SalleDAO extends DAO<Salle> {
 
     }
 
+    /**
+     * Retourne les seances d'une salle pour une semaine choisie
+     */
     public ArrayList<Seance> lesSeances(int id_salle, int numero_semaine) {
 
         ArrayList<Seance> lesseances = new ArrayList<>();

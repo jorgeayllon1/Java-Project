@@ -29,7 +29,7 @@ public abstract class DAO<T> {
      */
 
     public DAO(Connection conn) {
-        this.conn = conn; // pas besoin de conn
+        this.conn = conn;
     }
 
     public DAO() {
@@ -74,7 +74,6 @@ public abstract class DAO<T> {
     {
         System.out.println("Affichage des champs de la table : ");
         try {
-            this.conn = SdzConnection.getInstance();
             this.stmt = conn.createStatement();
             this.rset = this.stmt.executeQuery("SELECT * FROM " + nomTable);
             this.rsetMeta = rset.getMetaData();
@@ -84,7 +83,7 @@ public abstract class DAO<T> {
             System.out.println("\n");
 
         } catch (SQLException e) {
-            System.out.println("Connexion echouee : probleme SQL");
+            System.err.println("Connexion echouee : probleme SQL");
             e.printStackTrace();
         }
     }
@@ -107,7 +106,7 @@ public abstract class DAO<T> {
             return taille;
 
         } catch (SQLException e) {
-            System.out.println("Erreur lors du retour de getTaille");
+            System.err.println("Erreur lors du retour de getTaille");
             e.printStackTrace();
             return -1;
         }

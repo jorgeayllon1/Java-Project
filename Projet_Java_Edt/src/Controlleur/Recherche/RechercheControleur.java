@@ -5,6 +5,7 @@ import Modele.*;
 
 import java.awt.event.ActionEvent;
 import java.nio.charset.IllegalCharsetNameException;
+import java.sql.Date;
 import java.util.ArrayList;
 
 /**
@@ -70,7 +71,7 @@ public class RechercheControleur extends Controleur {
                         + " " + leusersouhaiter.getMail() + " " + leusersouhaiter.getDroit());
 
                 // On recupère les information de l'utilisateur si possible
-                ArrayList<Seance> lesSeances = userDAO.lesSeance(leusersouhaiter.getID(), numero_semaine);
+                ArrayList<Seance> lesSeances = userDAO.lesSeance(leusersouhaiter.getID(), numero_semaine);//ICI LES SEANCES
 
                 System.out.println("Son emploi du temps est le suivant :");
                 for (Seance uneseance :
@@ -121,6 +122,9 @@ public class RechercheControleur extends Controleur {
 
     }
 
+    /**
+     * Recherche l'emplois du temps d'une promo pour une semaine choisie
+     */
     public void rechercher_promotion(String anne_promotion, String semaine) {
 
         int numero_semaine = 0;//Valeur temp pour gestion erreur
@@ -155,6 +159,9 @@ public class RechercheControleur extends Controleur {
 
     }
 
+    /**
+     * Recherche l'emplois du temps du salle pour une semaine choisi
+     */
     public void rechercher_salle(String nom_salle, String semaine) {
 
         int numero_semaine = 0;
@@ -172,7 +179,7 @@ public class RechercheControleur extends Controleur {
 
         if (id_salle != 0) {/// Si le id_groupe = 0 alors le groupe n'existe pas
 
-            ArrayList<Seance> lesseances = salleDAO.lesSeances(id_salle, numero_semaine);
+            ArrayList<Seance> lesseances = salleDAO.lesSeances(id_salle, numero_semaine);// ICI LES SEANCES
 
             if (lesseances.size() != 0) {/// Si le nombre de seance = 0 alors il n'y a pas d'emplois du temps
 
@@ -185,6 +192,13 @@ public class RechercheControleur extends Controleur {
             } else System.out.println("Pas de séance cette semaine");
         } else System.out.println("Cette salle n'existe pas n'existe pas");
 
+    }
+
+    /**
+     * Renvoie un recap de toutes les informations d'un enseignant
+     */
+    public void voirrecap(Enseignant prof, Date date_debut, Date date_fin) {
+        System.out.println("je suis " + prof.getNom() + " je veux mon emplois du temps du " + date_debut + " au " + date_fin);
     }
 
     @Override

@@ -11,6 +11,7 @@ import Modele.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.sql.Date;
 import java.util.ArrayList;
 
 /**
@@ -18,11 +19,18 @@ import java.util.ArrayList;
  */
 public class Edt_Enseignant extends Edt {
 
+    Enseignant enseignant;
+
     public Edt_Enseignant() {
     }
 
     public Edt_Enseignant(Utilisateur user, Enseignant prof) {
         super(user);
+
+        this.enseignant = prof;
+
+        this.summary.addActionListener(this::actionPerformed);
+
         System.out.println("Bienvenue " + prof.getNom());
 
 
@@ -58,29 +66,39 @@ public class Edt_Enseignant extends Edt {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        JPanel schear = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+        ///Si on clique sur rechercher
+        if (e.getSource() == this.rechercher) {
 
-        JTextField nom = new JTextField();
-        nom.setPreferredSize(new Dimension(100, 200));
+            JPanel schear = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
 
-        JTextField semaine = new JTextField();
-        semaine.setPreferredSize(new Dimension(100, 200));
+            JTextField nom = new JTextField();
+            nom.setPreferredSize(new Dimension(100, 200));
 
-        schear.add(nom);
-        schear.add(semaine);
+            JTextField semaine = new JTextField();
+            semaine.setPreferredSize(new Dimension(100, 200));
 
-        JButton lancerrecherche = new JButton(new AbstractAction("Rechercher") {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                control_recherche = new RechercheControleur();
-                control_recherche.rechercher_utilisateur(nom.getText(), semaine.getText(), 3);
-            }
-        });
+            schear.add(nom);
+            schear.add(semaine);
+
+            JButton lancerrecherche = new JButton(new AbstractAction("Rechercher") {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    control_recherche = new RechercheControleur();
+                    control_recherche.rechercher_utilisateur(nom.getText(), semaine.getText(), 3);
+                }
+            });
 
 
-        schear.add(lancerrecherche);
-        panel.add(schear);
-        this.setVisible(true);
+            schear.add(lancerrecherche);
+            panel.add(schear);
+            this.setVisible(true);
+        }
+
+        ///Si on clique sur recap
+        if (e.getSource() == this.summary) {
+            control_recherche = new RechercheControleur();
+            control_recherche.voirrecap(this.enseignant, new Date(2020, 6, 2), new Date(2020, 6, 11));
+        }
 
     }
 }
