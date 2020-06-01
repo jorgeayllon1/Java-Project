@@ -12,20 +12,74 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import javax.swing.border.MatteBorder;
 
 /**
  * @author Wang David
  */
 public class Edt_Enseignant extends Edt {
+    
+    Utilisateur user;
+    Enseignant prof;
+    JPanel grille_edt = new JPanel();
+    GridBagConstraints grille = new GridBagConstraints();
+    Groupe groupe = null;
+    GroupeDAO groupeDao=null;
+    EnseignantDAO profDao=null;
 
     public Edt_Enseignant() {
     }
 
     public Edt_Enseignant(Utilisateur user, Enseignant prof) {
         super(user);
-        System.out.println("Bienvenue " + prof.getNom());
+        this.prof=prof;
+        afficherEdtProfAccueil();
+
+        this.mes_cours.addActionListener(this);
+        this.rechercher.addActionListener(this);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        if(e.getSource()==this.rechercher)
+        {
+            JPanel schear = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+
+            JTextField nom = new JTextField();
+            nom.setPreferredSize(new Dimension(100, 200));
+
+            JTextField semaine = new JTextField();
+            semaine.setPreferredSize(new Dimension(100, 200));
+
+            schear.add(nom);
+            schear.add(semaine);
+
+            JButton lancerrecherche = new JButton(new AbstractAction("Rechercher") {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    control_recherche = new RechercheControleur();
+                    control_recherche.rechercher_utilisateur(nom.getText(), semaine.getText(), 3);
+                }
+            });
 
 
+            schear.add(lancerrecherche);
+            panel.add(schear);
+            this.setVisible(true);
+        }
+        
+        if(e.getSource()==this.mes_cours)
+        {
+            afficherEdtProfAccueil();
+        }
+       
+        
+
+    }
+    
+    public void afficherEdtProfAccueil()
+    {
         ///Affichage des séances relatives à cet enseignant
         EnseignantDAO profDao = new EnseignantDAO();
         ArrayList<Integer> mes_id = new ArrayList();
@@ -51,36 +105,71 @@ public class Edt_Enseignant extends Edt {
         for (int i = 0; i < mes_profs.size(); i++) {
             System.out.println(mes_profs.get(i).getNom());
         }
+        
+        grille_edt = new JPanel(new GridBagLayout());
 
-        this.rechercher.addActionListener(this);
-    }
+        grille = new GridBagConstraints();
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+        grille.fill = GridBagConstraints.HORIZONTAL;
+        grille.gridx = 0;
+        grille.gridy = 0;
+        grille.weightx = 0.1;
+        grille.weighty = 0.1;
 
-        JPanel schear = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+        grille_edt.add(new JLabel("Heures "), grille);
+        grille_edt.setBorder(new MatteBorder(0, 0, 1, 1, Color.black));
 
-        JTextField nom = new JTextField();
-        nom.setPreferredSize(new Dimension(100, 200));
+        grille.gridx = 1;
+        grille.gridy = 0;
+        grille.weightx = 0.15;
+        grille.weighty = 0.15;
+        grille_edt.add(new JLabel("Lundi "), grille);
 
-        JTextField semaine = new JTextField();
-        semaine.setPreferredSize(new Dimension(100, 200));
+        grille.gridx = 2;
+        grille.gridy = 0;
+        grille.weightx = 0.1;
+        grille.weighty = 0.15;
+        grille_edt.add(new JLabel("Mardi "), grille);
 
-        schear.add(nom);
-        schear.add(semaine);
+        grille.gridx = 3;
+        grille.gridy = 0;
+        grille.weightx = 0.1;
+        grille.weighty = 0.15;
+        grille_edt.add(new JLabel("Mercredi "), grille);
 
-        JButton lancerrecherche = new JButton(new AbstractAction("Rechercher") {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                control_recherche = new RechercheControleur();
-                control_recherche.rechercher_utilisateur(nom.getText(), semaine.getText(), 3);
-            }
-        });
+        grille.gridx = 4;
+        grille.gridy = 0;
+        grille.weightx = 0.1;
+        grille.weighty = 0.15;
+        grille_edt.add(new JLabel("jeudi "), grille);
 
+        grille.gridx = 5;
+        grille.gridy = 0;
+        grille.weightx = 0.1;
+        grille.weighty = 0.15;
+        grille_edt.add(new JLabel("Vendredi "), grille);
 
-        schear.add(lancerrecherche);
-        panel.add(schear);
+        grille.gridx = 6;
+        grille.gridy = 0;
+        grille.weightx = 0.1;
+        grille.weighty = 0.15;
+        grille_edt.add(new JLabel("Samedi "), grille);
+
+        int j = 8;
+        int k = j + 2;
+        for (int i = 0; i < 6; i++) {
+
+            grille.gridx = 0;
+            grille.gridy = i + 1;
+            grille.weightx = 0.1;
+            grille.weighty = 0.15;
+            grille_edt.add(new JLabel(j + "H-" + k + "H"), grille);
+            j += 2;
+            k += 2;
+        }
+
+        
+        this.panel.add(grille_edt);
         this.setVisible(true);
-
     }
 }
