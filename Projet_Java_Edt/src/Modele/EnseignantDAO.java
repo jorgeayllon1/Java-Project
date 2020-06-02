@@ -208,10 +208,12 @@ public class EnseignantDAO extends DAO<Enseignant> {
     
     public ArrayList<Seance> trouverAllSeancesSemaine(int id_prof, int numero_semaine) {
 
+        
         ArrayList<Seance> les_seances = new ArrayList<>();
         DAO<Cours> coursDAO = DAOFactory.getCours();
         DAO<TypeCours> typeCoursDAO = DAOFactory.getTypeCours();
-
+        ArrayList<Integer> deja_compte = new ArrayList();
+        
         try {
             //this.conn = Connexion.seConnecter();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
@@ -223,20 +225,27 @@ public class EnseignantDAO extends DAO<Enseignant> {
                             "WHERE enseignant.id_utilisateur=" + id_prof + "\n" +
                             "AND seance.semaine=" + numero_semaine
             );
+            
+            
 
             while (rset.next()) {
+                
+                if(!deja_compte.contains(rset.getInt("id")))
+                {
+                    int id = rset.getInt("id");
+                    int semaine = rset.getInt("semaine");
+                    Date date = rset.getDate("date");
+                    Timestamp heure_debut = rset.getTimestamp("heure_debut");
+                    Timestamp heure_fin = rset.getTimestamp("heure_fin");
+                    int id_cours = rset.getInt("id_cours");
+                    Cours cours = coursDAO.find(id_cours);
+                    int id_type = rset.getInt("id_type");
+                    TypeCours typeCours = typeCoursDAO.find(id_type);
+                    deja_compte.add(rset.getInt("id"));
+                    les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, cours, typeCours));
+                }
 
-                int id = rset.getInt("id");
-                int semaine = rset.getInt("semaine");
-                Date date = rset.getDate("date");
-                Timestamp heure_debut = rset.getTimestamp("heure_debut");
-                Timestamp heure_fin = rset.getTimestamp("heure_fin");
-                int id_cours = rset.getInt("id_cours");
-                Cours cours = coursDAO.find(id_cours);
-                int id_type = rset.getInt("id_type");
-                TypeCours typeCours = typeCoursDAO.find(id_type);
-
-                les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, cours, typeCours));
+                
 
             }
 

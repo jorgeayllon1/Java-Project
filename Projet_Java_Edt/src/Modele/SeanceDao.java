@@ -168,6 +168,37 @@ public class SeanceDao extends DAO<Seance> {
         
         return prof;
     }
+    
+    public Groupe trouverGroupe(Seance seance)
+    {
+        Groupe groupe = new Groupe();
+        GroupeDAO groupeDao = new GroupeDAO();
+        int id_groupe=0;
+        
+        try {
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id_groupe FROM seance_groupes WHERE id_seance = " + seance.getID()); //On cherche tout les ID des séances de ce groupe
+
+
+            while (rset.next())
+            {
+
+                id_groupe=rset.getInt("id_groupe");
+                groupe = groupeDao.find(id_groupe);
+
+
+            }
+
+
+        } catch (SQLException e) {
+            
+            System.out.println("Connexion echouee : probleme SQL SeanceDAO");
+            e.printStackTrace();
+        }
+        
+        return groupe;
+    }
 
 
 }

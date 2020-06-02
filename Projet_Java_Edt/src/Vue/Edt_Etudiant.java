@@ -421,10 +421,14 @@ public class Edt_Etudiant extends Edt {
                                     if (heure.contains("20"))
                                         grille.gridy = 7;
 
+                                    Enseignant prof = new Enseignant();
+                                    SeanceDao seanceDao = new SeanceDao();
+                                    prof = seanceDao.trouverEnseignant(mes_seances.get(i));
                                     String myString =
-                                            "<html><p>" + mes_seances.get(i).getCours().getNom() + "<br>Salle :" +
-                                                    salle.getNom() + "<br>Site :" +
-                                                    salle.getSite().getNom() + "</p></html>";
+                                            "<html><p>" + mes_seances.get(i).getCours().getNom() + "<br>Prof :" +
+                                                prof.getNom() + "<br>Salle :" +
+                                                salle.getNom() + "<br>Site :" +
+                                                salle.getSite().getNom() + "</p></html>";
 
                                     grille_edt.add(new JLabel(myString), grille);
                                 }
