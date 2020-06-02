@@ -9,7 +9,7 @@ import Vue.*;
 import Modele.*;
 
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.*;
 
 import static javafx.scene.input.KeyCode.T;
 

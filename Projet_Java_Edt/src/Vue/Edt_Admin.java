@@ -13,7 +13,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * @author Wang David
@@ -38,11 +38,10 @@ public class Edt_Admin extends Edt {
         
         if(e.getSource()==this.rechercher)
         {
-            schear = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+            JPanel content = new JPanel(new BorderLayout());
+            JPanel schear = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
             Object[] deroulant = new Object[]{"Rechercher...", "Utilisateur" , "Groupe" , "Promotion" , "Salle"};
             JComboBox liste = new JComboBox(deroulant);
-
-            
             schear.add(liste);
             
             JLabel label_nom = new JLabel();
@@ -57,7 +56,12 @@ public class Edt_Admin extends Edt {
             schear.add(nom);
             schear.add(label_semaine);
             schear.add(semaine);
-            panel.add(schear);
+            JPanel infos = new JPanel(new BorderLayout() );
+            recup_info = new JLabel("f", JLabel.CENTER);
+            infos.add(recup_info);
+            content.add(schear, BorderLayout.NORTH);
+            content.add(infos, BorderLayout.CENTER);
+            this.panel.add(content);
             
             liste.addActionListener(new ActionListener() {
                 @Override
@@ -77,8 +81,9 @@ public class Edt_Admin extends Edt {
 
                         label_nom.setText("Nom utilisateur :");
                         label_semaine.setText("Numéro semaine");
-                        schear.add(chercher_utilisateur);     
-                        panel.add(schear);
+                        schear.add(chercher_utilisateur);  
+                        content.add(schear, BorderLayout.NORTH);
+                        panel.add(content);
   
                         
                     }
@@ -95,7 +100,8 @@ public class Edt_Admin extends Edt {
                         label_nom.setText("Nom groupe :");
                         label_semaine.setText("Numéro semaine");
                         schear.add(chercher_groupe);     
-                        panel.add(schear);
+                        content.add(schear, BorderLayout.NORTH);
+                        panel.add(content);
                     }
                     
                     else if(choisi=="Promotion")
@@ -110,7 +116,8 @@ public class Edt_Admin extends Edt {
                         label_nom.setText("Promotion :");
                         label_semaine.setText("Numéro semaine");
                         schear.add(chercher_promotion);     
-                        panel.add(schear);
+                        content.add(schear, BorderLayout.NORTH);
+                        panel.add(content);
                     }
                     
                     else if(choisi=="Salle")
@@ -125,7 +132,8 @@ public class Edt_Admin extends Edt {
                         label_nom.setText("Salle :");
                         label_semaine.setText("Numéro semaine");
                         schear.add(chercher_salle);     
-                        panel.add(schear);
+                        content.add(schear, BorderLayout.NORTH);
+                        panel.add(content);
                     }
                    
                 }
@@ -135,74 +143,10 @@ public class Edt_Admin extends Edt {
         }
    
     }
-    
-    public void rechercher_utilisateur(String nom, String semaine, int droit) {
-
-        int numero_semaine = 0;
-        boolean validationdacces = false;
-
-        // On verifie que l'utilisateur a bien ecrit un entier pour la semaine
-        try {
-            numero_semaine = Integer.parseInt(semaine);
-        } catch (NumberFormatException e) {
-            System.out.println("Numero de semaine non valide");
-            return;
-        }
-
-        // On crée les utilisateurs et on va faire une recherche dessus
-        UtilisateurDao userDAO = new UtilisateurDao();
-        ArrayList<Utilisateur> mesUsers = new ArrayList<>();
-
-        for (int i = 1; i < userDAO.getTaille("utilisateur") + 1; i++) {
-            mesUsers.add(userDAO.find(i));
-        }
-
-        Utilisateur leusersouhaiter = new Utilisateur();
-
-        for (int i = 0; i < mesUsers.size(); i++) {
-            if (mesUsers.get(i).getNom().equals(nom)) {
-                leusersouhaiter = new Utilisateur(mesUsers.get(i));///dés qu'on trouve le bon utilisateur on sort de la boucle
-                break;
-            }
-        }
-        for (int i = 0; i < mesUsers.size(); i++) {
-            if (mesUsers.get(i).getNom().equals(nom) && mesUsers.get(i).getDroit() == droit) {
-                leusersouhaiter = new Utilisateur(mesUsers.get(i));
-                break;
-            }
-        }
-
-        if (droit == 1 || droit == 2) {// Admin et Referent on une vue total sur les utilisateur
-            validationdacces = true;
-        } else {
-            if (droit == leusersouhaiter.getDroit())/// Pour les prof et etudiant, il ne peuvent voir que respectivement prof et etudiant
-                validationdacces = true;
-        }
-
-        if (leusersouhaiter.getID() != 0) {
-            if (validationdacces) {
-                System.out.println("Les informations de la personne sont :");
-                System.out.println(leusersouhaiter.getID() + " " + leusersouhaiter.getNom() + " " + leusersouhaiter.getPrenom()
-                        + " " + leusersouhaiter.getMail() + " " + leusersouhaiter.getDroit());
-
-                // On recupère les information de l'utilisateur si possible
-                ArrayList<Seance> lesSeances = userDAO.lesSeance(leusersouhaiter.getID(), numero_semaine);//ICI LES SEANCES
-
-                System.out.println("Son emploi du temps est le suivant :");
-                for (Seance uneseance :
-                        lesSeances) {
-                    System.out.println(uneseance.getID() + " " + uneseance.getSemaine() + " " + uneseance.getDate().toString() + " " + uneseance.getHeureDebut()
-                            + " " + uneseance.getHeureFin() + " " + uneseance.getCours().getNom() + " " + uneseance.getType().getNom());
-                }
-                System.out.println("Il faut modifier la vu pour les afficher correctement");
-            } else System.out.println("Accés non autorisé");
-        } else
-            System.out.println("Personne non trouvé dans la BDD : " + nom);
-
-    }
+   
 
     /**
-     * Recherche de l'emplois du temps d'un groupe
+     * Recherche de l'emploi du temps d'un groupe
      */
     public void rechercher_groupe(String nom_groupe, String semaine) {
 
@@ -218,22 +162,31 @@ public class Edt_Admin extends Edt {
         GroupeDAO groupeDAO = new GroupeDAO();
 
         id_groupe = groupeDAO.idCelonNom(nom_groupe);
+        
 
         if (id_groupe != 0) {/// Si le id_groupe = 0 alors le groupe n'existe pas
 
             ArrayList<Seance> lesseances = groupeDAO.trouverAllSeancesSemaine(id_groupe, numero_semaine);
+            
+            String s = "<html><p>Les séances pour le groupe " + nom_groupe +" dans la semaine du " + semaine+ " sont : <br>";
 
             if (lesseances.size() != 0) {/// Si le nombre de seance = 0 alors il n'y a pas d'emplois du temps
 
-                System.out.println("les seances sont :");
+                System.out.println("Les seances sont  :");
 
                 for (int i = 0; i < lesseances.size(); i++) {
                     System.out.println(lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
                             + lesseances.get(i).getCours().getNom());
+                    s+=lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
+                            + lesseances.get(i).getCours().getNom()+"<br>";
                 }
+                s+="</p></html>";
+                recup_info.setText(s);
             } else System.out.println("Pas de séance cette semaine");
         } else System.out.println("Ce groupe n'existe pas");
+        
 
+        
 
     }
 
@@ -259,16 +212,23 @@ public class Edt_Admin extends Edt {
         id_promotion = promotionDAO.idCelonAnne(numero_promotion);
 
         if (id_promotion != 0) {
+            String s = "<html><p>Les séances sont pour la promotion "+anne_promotion+" dans la semaine" +semaine+" : <br>";
             ArrayList<Seance> lesseances = promotionDAO.lesSeances(id_promotion, numero_semaine);
             if (lesseances.size() != 0) {/// Si le nombre de seance = 0 alors il n'y a pas d'emplois du temps
 
-                System.out.println("les seances sont :");
+                System.out.println("Les seances sont :");
 
                 for (int i = 0; i < lesseances.size(); i++) {
                     System.out.println(lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
                             + lesseances.get(i).getCours().getNom());
+                    
+                    s+=lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
+                            + lesseances.get(i).getCours().getNom()+"<br>";
                 }
+                s+="</p></html>";
+            recup_info.setText(s);
             } else System.out.println("Pas de séance cette semaine");
+            
 
         } else System.out.println("Cette promotion n'existe pas");
 
@@ -295,15 +255,20 @@ public class Edt_Admin extends Edt {
         if (id_salle != 0) {/// Si le id_groupe = 0 alors le groupe n'existe pas
 
             ArrayList<Seance> lesseances = salleDAO.lesSeances(id_salle, numero_semaine);// ICI LES SEANCES
+            String s = "<html><p>Les séances pour la salle " +nom_salle+" dans la semaine " +semaine +"  sont : <br>";
 
             if (lesseances.size() != 0) {/// Si le nombre de seance = 0 alors il n'y a pas d'emplois du temps
 
-                System.out.println("les seances sont :");
+                System.out.println("Les seances sont :");
 
                 for (int i = 0; i < lesseances.size(); i++) {
                     System.out.println(lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
                             + lesseances.get(i).getCours().getNom());
+                    s+=lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
+                            + lesseances.get(i).getCours().getNom()+"<br>";
                 }
+                s+="</p></html>";
+                recup_info.setText(s);
             } else System.out.println("Pas de séance cette semaine");
         } else System.out.println("Cette salle n'existe pas n'existe pas");
 

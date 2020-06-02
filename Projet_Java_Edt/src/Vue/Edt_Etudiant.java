@@ -13,10 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 
@@ -25,13 +22,13 @@ import javax.swing.border.MatteBorder;
  */
 public class Edt_Etudiant extends Edt {
 
-    Utilisateur user;
-    Etudiant etudiant;
-    JPanel grille_edt = new JPanel();
-    GridBagConstraints grille = new GridBagConstraints();
+    Utilisateur user=null;
+    Etudiant etudiant=null;
+
     Groupe groupe = null;
     GroupeDAO groupeDao = null;
     EtudiantDao etudiantDao = null;
+    
 
     public Edt_Etudiant() {
     }
@@ -100,69 +97,8 @@ public class Edt_Etudiant extends Edt {
             System.out.println("Salle : " + salle.getNom() + " Capacite : " + salle.getCapacite() + " Site : " + salle.getSite().getNom());
 
         }*/
-
-
-        grille_edt = new JPanel(new GridBagLayout());
-
-        grille = new GridBagConstraints();
-
-        grille.fill = GridBagConstraints.HORIZONTAL;
-        grille.gridx = 0;
-        grille.gridy = 0;
-        grille.weightx = 0.1;
-        grille.weighty = 0.1;
-
-        grille_edt.add(new JLabel("Heures "), grille);
-        grille_edt.setBorder(new MatteBorder(0, 0, 1, 1, Color.black));
-
-        grille.gridx = 1;
-        grille.gridy = 0;
-        grille.weightx = 0.15;
-        grille.weighty = 0.15;
-        grille_edt.add(new JLabel("Lundi "), grille);
-
-        grille.gridx = 2;
-        grille.gridy = 0;
-        grille.weightx = 0.1;
-        grille.weighty = 0.15;
-        grille_edt.add(new JLabel("Mardi "), grille);
-
-        grille.gridx = 3;
-        grille.gridy = 0;
-        grille.weightx = 0.1;
-        grille.weighty = 0.15;
-        grille_edt.add(new JLabel("Mercredi "), grille);
-
-        grille.gridx = 4;
-        grille.gridy = 0;
-        grille.weightx = 0.1;
-        grille.weighty = 0.15;
-        grille_edt.add(new JLabel("jeudi "), grille);
-
-        grille.gridx = 5;
-        grille.gridy = 0;
-        grille.weightx = 0.1;
-        grille.weighty = 0.15;
-        grille_edt.add(new JLabel("Vendredi "), grille);
-
-        grille.gridx = 6;
-        grille.gridy = 0;
-        grille.weightx = 0.1;
-        grille.weighty = 0.15;
-        grille_edt.add(new JLabel("Samedi "), grille);
-
-        int j = 8;
-        int k = j + 2;
-        for (int i = 0; i < 6; i++) {
-
-            grille.gridx = 0;
-            grille.gridy = i + 1;
-            grille.weightx = 0.1;
-            grille.weighty = 0.15;
-            grille_edt.add(new JLabel(j + "H-" + k + "H"), grille);
-            j += 2;
-            k += 2;
-        }
+        this.afficherGrille();
+        
 
 
         for (int i = 0; i < mes_seances.size(); i++) //On parcourt toutes séances relatives à cet etudiant
@@ -258,13 +194,15 @@ public class Edt_Etudiant extends Edt {
             afficherEdtEtudiantAccueil();
         }
         //Si on clique sur rechercher
-        if (e.getSource() == this.rechercher) {
+        if (e.getSource() == this.rechercher) 
+        {
+            JPanel content = new JPanel(new BorderLayout());
             JPanel schear = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
 
             JLabel label_nom = new JLabel();
             JLabel label_semaine = new JLabel();
 
-            label_nom.setText("Nom utilisateur :");
+            label_nom.setText("Nom de l'étudiant :");
             label_semaine.setText("Numéro semaine");
             JTextField nom = new JTextField();
             nom.setPreferredSize(new Dimension(100, 200));
@@ -276,6 +214,10 @@ public class Edt_Etudiant extends Edt {
             schear.add(nom);
             schear.add(label_semaine);
             schear.add(semaine);
+            
+            JPanel infos = new JPanel(new BorderLayout() );
+            recup_info = new JLabel("", JLabel.CENTER);
+            infos.add(recup_info);
 
             JButton lancerrecherche = new JButton(new AbstractAction("Rechercher") {
                 @Override
@@ -285,7 +227,10 @@ public class Edt_Etudiant extends Edt {
             });
 
             schear.add(lancerrecherche);
-            panel.add(schear);
+            content.add(schear, BorderLayout.NORTH);
+            content.add(infos, BorderLayout.CENTER);
+            
+            panel.add(content);
             this.setVisible(true);
         }
 
@@ -295,67 +240,7 @@ public class Edt_Etudiant extends Edt {
             if (e.getActionCommand().equals(this.week_button.get(s).getText())) {
                 System.out.println(this.week_button.get(s).getText()); //On affiche le texte du bouton cliqué
 
-                grille_edt = new JPanel(new GridBagLayout());//Initialisations
-
-                ///Ajout des jours de la semaine
-                grille = new GridBagConstraints();
-                grille.fill = GridBagConstraints.HORIZONTAL;
-                grille.gridx = 0;
-                grille.gridy = 0;
-                grille.weightx = 0.1;
-                grille.weighty = 0.1;
-
-                grille_edt.add(new JLabel("Heures "), grille);
-
-                grille.gridx = 1;
-                grille.gridy = 0;
-                grille.weightx = 0.15;
-                grille.weighty = 0.15;
-                grille_edt.add(new JLabel("Lundi "), grille);
-
-                grille.gridx = 2;
-                grille.gridy = 0;
-                grille.weightx = 0.1;
-                grille.weighty = 0.15;
-                grille_edt.add(new JLabel("Mardi "), grille);
-
-                grille.gridx = 3;
-                grille.gridy = 0;
-                grille.weightx = 0.1;
-                grille.weighty = 0.15;
-                grille_edt.add(new JLabel("Mercredi "), grille);
-
-                grille.gridx = 4;
-                grille.gridy = 0;
-                grille.weightx = 0.1;
-                grille.weighty = 0.15;
-                grille_edt.add(new JLabel("jeudi "), grille);
-
-                grille.gridx = 5;
-                grille.gridy = 0;
-                grille.weightx = 0.1;
-                grille.weighty = 0.15;
-                grille_edt.add(new JLabel("Vendredi "), grille);
-
-                grille.gridx = 6;
-                grille.gridy = 0;
-                grille.weightx = 0.1;
-                grille.weighty = 0.15;
-                grille_edt.add(new JLabel("Samedi "), grille);
-
-                int j = 8;
-                int k = j + 2;
-                for (int a = 0; a < 6; a++) {
-
-                    grille.gridx = 0;
-                    grille.gridy = a + 1;
-                    grille.weightx = 0.1;
-                    grille.weighty = 0.15;
-                    grille_edt.add(new JLabel(j + "H-" + k + "H"), grille);  //Ajout des horaires
-                    j += 2;
-                    k += 2;
-                }
-
+                this.afficherGrille();
 
                 String string_semaine = this.week_button.get(s).getText(); //On get le string du numero de semaine
 
@@ -444,8 +329,6 @@ public class Edt_Etudiant extends Edt {
                     }
 
                 }
-
-
                 panel.add(grille_edt);
                 this.setVisible(true);
 
@@ -459,74 +342,7 @@ public class Edt_Etudiant extends Edt {
 
 
     }
-    public void rechercher_utilisateur(String nom, String semaine, int droit) {
 
-        int numero_semaine = 0;
-        boolean validationdacces = false;
-
-        // On verifie que l'utilisateur a bien ecrit un entier pour la semaine
-        try {
-            numero_semaine = Integer.parseInt(semaine);
-        } catch (NumberFormatException e) {
-            System.out.println("Numero de semaine non valide");
-            return;
-        }
-
-        // On crée les utilisateurs et on va faire une recherche dessus
-        UtilisateurDao userDAO = new UtilisateurDao();
-        ArrayList<Utilisateur> mesUsers = new ArrayList<>();
-
-        for (int i = 1; i < userDAO.getTaille("utilisateur") + 1; i++) {
-            mesUsers.add(userDAO.find(i));
-        }
-
-        Utilisateur leusersouhaiter = new Utilisateur();
-
-        for (int i = 0; i < mesUsers.size(); i++) {
-            if (mesUsers.get(i).getNom().equals(nom)) {
-                leusersouhaiter = new Utilisateur(mesUsers.get(i));///dés qu'on trouve le bon utilisateur on sort de la boucle
-                break;
-            }
-        }
-        for (int i = 0; i < mesUsers.size(); i++) {
-            if (mesUsers.get(i).getNom().equals(nom) && mesUsers.get(i).getDroit() == droit) {
-                leusersouhaiter = new Utilisateur(mesUsers.get(i));
-                break;
-            }
-        }
-
-        if (droit == 1 || droit == 2) {// Admin et Referent on une vue total sur les utilisateur
-            validationdacces = true;
-        } else {
-            if (droit == leusersouhaiter.getDroit())/// Pour les prof et etudiant, il ne peuvent voir que respectivement prof et etudiant
-                validationdacces = true;
-        }
-
-        if (leusersouhaiter.getID() != 0) {
-            if (validationdacces) {
-                System.out.println("Les informations de la personne sont :");
-                System.out.println(leusersouhaiter.getID() + " " + leusersouhaiter.getNom() + " " + leusersouhaiter.getPrenom()
-                        + " " + leusersouhaiter.getMail() + " " + leusersouhaiter.getDroit());
-
-                // On recupère les information de l'utilisateur si possible
-                ArrayList<Seance> lesSeances = userDAO.lesSeance(leusersouhaiter.getID(), numero_semaine);//ICI LES SEANCES
-
-                System.out.println("Son emploi du temps est le suivant :");
-                for (Seance uneseance :
-                        lesSeances) {
-                    System.out.println(uneseance.getID() + " " + uneseance.getSemaine() + " " + uneseance.getDate().toString() + " " + uneseance.getHeureDebut()
-                            + " " + uneseance.getHeureFin() + " " + uneseance.getCours().getNom() + " " + uneseance.getType().getNom());
-                }
-                System.out.println("Il faut modifier la vu pour les afficher correctement");
-            } else System.out.println("Accés non autorisé");
-        } else
-            System.out.println("Personne non trouvé dans la BDD : " + nom);
-
-    }
-
-    
-
-    
 
     /**
      * Renvoie un recap de toutes les informations d'un enseignant

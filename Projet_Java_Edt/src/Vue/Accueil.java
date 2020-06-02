@@ -10,11 +10,10 @@ import javax.swing.*;
 import Modele.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.*;
 
 import Controlleur.*;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 /**
  *
@@ -33,11 +32,9 @@ public class Accueil extends JFrame implements Observer, ActionListener {
     /**Construcetur initialisant les objets graphiques*/
     public Accueil()
     {
-        
+       
         super("Connectez-vous");
-        
-        //user.addObserver(this);
-        
+
         this.setSize(400,400); //Taille
         this.setLocationRelativeTo(null); //Centre
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Stop run quand la dernière fenetre est fermée
@@ -87,14 +84,5 @@ public class Accueil extends JFrame implements Observer, ActionListener {
     public void update(Observable o, Object obj)
     {  }
     
-    public String getIdField()
-    {
-        return this.id.toString();
-    }
-    
-    public String getMdpField()
-    {
-        return this.mdp.toString();
-    }
 
 }
