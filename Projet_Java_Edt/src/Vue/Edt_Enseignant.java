@@ -11,6 +11,7 @@ import Modele.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,6 +30,7 @@ public class Edt_Enseignant extends Edt {
     GroupeDAO groupeDao = null;
     EnseignantDAO profDao = null;
     SeanceDao seanceDao=new SeanceDao();
+    JPanel schear = new JPanel();
 
     public Edt_Enseignant() {
     }
@@ -59,9 +61,11 @@ public class Edt_Enseignant extends Edt {
 
         ArrayList<Seance> mes_seances = new ArrayList();
         mes_seances = profDao.trouverAllSeances(mes_id);
-
-        System.out.println("Nombre de séances prevues pour cet enseignant : " + mes_seances.size());
+        
         Salle salle = new Salle();
+
+        /*System.out.println("Nombre de séances prevues pour cet enseignant : " + mes_seances.size());
+        
         for (int i = 0; i < mes_seances.size(); i++) {
             System.out.println("Mes seances:"
                     + "\n date : " + mes_seances.get(i).getDate()
@@ -77,7 +81,7 @@ public class Edt_Enseignant extends Edt {
         mes_profs = profDao.listeEnseignant();
         for (int i = 0; i < mes_profs.size(); i++) {
             System.out.println(mes_profs.get(i).getNom());
-        }
+        }*/
 
         grille_edt = new JPanel(new GridBagLayout());
 
@@ -231,28 +235,45 @@ public class Edt_Enseignant extends Edt {
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == this.rechercher) {
-            JPanel schear = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+            
+                System.out.println("hhg");
+            
+                schear = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
 
-            JTextField nom = new JTextField();
-            nom.setPreferredSize(new Dimension(100, 200));
+                JLabel label_nom = new JLabel();
+                JLabel label_semaine = new JLabel();
+                
+                label_nom.setText("Nom utilisateur :");
+                label_semaine.setText("Numéro semaine");
 
-            JTextField semaine = new JTextField();
-            semaine.setPreferredSize(new Dimension(100, 200));
+                JTextField nom = new JTextField();
+                nom.setPreferredSize(new Dimension(100, 200));
+                
+               
+                JTextField semaine = new JTextField();
+                semaine.setPreferredSize(new Dimension(100, 200));
+                
+                schear.add(label_nom);
+                schear.add(nom);
+                schear.add(label_semaine);
+                schear.add(semaine);
+                
 
-            schear.add(nom);
-            schear.add(semaine);
+                
 
-            JButton lancerrecherche = new JButton(new AbstractAction("Rechercher") {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    rechercher_utilisateur(nom.getText(), semaine.getText(), 3);
-                }
-            });
+                JButton chercher_utilisateur = new JButton(new AbstractAction("Chercher Utilisateur") {
+                    @Override
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        rechercher_utilisateur(nom.getText(), semaine.getText(), 1);
+                    }
+                });
+
+                
+                schear.add(chercher_utilisateur);     
+                panel.add(schear);
+                this.setVisible(true);
 
 
-            schear.add(lancerrecherche);
-            panel.add(schear);
-            this.setVisible(true);
         }
 
         if (e.getSource() == this.mes_cours) {

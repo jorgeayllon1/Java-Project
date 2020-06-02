@@ -86,9 +86,9 @@ public class Edt_Etudiant extends Edt {
         SeanceDao seanceDao = new SeanceDao();
         Enseignant prof = new Enseignant();
 
-
-        System.out.println("Nombre de séances prevues pour cet eleve : " + mes_seances.size());
-        Salle salle = new Salle();
+         Salle salle = new Salle();
+        /*System.out.println("Nombre de séances prevues pour cet eleve : " + mes_seances.size());
+        
         for (int i = 0; i < mes_seances.size(); i++) {
             System.out.println("Mes seances: \n"
                     + "Intitule du cours : " + mes_seances.get(i).getCours().getNom()
@@ -99,7 +99,7 @@ public class Edt_Etudiant extends Edt {
             salle = etudiantDao.trouverSalle(mes_seances.get(i));
             System.out.println("Salle : " + salle.getNom() + " Capacite : " + salle.getCapacite() + " Site : " + salle.getSite().getNom());
 
-        }
+        }*/
 
 
         grille_edt = new JPanel(new GridBagLayout());
@@ -261,13 +261,20 @@ public class Edt_Etudiant extends Edt {
         if (e.getSource() == this.rechercher) {
             JPanel schear = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
 
+            JLabel label_nom = new JLabel();
+            JLabel label_semaine = new JLabel();
+
+            label_nom.setText("Nom utilisateur :");
+            label_semaine.setText("Numéro semaine");
             JTextField nom = new JTextField();
             nom.setPreferredSize(new Dimension(100, 200));
 
             JTextField semaine = new JTextField();
             semaine.setPreferredSize(new Dimension(100, 200));
 
+            schear.add(label_nom);
             schear.add(nom);
+            schear.add(label_semaine);
             schear.add(semaine);
 
             JButton lancerrecherche = new JButton(new AbstractAction("Rechercher") {

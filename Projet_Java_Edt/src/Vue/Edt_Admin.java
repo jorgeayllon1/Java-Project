@@ -11,6 +11,7 @@ import Modele.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -18,6 +19,8 @@ import java.util.ArrayList;
  * @author Wang David
  */
 public class Edt_Admin extends Edt {
+    
+    JPanel schear = new JPanel();
 
     public Edt_Admin() {
     }
@@ -32,52 +35,105 @@ public class Edt_Admin extends Edt {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        
+        if(e.getSource()==this.rechercher)
+        {
+            schear = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+            Object[] deroulant = new Object[]{"Rechercher...", "Utilisateur" , "Groupe" , "Promotion" , "Salle"};
+            JComboBox liste = new JComboBox(deroulant);
 
-        JPanel schear = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+            
+            schear.add(liste);
+            
+            JLabel label_nom = new JLabel();
+            JLabel label_semaine = new JLabel();
+            
+            JTextField nom = new JTextField();
+            nom.setPreferredSize(new Dimension(100, 200));
 
-        JTextField nom = new JTextField();
-        nom.setPreferredSize(new Dimension(100, 200));
+            JTextField semaine = new JTextField();
+            semaine.setPreferredSize(new Dimension(100, 200));
+            schear.add(label_nom);
+            schear.add(nom);
+            schear.add(label_semaine);
+            schear.add(semaine);
+            panel.add(schear);
+            
+            liste.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    e.getSource();
+                    String choisi = (String)liste.getSelectedItem();
+                    if(choisi=="Utilisateur")
+                    {
+                        
 
-        JTextField semaine = new JTextField();
-        semaine.setPreferredSize(new Dimension(100, 200));
+                        JButton chercher_utilisateur = new JButton(new AbstractAction("Chercher Utilisateur") {
+                            @Override
+                            public void actionPerformed(ActionEvent actionEvent) {
+                                rechercher_utilisateur(nom.getText(), semaine.getText(), 1);
+                            }
+                        });
 
-        schear.add(nom);
-        schear.add(semaine);
+                        label_nom.setText("Nom utilisateur :");
+                        label_semaine.setText("Numéro semaine");
+                        schear.add(chercher_utilisateur);     
+                        panel.add(schear);
+  
+                        
+                    }
+                    else if(choisi=="Groupe")
+                    {
+                        JButton chercher_groupe = new JButton(new AbstractAction("Chercher Groupe") {
+                            @Override
+                            public void actionPerformed(ActionEvent actionEvent) {
+                                rechercher_groupe(nom.getText(), semaine.getText());
+                            }
+                        });
+                        
+                        panel.repaint();
+                        label_nom.setText("Nom groupe :");
+                        label_semaine.setText("Numéro semaine");
+                        schear.add(chercher_groupe);     
+                        panel.add(schear);
+                    }
+                    
+                    else if(choisi=="Promotion")
+                    {
+                        JButton chercher_promotion = new JButton(new AbstractAction("Chercher Promotion") {
+                            @Override
+                            public void actionPerformed(ActionEvent actionEvent) {
+                                rechercher_promotion(nom.getText(), semaine.getText());
+                            }
+                        });
+                        
+                        label_nom.setText("Promotion :");
+                        label_semaine.setText("Numéro semaine");
+                        schear.add(chercher_promotion);     
+                        panel.add(schear);
+                    }
+                    
+                    else if(choisi=="Salle")
+                    {
+                        JButton chercher_salle = new JButton(new AbstractAction("Chercher Salle") {
+                            @Override
+                            public void actionPerformed(ActionEvent actionEvent) {
+                                rechercher_salle(nom.getText(), semaine.getText());
+                            }
+                        });
+                        
+                        label_nom.setText("Salle :");
+                        label_semaine.setText("Numéro semaine");
+                        schear.add(chercher_salle);     
+                        panel.add(schear);
+                    }
+                   
+                }
+            });
 
-        JButton chercher_utilisateur = new JButton(new AbstractAction("Chercher Utilisateur") {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                rechercher_utilisateur(nom.getText(), semaine.getText(), 1);
-            }
-        });
-
-        JButton chercher_groupe = new JButton(new AbstractAction("Chercher Groupe") {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                rechercher_groupe(nom.getText(), semaine.getText());
-            }
-        });
-
-        JButton chercher_promotion = new JButton(new AbstractAction("Chercher Promotion") {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                rechercher_promotion(nom.getText(), semaine.getText());
-            }
-        });
-
-        JButton chercher_salle = new JButton(new AbstractAction("Chercher Salle") {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                rechercher_salle(nom.getText(), semaine.getText());
-            }
-        });
-
-        schear.add(chercher_utilisateur);
-        schear.add(chercher_groupe);
-        schear.add(chercher_promotion);
-        schear.add(chercher_salle);
-        panel.add(schear);
-        this.setVisible(true);
+            
+        }
+   
     }
     
     public void rechercher_utilisateur(String nom, String semaine, int droit) {
