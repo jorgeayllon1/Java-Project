@@ -82,7 +82,7 @@ public class Edt_Etudiant extends Edt {
         ArrayList<Seance> mes_seances = new ArrayList();
         mes_seances = groupeDao.trouverAllSeances(mes_id);
 
-        System.out.println("bug  bug bug");
+        
         SeanceDao seanceDao = new SeanceDao();
         Enseignant prof = new Enseignant();
 
@@ -175,7 +175,7 @@ public class Edt_Etudiant extends Edt {
                 c.setTime(date);
                 int dayOfWeek = c.get(Calendar.DAY_OF_WEEK); //On get le jour de la semaine 1 sunday 2 monday 3 tuesday...
                 for (int jour_semaine = 2; jour_semaine < 7; jour_semaine++) {
-                    if (dayOfWeek == jour_semaine) //Si c un vendredi
+                    if (dayOfWeek == jour_semaine) 
                     {
                             /*SimpleDateFormat sdf = new SimpleDateFormat("h");
                             sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
