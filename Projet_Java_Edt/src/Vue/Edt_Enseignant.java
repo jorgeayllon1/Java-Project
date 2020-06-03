@@ -43,7 +43,6 @@ public class Edt_Enseignant extends Edt {
     {
         super(user);
         this.summary.addActionListener(this::actionPerformed);
-
         this.prof = prof;
         afficherEdtProfAccueil();
 
@@ -307,14 +306,10 @@ public class Edt_Enseignant extends Edt {
                     }
                     
                 });
-
-
                 schear.add(chercher_utilisateur); 
                 this.panel.remove(this.tableau);           
                 this.panel.add(schear, BorderLayout.CENTER);
                 this.setVisible(true);
-
-
         }
 
         //Si clique sur cours
@@ -332,8 +327,8 @@ public class Edt_Enseignant extends Edt {
         for (int s = 1; s < this.week_button.size(); s++) {
             //Si c'est cliqué
             if (e.getActionCommand().equals(this.week_button.get(s).getText())) {
-                System.out.println(this.week_button.get(s).getText()); //On affiche le texte du bouton cliqué
-                this.afficherGrille();             
+                //System.out.println(this.week_button.get(s).getText()); //On affiche le texte du bouton cliqué
+                this.afficherGrille();   //Affichage grille vide          
                 String string_semaine = this.week_button.get(s).getText(); //On get le string du numero de semaine
                 int int_semaine = Integer.valueOf(string_semaine); //Cast en int              
                 this.afficherEdtSemaineProf(3, int_semaine);

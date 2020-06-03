@@ -25,6 +25,7 @@ public class Edt_Admin extends Edt {
     JButton chercher_salle=null;
     JButton chercher_groupe=null;
     JButton chercher_promotion=null;
+    JButton maj = new JButton ("Mise à jour");
 
     public Edt_Admin() {
     }
@@ -221,9 +222,6 @@ public class Edt_Admin extends Edt {
                 recup_info.setText(s);
             } else System.out.println("Pas de séance cette semaine");
         } else System.out.println("Ce groupe n'existe pas");
-        
-
-        
 
     }
 
