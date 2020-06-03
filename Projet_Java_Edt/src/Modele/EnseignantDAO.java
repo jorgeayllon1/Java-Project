@@ -201,21 +201,16 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return liste_prof;
     }
 
-    public void coucou() {
-        System.out.println("coucou");
-    }
-    
-    
+
     public ArrayList<Seance> trouverAllSeancesSemaine(int id_prof, int numero_semaine) {
 
-        
+
         ArrayList<Seance> les_seances = new ArrayList<>();
         DAO<Cours> coursDAO = DAOFactory.getCours();
         DAO<TypeCours> typeCoursDAO = DAOFactory.getTypeCours();
         ArrayList<Integer> deja_compte = new ArrayList();
-        
+
         try {
-            //this.conn = Connexion.seConnecter();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
                     "SELECT * FROM seance\n" +
                             "INNER JOIN seance_enseignants\n" +
@@ -225,13 +220,11 @@ public class EnseignantDAO extends DAO<Enseignant> {
                             "WHERE enseignant.id_utilisateur=" + id_prof + "\n" +
                             "AND seance.semaine=" + numero_semaine
             );
-            
-            
+
 
             while (rset.next()) {
-                
-                if(!deja_compte.contains(rset.getInt("id")))
-                {
+
+                if (!deja_compte.contains(rset.getInt("id"))) {
                     int id = rset.getInt("id");
                     int semaine = rset.getInt("semaine");
                     Date date = rset.getDate("date");
@@ -245,7 +238,6 @@ public class EnseignantDAO extends DAO<Enseignant> {
                     les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, cours, typeCours));
                 }
 
-                
 
             }
 
@@ -257,4 +249,50 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return les_seances;
     }
 
+    public ArrayList<Seance> trouverSeancesParGroupeSurPeriode(int id_prof, int id_groupe, Date debut, Date fin) {
+        ArrayList<Seance> les_seances = new ArrayList<>();
+        DAO<Cours> coursDAO = DAOFactory.getCours();
+        DAO<TypeCours> typeCoursDAO = DAOFactory.getTypeCours();
+        ArrayList<Integer> deja_compte = new ArrayList();
+
+        try {
+            this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT * FROM seance\n" +
+                            "INNER JOIN seance_enseignants\n" +
+                            "ON seance.id = seance_enseignants.id_seance\n" +
+                            "INNER JOIN enseignant\n" +
+                            "ON seance_enseignants.id_enseignant=enseignant.id_utilisateur\n" +
+                            "INNER JOIN seance_groupes\n" +
+                            "ON seance_groupes.id_groupe=" + id_groupe + "\n" +
+                            "WHERE enseignant.id_utilisateur=" + id_prof + "\n" +
+                            "AND seance.date BETWEEN \'" + debut + "\' AND \'" + fin + "\'"
+            );
+
+
+            while (rset.next()) {
+
+                if (!deja_compte.contains(rset.getInt("id"))) {
+                    int id = rset.getInt("id");
+                    int semaine = rset.getInt("semaine");
+                    Date date = rset.getDate("date");
+                    Timestamp heure_debut = rset.getTimestamp("heure_debut");
+                    Timestamp heure_fin = rset.getTimestamp("heure_fin");
+                    int id_cours = rset.getInt("id_cours");
+                    Cours cours = coursDAO.find(id_cours);
+                    int id_type = rset.getInt("id_type");
+                    TypeCours typeCours = typeCoursDAO.find(id_type);
+                    deja_compte.add(rset.getInt("id"));
+                    les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, cours, typeCours));
+                }
+
+
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erreur SQL GroupeDAO");
+            e.printStackTrace();
+        }
+
+        return les_seances;
+    }
 }

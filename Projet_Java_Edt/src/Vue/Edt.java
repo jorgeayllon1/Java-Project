@@ -28,7 +28,8 @@ public class Edt extends JFrame implements ActionListener {
     
     protected Graphics ligneh = getGraphics();
     protected JPanel panel;
-    protected JPanel grille_edt = new JPanel();
+    protected JPanel grille_edt = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JPanel content = null;
     
     protected JButton rechercher = new JButton("Rechercher");
     protected JButton annule = new JButton("Cours annulé(s)");
@@ -51,8 +52,9 @@ public class Edt extends JFrame implements ActionListener {
     public Edt(Utilisateur user) {
         super("Votre emploi du temps - " + user.getNom().toUpperCase() + " " + user.getPrenom().toUpperCase());
 
-        this.setSize(1400, 800); //Taille
+        this.setSize(1415, 805); //Taille
         this.setLocationRelativeTo(null); //Centre
+        this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Stop run quand la dernière fenetre est fermé
         infoBase();
 
@@ -134,10 +136,11 @@ public class Edt extends JFrame implements ActionListener {
 
     }
     
+    
     //Méthode de personnalisation font
     public void iconFont(JButton j)
     {
-        j.setPreferredSize(new Dimension(150,50));
+        j.setPreferredSize(new Dimension(200,50));
         Font f = mes_cours.getFont();
         j.setFont(f.deriveFont(f.getStyle() | Font.BOLD));
         menu.add(j);
@@ -151,68 +154,113 @@ public class Edt extends JFrame implements ActionListener {
     //Méthode affichage grille edt
     public void afficherGrille()
     {
-        grille_edt = new JPanel(new GridBagLayout());
+        grille_edt = new JPanel(new GridBagLayout()){protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        int y=145;
+        g.drawLine(70,0, 70, 800);
+        g.drawLine(0, 55, 1400, 55);
+        for(int j=y;j<805;j+=95)
+        {
+            g.drawLine(0, j, 1415, j);
+        }
+        int x=310;
+        for(int i=x;i<1415;i+=220)
+        {
+            g.drawLine(i, 0, i, 805);
+        }
+        
+        
+        }};
 
         grille = new GridBagConstraints();
 
         grille.fill = GridBagConstraints.HORIZONTAL;
         grille.gridx = 0;
         grille.gridy = 0;
-        grille.weightx = 0.1;
-        grille.weighty = 0.1;
+        grille.weightx = 1;
+        grille.weighty = 1;
+        
+        
 
-        grille_edt.add(new JLabel("Heures "), grille);
-        grille_edt.setBorder(new MatteBorder(0, 0, 1, 1, Color.black));
+        grille_edt.add(new JLabel("Heures "){@Override
+                                    public Dimension getPreferredSize() {
+                                        return new Dimension(65, 95);
+                                    }},  grille);
+        
 
         grille.gridx = 1;
         grille.gridy = 0;
-        grille.weightx = 0.15;
-        grille.weighty = 0.15;
-        grille_edt.add(new JLabel("Lundi "), grille);
+        grille.weightx = 1;
+        grille.weighty = 1;
+        
+        
+        grille_edt.add(new JLabel("Lundi "){@Override
+                                    public Dimension getPreferredSize() {
+                                        return new Dimension(115, 95);
+                                    }}, grille);
 
         grille.gridx = 2;
         grille.gridy = 0;
-        grille.weightx = 0.1;
-        grille.weighty = 0.15;
-        grille_edt.add(new JLabel("Mardi "), grille);
+        grille.weightx = 1;
+        grille.weighty = 1;
+        grille_edt.add(new JLabel("Mardi "){@Override
+                                    public Dimension getPreferredSize() {
+                                        return new Dimension(115, 95);
+                                    }}, grille);
 
         grille.gridx = 3;
         grille.gridy = 0;
-        grille.weightx = 0.1;
-        grille.weighty = 0.15;
-        grille_edt.add(new JLabel("Mercredi "), grille);
+        grille.weightx = 1;
+        grille.weighty = 1;
+        grille_edt.add(new JLabel("Mercredi "){@Override
+                                    public Dimension getPreferredSize() {
+                                        return new Dimension(115, 95);
+                                    }}, grille);
 
         grille.gridx = 4;
         grille.gridy = 0;
-        grille.weightx = 0.1;
-        grille.weighty = 0.15;
-        grille_edt.add(new JLabel("jeudi "), grille);
+        grille.weightx = 1;
+        grille.weighty = 1;
+        grille_edt.add(new JLabel("jeudi "){@Override
+                                    public Dimension getPreferredSize() {
+                                        return new Dimension(115, 95);
+                                    }}, grille);
 
         grille.gridx = 5;
         grille.gridy = 0;
-        grille.weightx = 0.1;
-        grille.weighty = 0.15;
-        grille_edt.add(new JLabel("Vendredi "), grille);
+        grille.weightx = 1;
+        grille.weighty = 1;
+        grille_edt.add(new JLabel("Vendredi "){@Override
+                                    public Dimension getPreferredSize() {
+                                        return new Dimension(115, 95);
+                                    }}, grille);
 
         grille.gridx = 6;
         grille.gridy = 0;
-        grille.weightx = 0.1;
-        grille.weighty = 0.15;
-        grille_edt.add(new JLabel("Samedi "), grille);
+        grille.weightx = 1;
+        grille.weighty = 1;
+        grille_edt.add(new JLabel("Samedi "){@Override
+                                    public Dimension getPreferredSize() {
+                                        return new Dimension(115, 95);
+                                    }}, grille);
 
         int j = 8;
         int k = j + 2;
         for (int i = 0; i < 6; i++) {
 
             grille.gridx = 0;
-            grille.gridy = i + 1;
-            grille.weightx = 0.1;
-            grille.weighty = 0.15;
-            grille_edt.add(new JLabel(j + "H-" + k + "H"), grille);
+            grille.gridy = i+1;
+            grille.weightx = 1;
+            grille.weighty = 1;
+            grille_edt.add(new JLabel(j + "H-" + k + "H"){@Override
+                                    public Dimension getPreferredSize() {
+                                        return new Dimension(65, 95);
+                                    }}, grille);
             j += 2;
             k += 2;
         }
     }
+    
     
     
     //Méthode de recherche selon nom user

@@ -18,6 +18,8 @@ public class Cours {
 
     public Cours(int id, String nom) {
         this.id = id;
+        this.nom = nom;
+        /*
         switch (this.id) {
             case 1:
                 this.nom = "Java POO";
@@ -54,6 +56,7 @@ public class Cours {
                 System.out.println("Cours inconnue");
                 break;
         }
+         */
     }
 
     public int getID() {
