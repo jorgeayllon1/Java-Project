@@ -28,6 +28,12 @@ public class Edt_Etudiant extends Edt {
     Groupe groupe = null;
     GroupeDAO groupeDao = null;
     EtudiantDao etudiantDao = null;
+    ArrayList<Seance> mes_seances = new ArrayList();
+    ArrayList<Integer> mes_id = new ArrayList();
+    SeanceDao seanceDao = new SeanceDao();
+    Salle salle = null;
+    Enseignant prof = null;
+    JPanel schear=null;
     
 
     public Edt_Etudiant() {
@@ -60,51 +66,54 @@ public class Edt_Etudiant extends Edt {
      * Méthode qui va afficher l'edt  de l'étudiant en fonction de la semaine actuelle
      */
     public void afficherEdtEtudiantAccueil() {
-        //On cree un nouveau etudiant avec l'id de l'utilisateur car id_utilisateur clé etrangere dans etudiant
-        EtudiantDao etudiantDao = new EtudiantDao(); //********************
-        etudiant = (Etudiant) etudiantDao.find(etudiant.getID());//*****************
-        System.out.print("Numero etudiant :" + etudiant.getNumEtudiant());
-
-        //Récupération données groupe
-        groupeDao = new GroupeDAO();
-        groupe = groupeDao.find(etudiant.getGroupe().getId());
-        System.out.println(" Groupe :" + groupe.getNom() + " Promotion :" + groupe.getPromo().getAnnee());
-
-        ///Affichage des séances relatives à cet eleve
-
-        ArrayList<Integer> mes_id = new ArrayList();
-        mes_id = groupeDao.trouverIdSeance(groupe);
-
-
-        ArrayList<Seance> mes_seances = new ArrayList();
-        mes_seances = groupeDao.trouverAllSeances(mes_id);
-
         
-        SeanceDao seanceDao = new SeanceDao();
-        Enseignant prof = new Enseignant();
-
-         Salle salle = new Salle();
-        /*System.out.println("Nombre de séances prevues pour cet eleve : " + mes_seances.size());
-        
-        for (int i = 0; i < mes_seances.size(); i++) {
-            System.out.println("Mes seances: \n"
-                    + "Intitule du cours : " + mes_seances.get(i).getCours().getNom()
-                    + "\n date : " + mes_seances.get(i).getDate()
-                    + "\nheure debut : " + mes_seances.get(i).getHeureDebut()
-                    + "\nheure fin : " + mes_seances.get(i).getHeureFin()
-                    + "\nType :" + mes_seances.get(i).getType().getNom());
-            salle = etudiantDao.trouverSalle(mes_seances.get(i));
-            System.out.println("Salle : " + salle.getNom() + " Capacite : " + salle.getCapacite() + " Site : " + salle.getSite().getNom());
-
-        }*/
         this.afficherGrille();
+        this.afficherEdtEtudiant(4);
+
         
+    }
+    
+    
+    public void afficherEdtEtudiant(int droit)
+    {
+        if(droit==4)
+        {
+            //On cree un nouveau etudiant avec l'id de l'utilisateur car id_utilisateur clé etrangere dans etudiant
+            etudiantDao = new EtudiantDao(); //********************
+            etudiant = (Etudiant) etudiantDao.find(etudiant.getID());//*****************
+            System.out.print("Numero etudiant :" + etudiant.getNumEtudiant());
+            
+            //Récupération données groupe
+            groupeDao = new GroupeDAO();
+            groupe = groupeDao.find(etudiant.getGroupe().getId());
+            System.out.println(" Groupe :" + groupe.getNom() + " Promotion :" + groupe.getPromo().getAnnee());
+            
+            ///Affichage des séances relatives à cet eleve
+
+            mes_id = new ArrayList();
+            mes_id = groupeDao.trouverIdSeance(groupe);
 
 
+            mes_seances = new ArrayList();
+            mes_seances = groupeDao.trouverAllSeances(mes_id);
+
+            seanceDao = new SeanceDao();
+            prof = new Enseignant();
+            
+                
+            
+            
+        }
+
+
+        salle = new Salle();
+        
         for (int i = 0; i < mes_seances.size(); i++) //On parcourt toutes séances relatives à cet etudiant
         {
             if (mes_seances.get(i).getSemaine() == this.num_semaine)//Si il y a un cours dans la semaine actuelle
             {
+                System.out.println("hhh");
+
                 salle = etudiantDao.trouverSalle(mes_seances.get(i));
                 Date date = mes_seances.get(i).getDate();
                 Calendar c = Calendar.getInstance();
@@ -141,8 +150,8 @@ public class Edt_Etudiant extends Edt {
                                 }
                             }
 
-                            grille.weightx = 0.1;
-                            grille.weighty = 0.15;
+                            grille.weightx = 1;
+                            grille.weighty = 1;
                             grille.gridx = jour_semaine - 1;
                             if (str4.toString().equals(heure)) //Si ca commence à 10h
                             {
@@ -160,6 +169,8 @@ public class Edt_Etudiant extends Edt {
                                     grille.gridy = 6;
                                 if (heure.contains("20"))
                                     grille.gridy = 7;
+                                
+                                
                                 prof = seanceDao.trouverEnseignant(mes_seances.get(i));
 
                                 String myString =
@@ -168,7 +179,10 @@ public class Edt_Etudiant extends Edt {
                                                 salle.getNom() + "<br>Site :" +
                                                 salle.getSite().getNom() + "</p></html>";
 
-                                grille_edt.add(new JLabel(myString), grille);
+                                grille_edt.add(new JLabel(myString) {@Override
+                                    public Dimension getPreferredSize() {
+                                        return new Dimension(115, 95);
+                                    }}, grille );
                             }
                         }
 
@@ -179,13 +193,125 @@ public class Edt_Etudiant extends Edt {
 
 
         }
-
-
         this.panel.add(grille_edt);
         this.setVisible(true);
     }
 
 
+    public void afficherEdtSemaineEtudiant(int droit, int semaine)
+    {
+        content = new JPanel(new BorderLayout());
+        if(droit==4)
+        {
+            etudiantDao = new EtudiantDao(); //********************
+            etudiant = (Etudiant) etudiantDao.find(etudiant.getID());//*****************
+            System.out.print("Numero etudiant :" + etudiant.getNumEtudiant());
+            
+            //Récupération données groupe
+            groupeDao = new GroupeDAO();
+            groupe = groupeDao.find(etudiant.getGroupe().getId());
+            System.out.println(" Groupe :" + groupe.getNom() + " Promotion :" + groupe.getPromo().getAnnee());
+            
+            ///Affichage des séances relatives à cet eleve
+
+            mes_id = new ArrayList();
+            mes_id = groupeDao.trouverIdSeance(groupe);
+
+
+            mes_seances = new ArrayList();
+            mes_seances = groupeDao.trouverAllSeancesSemaine(groupe.getId(), semaine); //On recup toutes les  séances relatives à cet etudiant dans cette semaine
+
+            seanceDao = new SeanceDao();
+            prof = new Enseignant();
+            
+            salle = new Salle();
+            
+            for (int i = 0; i < mes_seances.size(); i++) //On parcourt toutes séances relatives à cet etudiant
+                {
+
+                        salle = etudiantDao.trouverSalle(mes_seances.get(i));
+                        Date date = mes_seances.get(i).getDate();
+                        Calendar c = Calendar.getInstance();
+                        c.setTime(date);
+                        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK); //On get le jour de la semaine 1 sunday 2 monday 3 tuesday...
+                        for (int jour_semaine = 2; jour_semaine < 7; jour_semaine++) {
+                            if (dayOfWeek == jour_semaine) 
+                            {
+                                    /*SimpleDateFormat sdf = new SimpleDateFormat("h");
+                                    sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+                                    String str = sdf.format(mes_seances.get(i).getHeureDebut()); //On stocke dans un string l'entier de l'heure de début*/
+                                String str = mes_seances.get(i).getHeureDebut().toString();
+                                char str2 = str.charAt(11);
+                                char str3 = str.charAt(12);
+                                StringBuilder str4 = new StringBuilder();
+                                if (str2 == '0') {
+                                    str4.append(str3);
+                                } else {
+                                    str4.append(str2).append(str3);
+                                }
+
+                                int n = 0;
+                                String heure = "";
+                                for (int m = 0; m < 7; m++) {
+                                    if (m == 0) {
+                                        heure = Integer.toString(m + 8 + n);
+                                    } else {
+                                        if ((m + n) % 2 == 0) {
+                                            n += 2;
+                                            heure = Integer.toString(m + 8 + n);
+                                        } else if ((m + n) % 2 != 0) {
+                                            n++;
+                                            heure = Integer.toString(m + 8 + n);
+                                        }
+                                    }
+
+                                    grille.weightx = 1;
+                                    grille.weighty = 1;
+                                    grille.gridx = jour_semaine - 1;
+                                    if (str4.toString().equals(heure)) //Si ca commence à 10h
+                                    {
+                                        if (heure.contains("8"))
+                                            grille.gridy = 1;
+                                        if (heure.contains("10"))
+                                            grille.gridy = 2;
+                                        if (heure.contains("12"))
+                                            grille.gridy = 3;
+                                        if (heure.contains("14"))
+                                            grille.gridy = 4;
+                                        if (heure.contains("16"))
+                                            grille.gridy = 5;
+                                        if (heure.contains("18"))
+                                            grille.gridy = 6;
+                                        if (heure.contains("20"))
+                                            grille.gridy = 7;
+
+
+                                        prof = seanceDao.trouverEnseignant(mes_seances.get(i));
+
+                                        String myString =
+                                                "<html><p>" + mes_seances.get(i).getCours().getNom() + "<br>Prof :" +
+                                                        prof.getNom() + "<br>Salle :" +
+                                                        salle.getNom() + "<br>Site :" +
+                                                        salle.getSite().getNom() + "</p></html>";
+
+                                        grille_edt.add(new JLabel(myString){@Override
+                                    public Dimension getPreferredSize() {
+                                        return new Dimension(115, 95);
+                                    }}, grille);
+                                    }
+                                }
+
+                            }
+                        }
+
+                }
+                this.content.add(grille_edt , BorderLayout.CENTER);
+                this.panel.add(content);
+                this.setVisible(true);
+            
+            
+        }
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -196,8 +322,8 @@ public class Edt_Etudiant extends Edt {
         //Si on clique sur rechercher
         if (e.getSource() == this.rechercher) 
         {
-            JPanel content = new JPanel(new BorderLayout());
-            JPanel schear = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+            content = new JPanel(new BorderLayout());
+            schear = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
 
             JLabel label_nom = new JLabel();
             JLabel label_semaine = new JLabel();
@@ -223,14 +349,20 @@ public class Edt_Etudiant extends Edt {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
                     rechercher_utilisateur(nom.getText(), semaine.getText(), 4);
+                    afficherGrille();
+                    String string_semaine = semaine.getText();
+
+                    int int_semaine = Integer.valueOf(string_semaine); //Cast en int
+                    afficherEdtSemaineEtudiant(4,int_semaine);
+                    
                 }
             });
 
             schear.add(lancerrecherche);
             content.add(schear, BorderLayout.NORTH);
-            content.add(infos, BorderLayout.CENTER);
+            //content.add(infos, BorderLayout.CENTER);
             
-            panel.add(content);
+            panel.add(content, BorderLayout.CENTER);
             this.setVisible(true);
         }
 
@@ -245,92 +377,8 @@ public class Edt_Etudiant extends Edt {
                 String string_semaine = this.week_button.get(s).getText(); //On get le string du numero de semaine
 
                 int int_semaine = Integer.valueOf(string_semaine); //Cast en int
+                this.afficherEdtSemaineEtudiant(4, int_semaine);
 
-                ///Affichage des séances relatives à cet eleve
-                ArrayList<Integer> mes_id = new ArrayList();
-                mes_id = groupeDao.trouverIdSeance(groupe);
-
-
-                ArrayList<Seance> mes_seances = new ArrayList();
-                mes_seances = groupeDao.trouverAllSeancesSemaine(groupe.getId(), int_semaine); //On recup toutes les  séances relatives à cet etudiant dans cette semaine
-                for (int i = 0; i < mes_seances.size(); i++) //On parcourt les séances
-                {
-
-                    Salle salle = new Salle();
-                    salle = etudiantDao.trouverSalle(mes_seances.get(i));
-                    Date date = mes_seances.get(i).getDate();
-                    Calendar c = Calendar.getInstance();
-                    c.setTime(date);
-                    int dayOfWeek = c.get(Calendar.DAY_OF_WEEK); //On get le jour de la semaine 1 sunday 2 monday 3 tuesday...
-                    for (int jour_semaine = 2; jour_semaine < 7; jour_semaine++) {
-                        if (dayOfWeek == jour_semaine) //Si c un vendredi
-                        {
-
-
-                            String str = mes_seances.get(i).getHeureDebut().toString();
-                            char str2 = str.charAt(11);
-                            char str3 = str.charAt(12);
-                            StringBuilder str4 = new StringBuilder();
-                            if (str2 == '0') {
-                                str4.append(str3);
-                            } else {
-                                str4.append(str2).append(str3);
-                            }
-
-                            int n = 0;
-                            String heure = "";
-                            for (int m = 0; m < 7; m++) {
-                                if (m == 0) {
-                                    heure = Integer.toString(m + 8 + n);
-                                } else {
-                                    if ((m + n) % 2 == 0) {
-                                        n += 2;
-                                        heure = Integer.toString(m + 8 + n);
-                                    } else if ((m + n) % 2 != 0) {
-                                        n++;
-                                        heure = Integer.toString(m + 8 + n);
-                                    }
-                                }
-
-                                grille.weightx = 0.1;
-                                grille.weighty = 0.15;
-                                grille.gridx = jour_semaine - 1;
-                                if (str4.toString().equals(heure)) //Si ca commence à 10h
-                                {
-                                    if (heure.contains("8"))
-                                        grille.gridy = 1;
-                                    if (heure.contains("10"))
-                                        grille.gridy = 2;
-                                    if (heure.contains("12"))
-                                        grille.gridy = 3;
-                                    if (heure.contains("14"))
-                                        grille.gridy = 4;
-                                    if (heure.contains("16"))
-                                        grille.gridy = 5;
-                                    if (heure.contains("18"))
-                                        grille.gridy = 6;
-                                    if (heure.contains("20"))
-                                        grille.gridy = 7;
-
-                                    Enseignant prof = new Enseignant();
-                                    SeanceDao seanceDao = new SeanceDao();
-                                    prof = seanceDao.trouverEnseignant(mes_seances.get(i));
-                                    String myString =
-                                            "<html><p>" + mes_seances.get(i).getCours().getNom() + "<br>Prof :" +
-                                                prof.getNom() + "<br>Salle :" +
-                                                salle.getNom() + "<br>Site :" +
-                                                salle.getSite().getNom() + "</p></html>";
-
-                                    grille_edt.add(new JLabel(myString), grille);
-                                }
-                            }
-
-                        }
-                    }
-
-                }
-                panel.add(grille_edt);
-                this.setVisible(true);
 
             }
 

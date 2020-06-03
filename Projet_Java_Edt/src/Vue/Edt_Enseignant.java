@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Vue;
 
 import Controlleur.Recherche.RechercheControleur;
@@ -23,12 +18,19 @@ public class Edt_Enseignant extends Edt {
 
     Utilisateur user;
     Enseignant prof;
-    GridBagConstraints grille = new GridBagConstraints();
     Groupe groupe = null;
+    Salle salle = new Salle();
+    
     GroupeDAO groupeDao = null;
     EnseignantDAO profDao = null;
     SeanceDao seanceDao=new SeanceDao();
+    
+    GridBagConstraints grille = new GridBagConstraints();
     JPanel schear = new JPanel();
+    
+    
+    ArrayList<Seance> mes_seances = new ArrayList();
+    ArrayList<Integer> mes_id = new ArrayList();
 
     ///Constructeurs
     public Edt_Enseignant() {
@@ -37,10 +39,8 @@ public class Edt_Enseignant extends Edt {
     public Edt_Enseignant(Utilisateur user, Enseignant prof) 
     {
         super(user);
-
         this.summary.addActionListener(this::actionPerformed);
 
-        System.out.println("Bienvenue " + prof.getNom());
         this.prof = prof;
         afficherEdtProfAccueil();
 
@@ -56,37 +56,23 @@ public class Edt_Enseignant extends Edt {
     
     ///Affichage de l'onglet cours qui sert de page d'accueil lors de la connexion
     public void afficherEdtProfAccueil() {
-        ///Affichage des séances relatives à cet enseignant
-        EnseignantDAO profDao = new EnseignantDAO();
-        ArrayList<Integer> mes_id = new ArrayList();
-        mes_id = profDao.trouverIdSeance(prof);
-
-        ArrayList<Seance> mes_seances = new ArrayList();
-        mes_seances = profDao.trouverAllSeances(mes_id);
-        
-        Salle salle = new Salle();
-
-        /*System.out.println("Nombre de séances prevues pour cet enseignant : " + mes_seances.size());
-        
-        for (int i = 0; i < mes_seances.size(); i++) {
-            System.out.println("Mes seances:"
-                    + "\n date : " + mes_seances.get(i).getDate()
-                    + "\nheure debut : " + mes_seances.get(i).getHeureDebut()
-                    + "\nheure fin : " + mes_seances.get(i).getHeureFin()
-                    + " \nType : " + mes_seances.get(i).getType().getNom());
-            salle = profDao.trouverSalle(mes_seances.get(i));
-            System.out.println("Salle : " + salle.getNom() + " Capacite : " + salle.getCapacite() + " Site : " + salle.getSite().getNom());
-        }
-
-        System.out.println("Voici la liste de tous les enseignants : ");
-        ArrayList<Enseignant> mes_profs = new ArrayList();
-        mes_profs = profDao.listeEnseignant();
-        for (int i = 0; i < mes_profs.size(); i++) {
-            System.out.println(mes_profs.get(i).getNom());
-        }*/
 
         this.afficherGrille();
+        this.afficherEdtProf(3);
+  
+    }
+
+    public void afficherEdtProf(int droit)
+    {
+        ///Affichage des séances relatives à cet enseignant
+        EnseignantDAO profDao = new EnseignantDAO();
+        mes_id = new ArrayList();
+        mes_id = profDao.trouverIdSeance(prof);
+
+        mes_seances = new ArrayList();
+        mes_seances = profDao.trouverAllSeances(mes_id);
         
+        salle = new Salle();
         for (int i = 0; i < mes_seances.size(); i++) //On parcourt toutes séances relatives à cet etudiant
         {
             if (mes_seances.get(i).getSemaine() == this.num_semaine)//Si il y a un cours dans la semaine actuelle
@@ -170,92 +156,25 @@ public class Edt_Enseignant extends Edt {
 
         this.panel.add(grille_edt);
         this.setVisible(true);
-        this.rechercher.addActionListener(this);
     }
-
     
-    ///Toutes les actions sont controlés ici
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    public void afficherEdtSemaineProf(int droit, int semaine)
+    {
+        content = new JPanel(new BorderLayout());
+        if(droit==4)
+        {
+            profDao = new EnseignantDAO();
+            mes_id = new ArrayList();
+            mes_id = profDao.trouverIdSeance(prof);
 
-        //Si clique sur rechercher
-        if (e.getSource() == this.rechercher) {
+            mes_seances = new ArrayList();
+            mes_seances = profDao.trouverAllSeancesSemaine(prof.getID(), semaine);
+            salle = new Salle();
             
-                JPanel content = new JPanel(new BorderLayout());
-                JPanel schear = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
-
-                JLabel label_nom = new JLabel();
-                JLabel label_semaine = new JLabel();
-                
-                label_nom.setText("Nom utilisateur :");
-                label_semaine.setText("Numéro semaine");
-
-                JTextField nom = new JTextField();
-                nom.setPreferredSize(new Dimension(100, 200));
-                
-               
-                JTextField semaine = new JTextField();
-                semaine.setPreferredSize(new Dimension(100, 200));
-                
-                schear.add(label_nom);
-                schear.add(nom);
-                schear.add(label_semaine);
-                schear.add(semaine);
-                JPanel infos = new JPanel(new BorderLayout() );
-                recup_info = new JLabel("", JLabel.CENTER);
-                infos.add(recup_info);
-
-                JButton chercher_utilisateur = new JButton(new AbstractAction("Chercher Utilisateur") {
-                    @Override
-                    public void actionPerformed(ActionEvent actionEvent) {
-                        rechercher_utilisateur(nom.getText(), semaine.getText(), 3);
-                    }
-                });
-
-                
-                schear.add(chercher_utilisateur);     
-                content.add(schear, BorderLayout.NORTH);
-                content.add(infos, BorderLayout.CENTER);
-                this.panel.add(content);
-                this.setVisible(true);
-
-
-        }
-
-        //Si clique sur cours
-        if (e.getSource() == this.mes_cours) {
-            afficherEdtProfAccueil();
-        }
-
-        ///Si on clique sur recap
-        if (e.getSource() == this.summary) {
-            voirrecap(this.prof, new Date(2020, 6, 2), new Date(2020, 6, 11));
-        }
-        
-        
-        ///Si onclique sur un des boutons de la grille de semaine
-        for (int s = 1; s < this.week_button.size(); s++) {
-            //Si c'est cliqué
-            if (e.getActionCommand().equals(this.week_button.get(s).getText())) {
-                System.out.println(this.week_button.get(s).getText()); //On affiche le texte du bouton cliqué
-
-                this.afficherGrille();
-                
-                String string_semaine = this.week_button.get(s).getText(); //On get le string du numero de semaine
-
-                int int_semaine = Integer.valueOf(string_semaine); //Cast en int
-                
-                EnseignantDAO profDao = new EnseignantDAO();
-              ArrayList<Integer> mes_id = new ArrayList();
-             mes_id = profDao.trouverIdSeance(prof);
-
-           ArrayList<Seance> mes_seances = new ArrayList();
-           mes_seances = profDao.trouverAllSeancesSemaine(prof.getID(), int_semaine);
-                
-                for (int i = 0; i < mes_seances.size(); i++) //On parcourt les séances
+            for (int i = 0; i < mes_seances.size(); i++) //On parcourt les séances
                 {
 
-                    Salle salle = new Salle();
+                    
                     salle = profDao.trouverSalle(mes_seances.get(i));
                     java.util.Date date = mes_seances.get(i).getDate();
                     Calendar c = Calendar.getInstance();
@@ -329,53 +248,92 @@ public class Edt_Enseignant extends Edt {
 
                 }
 
+                this.content.add(grille_edt , BorderLayout.CENTER);
+                this.panel.add(content, BorderLayout.CENTER);
+                this.setVisible(true);
+        }
+    }
+            
+    ///Toutes les actions sont controlés ici
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        //Si clique sur rechercher
+        if (e.getSource() == this.rechercher) {
+            
+                content = new JPanel(new BorderLayout());
+                schear = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+
+                JLabel label_nom = new JLabel();
+                JLabel label_semaine = new JLabel();
+                
+                label_nom.setText("Nom utilisateur :");
+                label_semaine.setText("Numéro semaine");
+
+                JTextField nom = new JTextField();
+                nom.setPreferredSize(new Dimension(100, 200));
+                     
+                JTextField semaine = new JTextField();
+                semaine.setPreferredSize(new Dimension(100, 200));
+                
+                schear.add(label_nom);
+                schear.add(nom);
+                schear.add(label_semaine);
+                schear.add(semaine);
+                JPanel infos = new JPanel(new BorderLayout() );
+                recup_info = new JLabel("", JLabel.CENTER);
+                infos.add(recup_info);
+
+                JButton chercher_utilisateur = new JButton(new AbstractAction("Chercher Utilisateur") {
+                    @Override
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        rechercher_utilisateur(nom.getText(), semaine.getText(), 3);
+                        afficherGrille();
+                        String string_semaine = semaine.getText();
+
+                        int int_semaine = Integer.valueOf(string_semaine); //Cast en int
+                        afficherEdtSemaineProf(4,int_semaine);
+                        
+                        
+                    }
+                    
+                });
 
 
-                panel.add(grille_edt);
+                schear.add(chercher_utilisateur); 
+                
+                content.add(schear, BorderLayout.NORTH);
+                //content.add(infos, BorderLayout.CENTER);
+                
+                this.panel.add(content, BorderLayout.CENTER);
                 this.setVisible(true);
 
+
+        }
+
+        //Si clique sur cours
+        if (e.getSource() == this.mes_cours) {
+            afficherEdtProfAccueil();
+        }
+
+        ///Si on clique sur recap
+        if (e.getSource() == this.summary) {
+            voirrecap(this.prof, new Date(2020, 6, 2), new Date(2020, 6, 11));
+        }
+        
+        
+        ///Si onclique sur un des boutons de la grille de semaine
+        for (int s = 1; s < this.week_button.size(); s++) {
+            //Si c'est cliqué
+            if (e.getActionCommand().equals(this.week_button.get(s).getText())) {
+                System.out.println(this.week_button.get(s).getText()); //On affiche le texte du bouton cliqué
+                this.afficherGrille();             
+                String string_semaine = this.week_button.get(s).getText(); //On get le string du numero de semaine
+                int int_semaine = Integer.valueOf(string_semaine); //Cast en int              
+                this.afficherEdtSemaineProf(4, int_semaine);
+
             }
-
         }
-
-
-    }
-
-    
-    ///Méthodes de recherche
-    /**
-     * Recherche l'emplois du temps du salle pour une semaine choisi
-     */
-    public void rechercher_salle(String nom_salle, String semaine) {
-
-        int numero_semaine = 0;
-        int id_salle = 0;
-        try {
-            numero_semaine = Integer.parseInt(semaine);
-        } catch (NumberFormatException e) {
-            System.err.println("Numero de semaine non valide");
-            return;
-        }
-
-        SalleDAO salleDAO = new SalleDAO();
-
-        id_salle = salleDAO.idCelonNom(nom_salle);
-
-        if (id_salle != 0) {/// Si le id_groupe = 0 alors le groupe n'existe pas
-
-            ArrayList<Seance> lesseances = salleDAO.lesSeances(id_salle, numero_semaine);// ICI LES SEANCES
-
-            if (lesseances.size() != 0) {/// Si le nombre de seance = 0 alors il n'y a pas d'emplois du temps
-
-                System.out.println("les seances sont :");
-
-                for (int i = 0; i < lesseances.size(); i++) {
-                    System.out.println(lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
-                            + lesseances.get(i).getCours().getNom());
-                }
-            } else System.out.println("Pas de séance cette semaine");
-        } else System.out.println("Cette salle n'existe pas n'existe pas");
-
     }
 
     /**
