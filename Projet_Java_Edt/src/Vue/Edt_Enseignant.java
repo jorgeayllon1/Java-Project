@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.*;
 import javax.swing.border.MatteBorder;
+import javax.swing.table.TableColumn;
 
 /**
  * @author Wang David
@@ -31,6 +32,8 @@ public class Edt_Enseignant extends Edt {
     
     ArrayList<Seance> mes_seances = new ArrayList();
     ArrayList<Integer> mes_id = new ArrayList();
+    
+
 
     ///Constructeurs
     public Edt_Enseignant() {
@@ -64,6 +67,7 @@ public class Edt_Enseignant extends Edt {
 
     public void afficherEdtProf(int droit)
     {
+        ArrayList<JLabel> mes_labels = new ArrayList();
         ///Affichage des séances relatives à cet enseignant
         EnseignantDAO profDao = new EnseignantDAO();
         mes_id = new ArrayList();
@@ -113,36 +117,36 @@ public class Edt_Enseignant extends Edt {
                                 }
                             }
 
-                            grille.weightx = 0.1;
-                            grille.weighty = 0.15;
-                            grille.gridx = jour_semaine - 1;
+                            int colonne_semaine = jour_semaine-1;
+                            int ligne_semaine=0;
                             if (str4.toString().equals(heure)) //Si ca commence à 10h
                             {
                                 if (heure.contains("8"))
-                                    grille.gridy = 1;
+                                    ligne_semaine=1;
                                 if (heure.contains("10"))
-                                    grille.gridy = 2;
+                                    ligne_semaine=2;
                                 if (heure.contains("12"))
-                                    grille.gridy = 3;
+                                    ligne_semaine=3;
                                 if (heure.contains("14"))
-                                    grille.gridy = 4;
+                                    ligne_semaine=4;
                                 if (heure.contains("16"))
-                                    grille.gridy = 5;
+                                    ligne_semaine=5;
                                 if (heure.contains("18"))
-                                    grille.gridy = 6;
-                                if (heure.contains("20"))
-                                    grille.gridy = 7;
+                                    ligne_semaine=6;
+                                if(heure.contains("20"))
+                                    ligne_semaine=7;
+
                                 
                                 groupe = seanceDao.trouverGroupe(mes_seances.get(i));
 
                                 String myString =
-                                        "<html><p>" + mes_seances.get(i).getCours().getNom()  + "<br>Groupe :" +
+                                        "<html><p>" +mes_seances.get(i).getID()+ mes_seances.get(i).getCours().getNom()  + "<br>Groupe :" +
                                                 groupe.getNom()
                                                  + "<br>Salle :" +
                                                 salle.getNom() + "<br>Site :" +
                                                 salle.getSite().getNom() + "</p></html>";
-
-                                grille_edt.add(new JLabel(myString), grille);
+                                
+                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
                             }
                         }
 
@@ -154,14 +158,15 @@ public class Edt_Enseignant extends Edt {
 
         }
 
-        this.panel.add(grille_edt);
+        this.panel.add(tableau);
         this.setVisible(true);
     }
     
     public void afficherEdtSemaineProf(int droit, int semaine)
     {
+        ArrayList<JLabel> mes_labels = new ArrayList();
         content = new JPanel(new BorderLayout());
-        if(droit==4)
+        if(droit==3)
         {
             profDao = new EnseignantDAO();
             mes_id = new ArrayList();
@@ -172,9 +177,7 @@ public class Edt_Enseignant extends Edt {
             salle = new Salle();
             
             for (int i = 0; i < mes_seances.size(); i++) //On parcourt les séances
-                {
-
-                    
+                {                  
                     salle = profDao.trouverSalle(mes_seances.get(i));
                     java.util.Date date = mes_seances.get(i).getDate();
                     Calendar c = Calendar.getInstance();
@@ -183,8 +186,6 @@ public class Edt_Enseignant extends Edt {
                     for (int jour_semaine = 2; jour_semaine < 7; jour_semaine++) {
                         if (dayOfWeek == jour_semaine) //Si c un vendredi
                         {
-
-
                             String str = mes_seances.get(i).getHeureDebut().toString();
                             char str2 = str.charAt(11);
                             char str3 = str.charAt(12);
@@ -210,36 +211,43 @@ public class Edt_Enseignant extends Edt {
                                     }
                                 }
 
-                                grille.weightx = 0.1;
-                                grille.weighty = 0.15;
-                                grille.gridx = jour_semaine - 1;
-                                if (str4.toString().equals(heure)) //Si ca commence à 10h
-                                {
-                                    if (heure.contains("8"))
-                                        grille.gridy = 1;
-                                    if (heure.contains("10"))
-                                        grille.gridy = 2;
-                                    if (heure.contains("12"))
-                                        grille.gridy = 3;
-                                    if (heure.contains("14"))
-                                        grille.gridy = 4;
-                                    if (heure.contains("16"))
-                                        grille.gridy = 5;
-                                    if (heure.contains("18"))
-                                        grille.gridy = 6;
-                                    if (heure.contains("20"))
-                                        grille.gridy = 7;
 
+                            int colonne_semaine = jour_semaine-1;
+                            int ligne_semaine=0;
+                            if (str4.toString().equals(heure)) //Si ca commence à 10h
+                            {
+                                if (heure.contains("8"))
+                                    ligne_semaine=1;
+                                if (heure.contains("10"))
+                                    ligne_semaine=2;
+                                if (heure.contains("12"))
+                                    ligne_semaine=3;
+                                if (heure.contains("14"))
+                                    ligne_semaine=4;
+                                if (heure.contains("16"))
+                                    ligne_semaine=5;
+                                if (heure.contains("18"))
+                                    ligne_semaine=6;
+                                if(heure.contains("20"))
+                                    ligne_semaine=7;
+
+                                
                                 groupe = seanceDao.trouverGroupe(mes_seances.get(i));
+                                
 
                                 String myString =
-                                        "<html><p>" + mes_seances.get(i).getCours().getNom()  + "<br>Groupe :" +
+                                        "<html><p>" +mes_seances.get(i).getID()+ mes_seances.get(i).getCours().getNom()  + "<br>Groupe :" +
                                                 groupe.getNom()
                                                  + "<br>Salle :" +
                                                 salle.getNom() + "<br>Site :" +
                                                 salle.getSite().getNom() + "</p></html>";
-
-                                    grille_edt.add(new JLabel(myString), grille);
+                                mes_labels.add(new JLabel(myString));
+                                int last = mes_labels.size()-1;
+                                mes_labels.get(last).setBackground(Color.red);
+                                mes_labels.get(last).setOpaque(true);
+                                /*TableColumn t = tableau.getColumnModel().getColumn(3);
+                                t.setCellRenderer(new ColorierCase(Color.GREEN, Color.PINK));*/
+                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
                                 }
                             }
 
@@ -247,10 +255,10 @@ public class Edt_Enseignant extends Edt {
                     }
 
                 }
-
-                this.content.add(grille_edt , BorderLayout.CENTER);
-                this.panel.add(content, BorderLayout.CENTER);
-                this.setVisible(true);
+           
+        
+        this.panel.add(tableau);
+        this.setVisible(true);
         }
     }
             
@@ -283,6 +291,8 @@ public class Edt_Enseignant extends Edt {
                 JPanel infos = new JPanel(new BorderLayout() );
                 recup_info = new JLabel("", JLabel.CENTER);
                 infos.add(recup_info);
+                
+                
 
                 JButton chercher_utilisateur = new JButton(new AbstractAction("Chercher Utilisateur") {
                     @Override
@@ -292,20 +302,16 @@ public class Edt_Enseignant extends Edt {
                         String string_semaine = semaine.getText();
 
                         int int_semaine = Integer.valueOf(string_semaine); //Cast en int
-                        afficherEdtSemaineProf(4,int_semaine);
-                        
-                        
+                        afficherEdtSemaineProf(3,int_semaine);
+
                     }
                     
                 });
 
 
                 schear.add(chercher_utilisateur); 
-                
-                content.add(schear, BorderLayout.NORTH);
-                //content.add(infos, BorderLayout.CENTER);
-                
-                this.panel.add(content, BorderLayout.CENTER);
+                this.panel.remove(this.tableau);           
+                this.panel.add(schear, BorderLayout.CENTER);
                 this.setVisible(true);
 
 
@@ -330,7 +336,7 @@ public class Edt_Enseignant extends Edt {
                 this.afficherGrille();             
                 String string_semaine = this.week_button.get(s).getText(); //On get le string du numero de semaine
                 int int_semaine = Integer.valueOf(string_semaine); //Cast en int              
-                this.afficherEdtSemaineProf(4, int_semaine);
+                this.afficherEdtSemaineProf(3, int_semaine);
 
             }
         }
