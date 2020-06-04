@@ -423,7 +423,8 @@ public class Edt_Enseignant extends Edt {
             ArrayList<ArrayList<Seance>> cours_celon_matiere = new ArrayList<>();
             int indice_conteneur = 0;
 
-            /// cette fonction va trier les seances celon leurs cours, pour chaque cours, on a un ArrayList
+            // cette fonction va trier les seances celon leurs cours
+            // pour chaque cours on a un ArrayList
             for (Cours uncours : cours_des_seances) {
                 cours_celon_matiere.add(new ArrayList<>());
                 for (Seance uneseance : lesseances_prof) {
@@ -493,7 +494,7 @@ public class Edt_Enseignant extends Edt {
     }
  */
 
-        }
+        } else System.out.println("Pas de cours en cette periode");
 
 //Afficher première et dernier seance
 //Compter nombre de seance

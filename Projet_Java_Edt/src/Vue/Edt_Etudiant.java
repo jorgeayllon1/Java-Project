@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 
@@ -403,17 +404,98 @@ public class Edt_Etudiant extends Edt {
 
         EtudiantDao etudiantDao = new EtudiantDao();
 
+        /// ATTENTION peut ne pas marcher si la date d'aujourd'hui n'est pas bonne
+        /// Pensez à ajuster l'heure par des +- jours
+
         long temps_debut = new java.util.Date().getTime() - 259200000;
         long temps_fin = new java.util.Date().getTime() + 959200000;
 
         java.sql.Date debut = new java.sql.Date(temps_debut);
         java.sql.Date fin = new java.sql.Date(temps_fin);
 
-        System.out.println("Mon ID est " + this.etudiant.getID() + " je suis " + prof.getNom() +
-                " je veux mon emplois du temps du " + debut + " au " + fin + " pour le groupe " + this.etudiant.getGroupe().getNom());
+        System.out.println("Mon ID est " + this.etudiant.getID() + " je suis " + this.etudiant.getNom() +
+                " je veux mon emplois du temps du " + debut + " au " + fin + " pour le " + this.etudiant.getGroupe().getNom());
 
+        /// C'est cette methode qui retourne les seances sur une periode
         ArrayList<Seance> lesseances_eleve =
                 etudiantDao.trouverSeancesSurPeriode(this.etudiant.getID(), debut, fin);
+
+        System.out.println("Tout les cours de l'eleve sur une periode :");
+        if (lesseances_eleve.size() != 0) {
+
+            for (Seance uneseance : lesseances_eleve) {
+                System.out.println(uneseance.getID() + " " + uneseance.getCours().getNom() + " " + uneseance.getDate());
+            }
+
+            ArrayList<Cours> cours_des_seances = new ArrayList<>();///C'est une liste des cours des seances
+
+            /// On recupère les differents cours des seances
+            for (Seance uneseance : lesseances_eleve) {
+                boolean valide = true;
+                for (Cours uncours : cours_des_seances) {
+                    if (uneseance.getCours().getNom().equals(uncours.getNom())) {
+                        valide = false;
+                        break;
+                    }
+                }
+                if (valide) cours_des_seances.add(uneseance.getCours());
+            }
+
+            System.out.println("Ma liste de cours :");
+            for (Cours lescours : cours_des_seances) System.out.println(lescours.getNom());
+
+            ///C'est une liste de seance celon la matiere
+            ///On a n seance et n matière alors on fait double ArrayList
+            ArrayList<ArrayList<Seance>> cours_celon_matiere = new ArrayList<>();
+            int indice_conteneur = 0;
+
+            // cette fonction va trier les seances celon leurs cours
+            // pour chaque cours on a un ArrayList
+            for (Cours uncours : cours_des_seances) {
+                cours_celon_matiere.add(new ArrayList<>());
+                for (Seance uneseance : lesseances_eleve) {
+                    if (uneseance.getCours().getID() == uncours.getID()) {
+                        cours_celon_matiere.get(indice_conteneur).add(uneseance);
+                    }
+                }
+                indice_conteneur++;
+            }
+
+            /// Parcours Final pour le recap
+
+            System.out.println("----RECAP----");
+            for (ArrayList<Seance> unelistedecours : cours_celon_matiere) {
+
+                Seance premiere_seance = unelistedecours.get(0);
+                Seance derniere_seance = unelistedecours.get(0);
+
+                System.out.println("Pour la matière " + unelistedecours.get(0).getCours().getNom() + " : ");
+
+                // on cherche la première et la dernière seance
+                for (Seance uneseance : unelistedecours) {
+                    if (uneseance.getDate().getTime() < premiere_seance.getDate().getTime()) {
+                        premiere_seance = uneseance;
+                    }
+                    if (uneseance.getDate().getTime() > derniere_seance.getDate().getTime()) {
+                        derniere_seance = uneseance;
+                    }
+                }
+
+                System.out.println("La premier seance de " + premiere_seance.getCours().getNom() + " est le : " + premiere_seance.getDate());
+                System.out.println("La dernière seance de " + derniere_seance.getCours().getNom() + " est le : " + derniere_seance.getDate());
+                System.out.println("Le nombre de séance est : " + unelistedecours.size());
+
+                long temps_seance = 90;
+                int nombre_seance = unelistedecours.size();
+                long temps_final = temps_seance * nombre_seance;
+                int hours = (int) TimeUnit.MINUTES.toHours(temps_final);
+                int minutes = (int) (temps_final - TimeUnit.HOURS.toMinutes(hours));
+
+                System.out.println("Le volume horaire est : " + hours + "h" + minutes);
+
+            }
+
+        } else System.out.println("Pas de seance en cette periode");
 
     }
 
