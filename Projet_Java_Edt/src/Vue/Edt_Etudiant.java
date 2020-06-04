@@ -76,6 +76,7 @@ public class Edt_Etudiant extends Edt {
     
     public void afficherEdtEtudiant(int droit)
     {
+        ArrayList<JLabel> mes_labels = new ArrayList();
         if(droit==4)
         {
             //On cree un nouveau etudiant avec l'id de l'utilisateur car id_utilisateur clé etrangere dans etudiant
@@ -150,39 +151,33 @@ public class Edt_Etudiant extends Edt {
                                 }
                             }
 
-                            grille.weightx = 1;
-                            grille.weighty = 1;
-                            grille.gridx = jour_semaine - 1;
+                            int colonne_semaine = jour_semaine-1;
+                            int ligne_semaine=0;
                             if (str4.toString().equals(heure)) //Si ca commence à 10h
                             {
                                 if (heure.contains("8"))
-                                    grille.gridy = 1;
+                                    ligne_semaine=1;
                                 if (heure.contains("10"))
-                                    grille.gridy = 2;
+                                    ligne_semaine=2;
                                 if (heure.contains("12"))
-                                    grille.gridy = 3;
+                                    ligne_semaine=3;
                                 if (heure.contains("14"))
-                                    grille.gridy = 4;
+                                    ligne_semaine=4;
                                 if (heure.contains("16"))
-                                    grille.gridy = 5;
+                                    ligne_semaine=5;
                                 if (heure.contains("18"))
-                                    grille.gridy = 6;
-                                if (heure.contains("20"))
-                                    grille.gridy = 7;
-                                
-                                
-                                prof = seanceDao.trouverEnseignant(mes_seances.get(i));
+                                    ligne_semaine=6;
+                                if(heure.contains("20"))
+                                    ligne_semaine=7;
 
-                                String myString =
+                                prof = seanceDao.trouverEnseignant(mes_seances.get(i));
+                            String myString =
                                         "<html><p>" + mes_seances.get(i).getCours().getNom() + "<br>Prof :" +
                                                 prof.getNom() + "<br>Salle :" +
                                                 salle.getNom() + "<br>Site :" +
                                                 salle.getSite().getNom() + "</p></html>";
-
-                                grille_edt.add(new JLabel(myString) {@Override
-                                    public Dimension getPreferredSize() {
-                                        return new Dimension(115, 95);
-                                    }}, grille );
+                                
+                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
                             }
                         }
 
@@ -193,7 +188,7 @@ public class Edt_Etudiant extends Edt {
 
 
         }
-        this.panel.add(grille_edt);
+        this.panel.add(tableau);
         this.setVisible(true);
     }
 
@@ -265,39 +260,34 @@ public class Edt_Etudiant extends Edt {
                                         }
                                     }
 
-                                    grille.weightx = 1;
-                                    grille.weighty = 1;
-                                    grille.gridx = jour_semaine - 1;
-                                    if (str4.toString().equals(heure)) //Si ca commence à 10h
-                                    {
-                                        if (heure.contains("8"))
-                                            grille.gridy = 1;
-                                        if (heure.contains("10"))
-                                            grille.gridy = 2;
-                                        if (heure.contains("12"))
-                                            grille.gridy = 3;
-                                        if (heure.contains("14"))
-                                            grille.gridy = 4;
-                                        if (heure.contains("16"))
-                                            grille.gridy = 5;
-                                        if (heure.contains("18"))
-                                            grille.gridy = 6;
-                                        if (heure.contains("20"))
-                                            grille.gridy = 7;
+                            int colonne_semaine = jour_semaine-1;
+                            int ligne_semaine=0;
+                            if (str4.toString().equals(heure)) //Si ca commence à 10h
+                            {
+                                if (heure.contains("8"))
+                                    ligne_semaine=1;
+                                if (heure.contains("10"))
+                                    ligne_semaine=2;
+                                if (heure.contains("12"))
+                                    ligne_semaine=3;
+                                if (heure.contains("14"))
+                                    ligne_semaine=4;
+                                if (heure.contains("16"))
+                                    ligne_semaine=5;
+                                if (heure.contains("18"))
+                                    ligne_semaine=6;
+                                if(heure.contains("20"))
+                                    ligne_semaine=7;
 
-
-                                        prof = seanceDao.trouverEnseignant(mes_seances.get(i));
-
-                                        String myString =
-                                                "<html><p>" + mes_seances.get(i).getCours().getNom() + "<br>Prof :" +
-                                                        prof.getNom() + "<br>Salle :" +
-                                                        salle.getNom() + "<br>Site :" +
-                                                        salle.getSite().getNom() + "</p></html>";
-
-                                        grille_edt.add(new JLabel(myString){@Override
-                                    public Dimension getPreferredSize() {
-                                        return new Dimension(115, 95);
-                                    }}, grille);
+                                prof = seanceDao.trouverEnseignant(mes_seances.get(i));
+                                String myString =
+                                        "<html><p>" + mes_seances.get(i).getCours().getNom() + "<br>Prof :" +
+                                                prof.getNom() + "<br>Salle :" +
+                                                salle.getNom() + "<br>Site :" +
+                                                salle.getSite().getNom() + "</p></html>";
+                                
+                                
+                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
                                     }
                                 }
 
@@ -305,8 +295,7 @@ public class Edt_Etudiant extends Edt {
                         }
 
                 }
-                this.content.add(grille_edt , BorderLayout.CENTER);
-                this.panel.add(content);
+                this.panel.add(tableau);
                 this.setVisible(true);
             
             
@@ -359,10 +348,8 @@ public class Edt_Etudiant extends Edt {
             });
 
             schear.add(lancerrecherche);
-            content.add(schear, BorderLayout.NORTH);
-            //content.add(infos, BorderLayout.CENTER);
-            
-            panel.add(content, BorderLayout.CENTER);
+            panel.remove(this.tableau);
+            panel.add(schear, BorderLayout.CENTER);
             this.setVisible(true);
         }
 

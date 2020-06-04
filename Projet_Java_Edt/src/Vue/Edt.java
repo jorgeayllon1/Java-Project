@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
+import javax.swing.table.TableColumn;
 
 /**
  * @author Wang David
@@ -25,10 +26,9 @@ public class Edt extends JFrame implements ActionListener {
     protected final JToolBar semaine = new JToolBar(JToolBar.CENTER);
     
     protected JLabel info;
-    
-    protected Graphics ligneh = getGraphics();
     protected JPanel panel;
     protected JPanel grille_edt = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
     JPanel content = null;
     
     protected JButton rechercher = new JButton("Rechercher");
@@ -39,11 +39,12 @@ public class Edt extends JFrame implements ActionListener {
     
     protected int num_semaine;
     protected ArrayList<JButton> week_button;
-    
-    protected GridBagConstraints grille = new GridBagConstraints();
+
     protected Font f = null;
     
     protected JLabel recup_info=null;
+    protected JTable tableau;
+    protected JScrollPane scroll;
 
 
     public Edt() {
@@ -151,114 +152,25 @@ public class Edt extends JFrame implements ActionListener {
         return this.panel;
     }
     
-    //Méthode affichage grille edt
-    public void afficherGrille()
-    {
-        grille_edt = new JPanel(new GridBagLayout()){protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        int y=145;
-        g.drawLine(70,0, 70, 800);
-        g.drawLine(0, 55, 1400, 55);
-        for(int j=y;j<805;j+=95)
+        public void afficherGrille()
         {
-            g.drawLine(0, j, 1415, j);
-        }
-        int x=310;
-        for(int i=x;i<1415;i+=220)
-        {
-            g.drawLine(i, 0, i, 805);
-        }
+            Object[][] data =
+            {
+                {"Horaires", "Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"},
+                {"8h-10h", "", "","","","",""},
+                {"10h-12h", "", "","","","",""},
+                {"12h-14h", "", "","","","",""},
+                {"14h-16h", "", "","","","",""},
+                {"16h-18h", "", "","","","",""},
+                {"18h-20h", "", "","","","",""}
+            };
+
+        String  title[] = {"Horaires", "Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"};
+        tableau = new JTable(data, title);
+        tableau.setRowHeight(90);
+        tableau.setShowGrid(true);
+
         
-        
-        }};
-
-        grille = new GridBagConstraints();
-
-        grille.fill = GridBagConstraints.HORIZONTAL;
-        grille.gridx = 0;
-        grille.gridy = 0;
-        grille.weightx = 1;
-        grille.weighty = 1;
-        
-        
-
-        grille_edt.add(new JLabel("Heures "){@Override
-                                    public Dimension getPreferredSize() {
-                                        return new Dimension(65, 95);
-                                    }},  grille);
-        
-
-        grille.gridx = 1;
-        grille.gridy = 0;
-        grille.weightx = 1;
-        grille.weighty = 1;
-        
-        
-        grille_edt.add(new JLabel("Lundi "){@Override
-                                    public Dimension getPreferredSize() {
-                                        return new Dimension(115, 95);
-                                    }}, grille);
-
-        grille.gridx = 2;
-        grille.gridy = 0;
-        grille.weightx = 1;
-        grille.weighty = 1;
-        grille_edt.add(new JLabel("Mardi "){@Override
-                                    public Dimension getPreferredSize() {
-                                        return new Dimension(115, 95);
-                                    }}, grille);
-
-        grille.gridx = 3;
-        grille.gridy = 0;
-        grille.weightx = 1;
-        grille.weighty = 1;
-        grille_edt.add(new JLabel("Mercredi "){@Override
-                                    public Dimension getPreferredSize() {
-                                        return new Dimension(115, 95);
-                                    }}, grille);
-
-        grille.gridx = 4;
-        grille.gridy = 0;
-        grille.weightx = 1;
-        grille.weighty = 1;
-        grille_edt.add(new JLabel("jeudi "){@Override
-                                    public Dimension getPreferredSize() {
-                                        return new Dimension(115, 95);
-                                    }}, grille);
-
-        grille.gridx = 5;
-        grille.gridy = 0;
-        grille.weightx = 1;
-        grille.weighty = 1;
-        grille_edt.add(new JLabel("Vendredi "){@Override
-                                    public Dimension getPreferredSize() {
-                                        return new Dimension(115, 95);
-                                    }}, grille);
-
-        grille.gridx = 6;
-        grille.gridy = 0;
-        grille.weightx = 1;
-        grille.weighty = 1;
-        grille_edt.add(new JLabel("Samedi "){@Override
-                                    public Dimension getPreferredSize() {
-                                        return new Dimension(115, 95);
-                                    }}, grille);
-
-        int j = 8;
-        int k = j + 2;
-        for (int i = 0; i < 6; i++) {
-
-            grille.gridx = 0;
-            grille.gridy = i+1;
-            grille.weightx = 1;
-            grille.weighty = 1;
-            grille_edt.add(new JLabel(j + "H-" + k + "H"){@Override
-                                    public Dimension getPreferredSize() {
-                                        return new Dimension(65, 95);
-                                    }}, grille);
-            j += 2;
-            k += 2;
-        }
     }
     
     
