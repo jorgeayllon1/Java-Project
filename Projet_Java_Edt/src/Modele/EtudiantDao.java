@@ -7,6 +7,7 @@ package Modele;
 
 import java.sql.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * @author Wang David
@@ -96,4 +97,47 @@ public class EtudiantDao extends UtilisateurDao {
         return salle;
     }
 
+    public ArrayList<Seance> trouverSeancesSurPeriode(int id_eleve, Date debut, Date fin) {
+
+        ArrayList<Seance> les_seances = new ArrayList<>();
+        DAO<Cours> coursDAO = DAOFactory.getCours();
+        DAO<TypeCours> typeCoursDAO = DAOFactory.getTypeCours();
+
+        try {
+            //this.conn = Connexion.seConnecter();
+            this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT * FROM seance\n" +
+                            "INNER JOIN seance_groupes\n" +
+                            "ON seance_groupes.id_seance=seance.id\n" +
+                            "INNER JOIN groupe\n" +
+                            "ON groupe.id = seance_groupes.id_groupe\n" +
+                            "INNER JOIN etudiant\n" +
+                            "ON etudiant.id_groupe=groupe.id\n" +
+                            "WHERE etudiant.id_utilisateur=" + id_eleve + "\n" +
+                            "AND seance.date BETWEEN '" + debut + "' AND '" + fin + "'"
+            );
+
+            while (rset.next()) {
+
+                int id = rset.getInt("id");
+                int semaine = rset.getInt("semaine");
+                Date date = rset.getDate("date");
+                Timestamp heure_debut = rset.getTimestamp("heure_debut");
+                Timestamp heure_fin = rset.getTimestamp("heure_fin");
+                int id_cours = rset.getInt("id_cours");
+                Cours cours = coursDAO.find(id_cours);
+                int id_type = rset.getInt("id_type");
+                TypeCours typeCours = typeCoursDAO.find(id_type);
+
+                les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, cours, typeCours));
+
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erreur SQL GroupeDAO");
+            e.printStackTrace();
+        }
+
+        return les_seances;
+    }
 }

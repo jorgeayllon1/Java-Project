@@ -33,10 +33,8 @@ public class Edt_Enseignant extends Edt {
 
     ArrayList<Seance> mes_seances = new ArrayList();
     ArrayList<Integer> mes_id = new ArrayList();
-    
-    JPanel panel_recherche=new JPanel();
 
-
+    JPanel panel_recherche = new JPanel();
 
 
     ///Constructeurs
@@ -55,11 +53,11 @@ public class Edt_Enseignant extends Edt {
         for (int nb_week = 0; nb_week < this.week_button.size(); nb_week++) {
             this.week_button.get(nb_week).addActionListener(this);
 
-        }     
+        }
         panel.add(panel_recherche);
         panel_edt.add(tableau);
         panel.add(panel_edt);
-        
+
     }
 
 
@@ -153,8 +151,9 @@ public class Edt_Enseignant extends Edt {
                                                 salle.getNom() + "<br>Site :" +
                                                 salle.getSite().getNom() + "</p></html>";
 
+
                                 tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
-                                
+
                             }
                         }
 
@@ -224,6 +223,8 @@ public class Edt_Enseignant extends Edt {
                                     heure = Integer.toString(m + 8 + n);
                                 }
                             }
+
+
                             int colonne_semaine = jour_semaine - 1;
                             int ligne_semaine = 0;
                             if (str4.toString().equals(heure)) //Si ca commence à 10h
@@ -257,7 +258,7 @@ public class Edt_Enseignant extends Edt {
                                 int last = mes_labels.size() - 1;
                                 mes_labels.get(last).setBackground(Color.red);
                                 mes_labels.get(last).setOpaque(true);
-                                
+
                                 tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
                             }
                         }
@@ -267,12 +268,12 @@ public class Edt_Enseignant extends Edt {
 
             }
 
-        this.panel_recherche.setVisible(false);
-        this.panel_edt.add(tableau);
-        this.panel_edt.revalidate();
-        this.panel_edt.repaint();
-        this.panel_edt.setVisible(true);
-        this.setVisible(true);
+            this.panel_recherche.setVisible(false);
+            this.panel_edt.add(tableau);
+            this.panel_edt.revalidate();
+            this.panel_edt.repaint();
+            this.panel_edt.setVisible(true);
+            this.setVisible(true);
 
         }
     }
@@ -304,7 +305,7 @@ public class Edt_Enseignant extends Edt {
             panel_recherche.add(label_semaine);
             panel_recherche.add(semaine);
 
-            
+
             JPanel infos = new JPanel(new BorderLayout());
             recup_info = new JLabel("", JLabel.CENTER);
             infos.add(recup_info);
