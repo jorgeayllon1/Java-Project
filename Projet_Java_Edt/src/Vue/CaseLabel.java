@@ -49,7 +49,16 @@ public class CaseLabel extends DefaultTableCellRenderer{
          }
       }
         
+        /*if(value instanceof JLabel){
+           //This time return only the JLabel without icon
+            return (JLabel)value;
+        }
+ 
+        else
+            return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);*/
         return component;
     }
+    
+
     
 }

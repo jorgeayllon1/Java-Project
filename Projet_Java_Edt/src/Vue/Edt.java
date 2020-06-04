@@ -18,6 +18,7 @@ import javax.swing.border.MatteBorder;
 import javax.swing.table.TableColumn;
 
 
+
 /**
  * @author Wang David
  */
@@ -29,6 +30,7 @@ public class Edt extends JFrame implements ActionListener {
     protected JLabel info;
     protected JPanel panel = new JPanel();
     protected JPanel panel_edt = new JPanel(new GridLayout(0, 1));
+    
 
     JPanel content = new JPanel();
     
@@ -122,8 +124,10 @@ public class Edt extends JFrame implements ActionListener {
 
         String mesInfos = "HYPERPLANNING 2019-2020";
         
-        info = new JLabel(mesInfos);
+        info = new JLabel(mesInfos, JLabel.CENTER);
         info.setPreferredSize(new Dimension(20,50));
+        info.setBackground( new java.awt.Color(204, 255, 204));
+        info.setOpaque(true);
         //panel.add(info, BorderLayout.SOUTH);
         this.add(info, BorderLayout.SOUTH);
 
@@ -174,9 +178,12 @@ public class Edt extends JFrame implements ActionListener {
 
         String  title[] = {"Horaires", "Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"};
         
-        tableau = new JTable(data, title);
+        tableau = new JTable(data,title);
+        //tableau = new JTable();
+        //tableau.setModel(new TableLabel());
         tableau.setRowHeight(90);
         tableau.setDefaultRenderer(Object.class, new CaseLabel());
+        //tableau.setDefaultRenderer(JLabel.class, new CaseLabel());
         
         
         tableau.setShowGrid(true);

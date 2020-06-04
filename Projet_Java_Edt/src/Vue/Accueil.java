@@ -24,7 +24,8 @@ import java.util.*;
 public class Accueil extends JFrame implements Observer, ActionListener {
     
     private final JButton connexion;
-    private final JTextField id,mdp;
+    private final JTextField id;
+    private final JPasswordField mdp;
     private final JLabel label_id,label_mdp;
     private AccueilControleur control_accueil;
     Utilisateur user = new Utilisateur();
@@ -45,7 +46,7 @@ public class Accueil extends JFrame implements Observer, ActionListener {
         
         this.id = new JTextField();
         id.setPreferredSize(new Dimension(100,30));
-        this.mdp = new JTextField();
+        this.mdp = new JPasswordField();
         mdp.setPreferredSize(new Dimension(100,30));
         this.connexion = new JButton("Se connecter");
         this.label_id = new JLabel("Identidiant");
