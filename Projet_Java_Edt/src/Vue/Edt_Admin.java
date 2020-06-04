@@ -45,7 +45,7 @@ public class Edt_Admin extends Edt {
     
     
     ///Mise à jour des données///
-    JPanel panel_maj = new JPanel();
+    JPanel content2 = new JPanel();
 
     public Edt_Admin() {
     }
@@ -54,6 +54,7 @@ public class Edt_Admin extends Edt {
     public Edt_Admin(Utilisateur user) {
         super(user);
        
+        this.annule.setVisible(false);
         
         ImageIcon maj_icon = new ImageIcon(new ImageIcon("src/Icones/refresh.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
         maj = new JButton("Mise à jour", maj_icon);
@@ -66,10 +67,7 @@ public class Edt_Admin extends Edt {
         this.maj.addActionListener(this);
         
         this.panel_recherche.add(boutons_search);
-        
-        
-        
-        
+
 
     }
     
@@ -194,6 +192,14 @@ public class Edt_Admin extends Edt {
         child.setVisible(true);
     }
 
+    public void ajoutPanel2(JComponent parent)
+    {
+        parent.revalidate();
+        parent.repaint();
+        parent.setVisible(true);
+        this.add(parent);
+        this.setVisible(true);
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
         
@@ -207,6 +213,8 @@ public class Edt_Admin extends Edt {
         {
             suppPanel(panel);
 
+            suppPanel(content2);
+           
             this.info.setVisible(false);
             suppPanel(boutons_search);
             content = new JPanel(new BorderLayout());
@@ -355,6 +363,18 @@ public class Edt_Admin extends Edt {
             ///Méthode affichage maj
             System.out.println("Mise a jour");
             afficherInterfaceMaj();
+        }
+        
+        if(e.getSource()==this.summary)
+        {
+            JOptionPane stop = new JOptionPane();
+            stop.showMessageDialog(null, "Non dispo", "ERREUR", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        if(e.getSource()==this.report)
+        {
+            JOptionPane stop = new JOptionPane();
+            stop.showMessageDialog(null, "Non dispo", "ERREUR", JOptionPane.ERROR_MESSAGE);
         }
    
     }
@@ -520,6 +540,26 @@ public class Edt_Admin extends Edt {
     //////////////////////////////////----------------------------MISE A JOUR DES DONNEES----------------------------------///////////////////////////
     public void afficherInterfaceMaj()
     {
+        suppPanel(panel);
+        suppPanel(content2);
+        suppPanel(this.content);
+        
+        JButton enlever = new JButton("ENLEVER");
+        JButton affecter = new JButton("AFFECTER");
+        JButton modifier = new JButton("MODIFIER");
+        JButton ajouter = new JButton("AJOUTER");
+        JButton annuler = new JButton("ANNULER");
+        JButton valider = new JButton("VALIDER");
+        
+        ajoutPanel(content2,enlever);
+        ajoutPanel(content2,affecter);
+        ajoutPanel(content2,modifier);
+        ajoutPanel(content2,ajouter);
+        ajoutPanel(content2,annuler);
+        ajoutPanel(content2,valider);
+        
+        ajoutPanel(panel,content2);
+        panel.setVisible(true);
         
         
     }

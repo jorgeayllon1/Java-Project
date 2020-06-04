@@ -124,10 +124,12 @@ public class Edt extends JFrame implements ActionListener {
 
         String mesInfos = "HYPERPLANNING 2019-2020";
         
+        
         info = new JLabel(mesInfos, JLabel.CENTER);
         info.setPreferredSize(new Dimension(20,50));
-        info.setBackground( new java.awt.Color(204, 255, 204));
+        info.setBackground( new java.awt.Color(153, 230, 230));
         info.setOpaque(true);
+        info.setFont(new Font("Verdana", Font.PLAIN, 18));
         //panel.add(info, BorderLayout.SOUTH);
         this.add(info, BorderLayout.SOUTH);
 
