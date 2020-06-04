@@ -20,7 +20,9 @@ import java.util.*;
  */
 public class Edt_Admin extends Edt {
     
-    JPanel schear = new JPanel();
+    JPanel recherche_panel = new JPanel();
+    JPanel boutons_search = new JPanel();
+    
     JButton chercher_utilisateur=null;
     JButton chercher_salle=null;
     JButton chercher_groupe=null;
@@ -34,20 +36,50 @@ public class Edt_Admin extends Edt {
     public Edt_Admin(Utilisateur user) {
         super(user);
         this.rechercher.addActionListener(this);
+        this.mes_cours.addActionListener(this);
+        ImageIcon maj_icon = new ImageIcon(new ImageIcon("src/Icones/refresh.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        maj = new JButton("Mise à jour", maj_icon);
+        this.iconFont(maj);
+        
+        this.recherche_panel.add(boutons_search);
 
+    }
+    
+    public void suppPanel(JComponent parent)
+    {
+        parent.removeAll();
+        parent.validate();
+        parent.repaint();
+    }
+    
+    public void ajoutPanel(JComponent parent, JComponent child)
+    {
+        parent.add(child);
+        parent.revalidate();
+        parent.repaint();
+        parent.setVisible(true);
+        child.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         
+        if(e.getSource()==this.mes_cours)
+        {
+            JOptionPane stop = new JOptionPane();
+            stop.showMessageDialog(null, "Vous n'etes ni etudiant ni enseignant", "ERREUR", JOptionPane.ERROR_MESSAGE);
+        }
+        
         if(e.getSource()==this.rechercher)
         {
             content = new JPanel(new BorderLayout());
-            schear = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+            recherche_panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+            boutons_search = new JPanel(new FlowLayout());
+            
             Object[] deroulant = new Object[]{"Rechercher...", "Utilisateur" , "Groupe" , "Promotion" , "Salle"};
             JComboBox liste = new JComboBox(deroulant);
             
-            schear.add(liste);
+            recherche_panel.add(liste);
             
             JLabel label_nom = new JLabel();
             JLabel label_semaine = new JLabel();
@@ -58,25 +90,26 @@ public class Edt_Admin extends Edt {
             JTextField semaine = new JTextField();
             semaine.setPreferredSize(new Dimension(100, 50));
             
-            chercher_utilisateur = new JButton();
-            chercher_utilisateur.setVisible(false);
-            chercher_groupe = new JButton();
-            chercher_groupe.setVisible(false);
-            chercher_promotion = new JButton();
-            chercher_promotion.setVisible(false);
-            chercher_salle = new JButton();
-            chercher_salle.setVisible(false);
+            suppPanel(boutons_search);
             
-            schear.add(label_nom);
-            schear.add(nom);
-            schear.add(label_semaine);
-            schear.add(semaine);
+            chercher_utilisateur = new JButton();
+            chercher_groupe = new JButton();
+            chercher_promotion = new JButton();
+            chercher_salle = new JButton();
+   
+            recherche_panel.add(label_nom);
+            recherche_panel.add(nom);
+            recherche_panel.add(label_semaine);
+            recherche_panel.add(semaine);
             
             JPanel infos = new JPanel(new BorderLayout() );
-            recup_info = new JLabel("f", JLabel.CENTER);
+            recup_info = new JLabel("", JLabel.CENTER);
             infos.add(recup_info);
             
-            content.add(schear, BorderLayout.NORTH);
+
+            
+            recherche_panel.add(boutons_search);
+            content.add(recherche_panel, BorderLayout.NORTH);
             content.add(infos, BorderLayout.CENTER);
             
             this.panel.add(content);
@@ -89,10 +122,7 @@ public class Edt_Admin extends Edt {
                     if(choisi=="Utilisateur")
                     {                      
 
-                        chercher_utilisateur.setVisible(true);
-                        chercher_salle.setVisible(false);
-                        chercher_promotion.setVisible(false);
-                        chercher_groupe.setVisible(false);
+                        suppPanel(boutons_search);
                         chercher_utilisateur = new JButton(new AbstractAction("Chercher Utilisateur") {
                             @Override
                             public void actionPerformed(ActionEvent actionEvent) {
@@ -102,18 +132,14 @@ public class Edt_Admin extends Edt {
 
                         label_nom.setText("Nom utilisateur :");
                         label_semaine.setText("Numéro semaine");
-                        schear.add(chercher_utilisateur);  
-
-                        content.add(schear, BorderLayout.NORTH);
+                        ajoutPanel(boutons_search,chercher_utilisateur) ;
+                        content.add(recherche_panel, BorderLayout.NORTH);
                         panel.add(content);
                         
                     }
                     else if(choisi=="Groupe")
                     {
-                        chercher_groupe.setVisible(true);
-                        chercher_utilisateur.setVisible(false);
-                        chercher_salle.setVisible(false);
-                        chercher_promotion.setVisible(false);
+                        suppPanel(boutons_search);
                         chercher_groupe = new JButton(new AbstractAction("Chercher Groupe") {
                             @Override
                             public void actionPerformed(ActionEvent actionEvent) {
@@ -121,21 +147,18 @@ public class Edt_Admin extends Edt {
                             }
                         });
                         
-                        panel.repaint();
+                        
                         label_nom.setText("Nom groupe :");
                         label_semaine.setText("Numéro semaine");
-                        schear.add(chercher_groupe);   
+                        ajoutPanel(boutons_search,chercher_groupe) ;  
 
-                        content.add(schear, BorderLayout.NORTH);
+                        content.add(recherche_panel, BorderLayout.NORTH);
                         panel.add(content);
                     }
                     
                     else if(choisi=="Promotion")
                     {
-                        chercher_promotion.setVisible(true);
-                        chercher_salle.setVisible(false);
-                        chercher_groupe.setVisible(false);
-                        chercher_utilisateur.setVisible(false);
+                        suppPanel(boutons_search);
                         
                         chercher_promotion = new JButton(new AbstractAction("Chercher Promotion") {
                             @Override
@@ -146,19 +169,16 @@ public class Edt_Admin extends Edt {
                         
                         label_nom.setText("Promotion :");
                         label_semaine.setText("Numéro semaine");
-                        schear.add(chercher_promotion);   
+                        ajoutPanel(boutons_search,chercher_promotion) ;  
                         
-                        content.add(schear, BorderLayout.NORTH);
+                        content.add(recherche_panel, BorderLayout.NORTH);
                         panel.add(content);
                     }
                     
                     else if(choisi=="Salle")
                     {
                         
-                        chercher_salle.setVisible(true);
-                        chercher_promotion.setVisible(false);
-                        chercher_groupe.setVisible(false);
-                        chercher_utilisateur.setVisible(false);
+                        suppPanel(boutons_search);
                         chercher_salle = new JButton(new AbstractAction("Chercher Salle") {
                             @Override
                             public void actionPerformed(ActionEvent actionEvent) {
@@ -168,9 +188,9 @@ public class Edt_Admin extends Edt {
                         
                         label_nom.setText("Salle :");
                         label_semaine.setText("Numéro semaine");
-                        schear.add(chercher_salle);  
+                        ajoutPanel(boutons_search,chercher_salle) ;  
 
-                        content.add(schear, BorderLayout.NORTH);
+                        content.add(recherche_panel, BorderLayout.NORTH);
                         panel.add(content);
                     }
                    

@@ -17,6 +17,7 @@ import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.TableColumn;
 
+
 /**
  * @author Wang David
  */
@@ -26,8 +27,8 @@ public class Edt extends JFrame implements ActionListener {
     protected final JToolBar semaine = new JToolBar(JToolBar.CENTER);
     
     protected JLabel info;
-    protected JPanel panel;
-    protected JPanel grille_edt = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    protected JPanel panel = new JPanel();
+    protected JPanel panel_edt = new JPanel(new GridLayout(0, 1));
 
     JPanel content = null;
     
@@ -90,12 +91,7 @@ public class Edt extends JFrame implements ActionListener {
         ImageIcon recap_icon = new ImageIcon(new ImageIcon("src/Icones/news-admin.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
         this.summary = new JButton("Récapitulatif des cours", recap_icon);
         this.iconFont(summary);
-
-        panel = (JPanel) this.getContentPane();
-        panel.setLayout(new BorderLayout());
-        this.panel.setBackground(new java.awt.Color(112, 219, 219));
-        this.panel.setOpaque(true);
-
+        
         ///Affiche le numéro de semaine
         Calendar cal = new GregorianCalendar();
         Date d = new Date();
@@ -121,13 +117,24 @@ public class Edt extends JFrame implements ActionListener {
         toolbars.add(menu);
         toolbars.add(semaine);
 
-        panel.add(toolbars, BorderLayout.NORTH);
+        //panel.add(toolbars, BorderLayout.NORTH);
+        this.add(toolbars, BorderLayout.NORTH);
 
         String mesInfos = "HYPERPLANNING 2019-2020";
         
         info = new JLabel(mesInfos);
         info.setPreferredSize(new Dimension(20,50));
-        panel.add(info, BorderLayout.SOUTH);
+        //panel.add(info, BorderLayout.SOUTH);
+        this.add(info, BorderLayout.SOUTH);
+
+        //panel = (JPanel) this.getContentPane();
+        //panel.setLayout(new BorderLayout());
+        this.add(panel);
+        panel.setLayout(new OverlayLayout(panel));
+        this.panel.setBackground(new java.awt.Color(112, 219, 219));
+        this.panel.setOpaque(true);
+
+        
 
         this.setVisible(true);
     }
@@ -166,8 +173,11 @@ public class Edt extends JFrame implements ActionListener {
             };
 
         String  title[] = {"Horaires", "Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"};
+        
         tableau = new JTable(data, title);
         tableau.setRowHeight(90);
+        tableau.setDefaultRenderer(Object.class, new CaseLabel());
+        
         tableau.setShowGrid(true);
 
         
