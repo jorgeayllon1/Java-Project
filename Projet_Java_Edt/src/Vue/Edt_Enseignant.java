@@ -1,17 +1,13 @@
 package Vue;
 
-import Controlleur.Recherche.RechercheControleur;
 import Modele.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import javax.swing.border.MatteBorder;
-import javax.swing.table.TableColumn;
 
 /**
  * @author Wang David
@@ -340,7 +336,15 @@ public class Edt_Enseignant extends Edt {
 
         ///Si on clique sur recap
         if (e.getSource() == this.summary) {
-            voirrecap(this.prof, "1", new Date(2020, 6, 2), new Date(2020, 6, 11));
+            /// ATTENTION peut ne pas marcher si la date d'aujourd'hui n'est pas bonne
+            /// Pensez à ajuster l'heure par des +- jours
+
+            long temps_debut = new java.util.Date().getTime() - 259200000;
+            long temps_fin = new java.util.Date().getTime() + 959200000;
+
+            java.sql.Date debut = new java.sql.Date(temps_debut);
+            java.sql.Date fin = new java.sql.Date(temps_fin);
+            voirrecap("TD10", debut, fin);
         }
 
 
@@ -361,26 +365,19 @@ public class Edt_Enseignant extends Edt {
     /**
      * Renvoie un recap de toutes les informations d'un enseignant
      */
-    public void voirrecap(Enseignant prof, String nomGroupe, Date date_debut, Date date_fin) {
+    public void voirrecap(String nomGroupe, Date date_debut, Date date_fin) {
 
         EnseignantDAO enseignantDAO = new EnseignantDAO();
+        GroupeDAO groupeDAO = new GroupeDAO();
 
-        /// ATTENTION peut ne pas marcher si la date d'aujourd'hui n'est pas bonne
-        /// Pensez à ajuster l'heure par des +- jours
+        int recip_id_groupe = groupeDAO.idCelonNom(nomGroupe);
 
-        long temps_debut = new java.util.Date().getTime() - 259200000;
-        long temps_fin = new java.util.Date().getTime() + 959200000;
-        int recip_id_groupe = 1;
-
-        java.sql.Date debut = new java.sql.Date(temps_debut);
-        java.sql.Date fin = new java.sql.Date(temps_fin);
-
-        System.out.println("Mon ID est " + this.prof.getID() + " je suis " + prof.getNom() +
-                " je veux mon emplois du temps du " + debut + " au " + fin + " pour le groupe " + recip_id_groupe);
+        System.out.println("Mon ID est " + this.prof.getID() + " je suis " + this.prof.getNom() +
+                " je veux mon emplois du temps du " + date_debut + " au " + date_fin + " pour le groupe " + nomGroupe);
 
         /// C'est cette methode qui retourne les seances d'un groupe sur une periode
         ArrayList<Seance> lesseances_prof =
-                enseignantDAO.trouverSeancesParGroupeSurPeriode(this.prof.getID(), recip_id_groupe, debut, fin);
+                enseignantDAO.trouverSeancesParGroupeSurPeriode(this.prof.getID(), recip_id_groupe, date_debut, date_fin);
 
         /*
         ///Il y a possiblement un beug dans la recup des cours
@@ -443,7 +440,7 @@ public class Edt_Enseignant extends Edt {
                 Seance premiere_seance = unelistedecours.get(0);
                 Seance derniere_seance = unelistedecours.get(0);
 
-                System.out.println("Pour la matière " + unelistedecours.get(0).getCours().getNom() + " du groupe id : " + recip_id_groupe);
+                System.out.println("Pour la matière " + unelistedecours.get(0).getCours().getNom() + " du groupe " + nomGroupe);
 
                 // on cherche la première et la dernière seance
                 for (Seance uneseance : unelistedecours) {

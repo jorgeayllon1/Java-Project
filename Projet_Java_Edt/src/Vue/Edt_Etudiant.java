@@ -5,18 +5,13 @@
  */
 package Vue;
 
-import Controlleur.Recherche.RechercheControleur;
 import Modele.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
-import javax.swing.border.MatteBorder;
 
 /**
  * @author Wang David
@@ -390,7 +385,15 @@ public class Edt_Etudiant extends Edt {
         if (e.getSource() == this.summary) {
             //JOptionPane stop = new JOptionPane();
             //stop.showMessageDialog(null, "Indisponible pour le moment", "ERREUR", JOptionPane.ERROR_MESSAGE);
-            voirrecap(this.etudiant, new java.sql.Date(2020, 6, 2), new java.sql.Date(2020, 6, 11));
+            /// ATTENTION peut ne pas marcher si la date d'aujourd'hui n'est pas bonne
+            /// Pensez à ajuster l'heure par des +- jours
+
+            long temps_debut = new java.util.Date().getTime() - 259200000;
+            long temps_fin = new java.util.Date().getTime() + 959200000;
+
+            java.sql.Date debut = new java.sql.Date(temps_debut);
+            java.sql.Date fin = new java.sql.Date(temps_fin);
+            voirrecap(debut, fin);
         }
 
 
@@ -400,25 +403,16 @@ public class Edt_Etudiant extends Edt {
     /**
      * Renvoie un recap de toutes les informations d'un enseignant
      */
-    public void voirrecap(Etudiant eleve, java.sql.Date date_debut, java.sql.Date date_fin) {
+    public void voirrecap(java.sql.Date date_debut, java.sql.Date date_fin) {
 
         EtudiantDao etudiantDao = new EtudiantDao();
 
-        /// ATTENTION peut ne pas marcher si la date d'aujourd'hui n'est pas bonne
-        /// Pensez à ajuster l'heure par des +- jours
-
-        long temps_debut = new java.util.Date().getTime() - 259200000;
-        long temps_fin = new java.util.Date().getTime() + 959200000;
-
-        java.sql.Date debut = new java.sql.Date(temps_debut);
-        java.sql.Date fin = new java.sql.Date(temps_fin);
-
         System.out.println("Mon ID est " + this.etudiant.getID() + " je suis " + this.etudiant.getNom() +
-                " je veux mon emplois du temps du " + debut + " au " + fin + " pour le " + this.etudiant.getGroupe().getNom());
+                " je veux mon emplois du temps du " + date_debut + " au " + date_fin + " pour le " + this.etudiant.getGroupe().getNom());
 
         /// C'est cette methode qui retourne les seances sur une periode
         ArrayList<Seance> lesseances_eleve =
-                etudiantDao.trouverSeancesSurPeriode(this.etudiant.getID(), debut, fin);
+                etudiantDao.trouverSeancesSurPeriode(this.etudiant.getID(), date_debut, date_fin);
 
         System.out.println("Tout les cours de l'eleve sur une periode :");
         if (lesseances_eleve.size() != 0) {
