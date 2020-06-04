@@ -328,6 +328,8 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return prof;
     }
     
+    /**Méthode qui renvoie vrai si le nom existe dans la bdd false sinon
+     * @param nom*/
     public boolean siExiste(String nom)
     {
         Enseignant prof = new Enseignant();

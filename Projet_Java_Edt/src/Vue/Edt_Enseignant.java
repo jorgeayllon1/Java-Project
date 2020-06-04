@@ -290,11 +290,12 @@ public class Edt_Enseignant extends Edt {
             label_nom.setText("Nom utilisateur :");
             label_semaine.setText("Numéro semaine");
 
-            JTextField nom = new JTextField();
-            nom.setPreferredSize(new Dimension(100, 200));
+            JTextField nom = new JTextField(prof.getNom());
+            nom.setEditable(false);
+            nom.setPreferredSize(new Dimension(100, 70));
 
             JTextField semaine = new JTextField();
-            semaine.setPreferredSize(new Dimension(100, 200));
+            semaine.setPreferredSize(new Dimension(100, 70));
 
             panel_recherche.add(label_nom);
             panel_recherche.add(nom);
@@ -315,7 +316,7 @@ public class Edt_Enseignant extends Edt {
                     String string_semaine = semaine.getText();
 
                     int int_semaine = Integer.valueOf(string_semaine); //Cast en int
-                    afficherEdtSemaineProf(3, int_semaine);
+                    afficherEdtSemaineProf(3, int_semaine); //On peut que rechercher ses propres cours
 
                 }
 
@@ -359,6 +360,11 @@ public class Edt_Enseignant extends Edt {
                 this.afficherEdtSemaineProf(3, int_semaine);
 
             }
+        }
+        
+        if(e.getSource()==this.logout)
+        {
+            this.dispose();
         }
     }
 

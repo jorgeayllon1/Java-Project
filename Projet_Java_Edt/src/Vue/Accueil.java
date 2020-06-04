@@ -23,6 +23,8 @@ import java.util.*;
 /** Page connexion*/
 public class Accueil extends JFrame implements Observer, ActionListener {
     
+    
+    
     private final JButton connexion;
     private final JTextField id;
     private final JPasswordField mdp;
@@ -39,6 +41,7 @@ public class Accueil extends JFrame implements Observer, ActionListener {
         this.setSize(400,400); //Taille
         this.setLocationRelativeTo(null); //Centre
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Stop run quand la dernière fenetre est fermée
+        this.setResizable(false);
         
         JPanel panel = (JPanel)this.getContentPane();
         
@@ -48,7 +51,9 @@ public class Accueil extends JFrame implements Observer, ActionListener {
         id.setPreferredSize(new Dimension(100,30));
         this.mdp = new JPasswordField();
         mdp.setPreferredSize(new Dimension(100,30));
-        this.connexion = new JButton("Se connecter");
+        ImageIcon login_icon = new ImageIcon(new ImageIcon("src/Icones/login.png").getImage().getScaledInstance(15, 15, Image.SCALE_DEFAULT));
+        this.connexion = new JButton("Se connecter",login_icon);
+        this.connexion.setPreferredSize(new Dimension(150,50));
         this.label_id = new JLabel("Identidiant");
         this.label_mdp = new JLabel("Mot de Passe");
         
@@ -77,7 +82,7 @@ public class Accueil extends JFrame implements Observer, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        this.control_accueil = new AccueilControleur();
+        this.control_accueil = new AccueilControleur(); //Création objet
         this.control_accueil.control_accueil(this.id.getText(),this.mdp.getText()); //On envoie les données des champs remplies ou pas
            
     }

@@ -27,7 +27,7 @@ public class Edt extends JFrame implements ActionListener {
     protected final JToolBar menu = new JToolBar();
     protected final JToolBar semaine = new JToolBar(JToolBar.CENTER);
     
-    protected JLabel info;
+    protected JLabel info = new JLabel();
     protected JPanel panel = new JPanel();
     protected JPanel panel_edt = new JPanel(new GridLayout(0, 1));
     
@@ -39,8 +39,9 @@ public class Edt extends JFrame implements ActionListener {
     protected JButton summary = new JButton("Récapitulatif des cours");
     protected JButton mes_cours = new JButton("Cours");
     protected JButton report = new JButton("Reporting");
+    protected JButton logout = new JButton("Se déconnecter");
     
-    protected int num_semaine;
+    protected int num_semaine=0;
     protected ArrayList<JButton> week_button;
 
     protected Font f = null;
@@ -61,6 +62,7 @@ public class Edt extends JFrame implements ActionListener {
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Stop run quand la dernière fenetre est fermé
         infoBase();
+        this.logout.addActionListener(this);
 
     }
     
@@ -93,6 +95,10 @@ public class Edt extends JFrame implements ActionListener {
         ImageIcon recap_icon = new ImageIcon(new ImageIcon("src/Icones/news-admin.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
         this.summary = new JButton("Récapitulatif des cours", recap_icon);
         this.iconFont(summary);
+        
+        ImageIcon logout_icon = new ImageIcon(new ImageIcon("src/Icones/logout.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        this.logout = new JButton("Se déconnecter", logout_icon);
+        this.iconFont(logout);
         
         ///Affiche le numéro de semaine
         Calendar cal = new GregorianCalendar();
@@ -147,6 +153,12 @@ public class Edt extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        
+        if(e.getSource()==this.logout)
+        {
+
+            this.dispose();
+        }
 
     }
     
@@ -169,7 +181,7 @@ public class Edt extends JFrame implements ActionListener {
         {
             Object[][] data =
             {
-                {"Horaires", "Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"},
+                {"Horaires/Jours", "Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"},
                 {"8h-10h", "", "","","","",""},
                 {"10h-12h", "", "","","","",""},
                 {"12h-14h", "", "","","","",""},
@@ -186,9 +198,7 @@ public class Edt extends JFrame implements ActionListener {
         tableau.setRowHeight(90);
         tableau.setDefaultRenderer(Object.class, new CaseLabel());
         //tableau.setDefaultRenderer(JLabel.class, new CaseLabel());
-        
-        
-        tableau.setShowGrid(true);
+        tableau.setShowGrid(true); //Affichage quadrillage
 
         
     }

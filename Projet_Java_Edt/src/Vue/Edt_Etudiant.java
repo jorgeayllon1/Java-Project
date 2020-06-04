@@ -1,10 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Vue;
 
+package Vue;
 import Modele.*;
 
 import java.awt.*;
@@ -327,11 +322,12 @@ public class Edt_Etudiant extends Edt {
 
             label_nom.setText("Nom de l'étudiant :");
             label_semaine.setText("Numéro semaine");
-            JTextField nom = new JTextField();
-            nom.setPreferredSize(new Dimension(100, 200));
+            JTextField nom = new JTextField(etudiant.getNom());
+            nom.setEditable(false);
+            nom.setPreferredSize(new Dimension(100, 70));
 
             JTextField semaine = new JTextField();
-            semaine.setPreferredSize(new Dimension(100, 200));
+            semaine.setPreferredSize(new Dimension(100, 70));
 
             panel_recherche.add(label_nom);
             panel_recherche.add(nom);
@@ -350,7 +346,7 @@ public class Edt_Etudiant extends Edt {
                     String string_semaine = semaine.getText();
 
                     int int_semaine = Integer.valueOf(string_semaine); //Cast en int
-                    afficherEdtSemaineEtudiant(4, int_semaine);
+                    afficherEdtSemaineEtudiant(4, int_semaine);//On peut que rechercher ses propres cours
 
                 }
             });
@@ -394,6 +390,11 @@ public class Edt_Etudiant extends Edt {
             java.sql.Date debut = new java.sql.Date(temps_debut);
             java.sql.Date fin = new java.sql.Date(temps_fin);
             voirrecap(debut, fin);
+        }
+        
+        if(e.getSource()==this.logout)
+        {
+            this.dispose();
         }
 
 

@@ -30,7 +30,6 @@ public class Edt_Admin extends Edt {
     JButton chercher_promotion=null;
     JButton maj = new JButton ("Mise à jour");
     
-    
     Utilisateur user = new Utilisateur();
     Enseignant prof = new Enseignant();
     Groupe groupe = new Groupe();
@@ -67,7 +66,6 @@ public class Edt_Admin extends Edt {
         this.maj.addActionListener(this);
         
         this.panel_recherche.add(boutons_search);
-
 
     }
     
@@ -176,6 +174,8 @@ public class Edt_Admin extends Edt {
         
     }
     
+    ///Méthodes de redirection de panel///
+    
     public void suppPanel(JComponent parent)
     {
         parent.removeAll();
@@ -200,6 +200,8 @@ public class Edt_Admin extends Edt {
         this.add(parent);
         this.setVisible(true);
     }
+    
+    ///ACTIONS///
     @Override
     public void actionPerformed(ActionEvent e) {
         
@@ -211,12 +213,12 @@ public class Edt_Admin extends Edt {
         
         if(e.getSource()==this.rechercher)
         {
-            suppPanel(panel);
-
-            suppPanel(content2);
-           
+            ///SUPRESSION///
+            suppPanel(panel); //Vider le panel
+            suppPanel(content2); //Supprimer le content2 pour maj        
             this.info.setVisible(false);
             suppPanel(boutons_search);
+            ///INSTANCIATION
             content = new JPanel(new BorderLayout());
             panel_recherche = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
             boutons_search = new JPanel(new FlowLayout());
@@ -224,8 +226,7 @@ public class Edt_Admin extends Edt {
             Object[] deroulant = new Object[]{"Rechercher...", "Utilisateur" , "Groupe" , "Promotion" , "Salle"};
             JComboBox liste = new JComboBox(deroulant);
             
-            panel_recherche.add(liste);
-            
+            panel_recherche.add(liste);         
             JLabel label_nom = new JLabel();
             JLabel label_semaine = new JLabel();
             
@@ -236,12 +237,13 @@ public class Edt_Admin extends Edt {
             semaine.setPreferredSize(new Dimension(100, 50));
             
             
-            
+            ///INSTANTICATION DES BOUTONS///
             chercher_utilisateur = new JButton();
             chercher_groupe = new JButton();
             chercher_promotion = new JButton();
             chercher_salle = new JButton();
    
+            ///AJOUT DANS LE PANEL SUPERIEUR DE RECHERCHE///
             panel_recherche.add(label_nom);
             panel_recherche.add(nom);
             panel_recherche.add(label_semaine);
@@ -253,7 +255,7 @@ public class Edt_Admin extends Edt {
             //infos.add(recup_info);
 
             //panel_recherche.add(boutons_search);
-            content.add(panel_recherche, BorderLayout.NORTH);
+            content.add(panel_recherche, BorderLayout.NORTH);//Ajout en haut des composants de recherche
             //content.add(infos, BorderLayout.CENTER);
             
             this.panel.add(content);
@@ -263,36 +265,36 @@ public class Edt_Admin extends Edt {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     e.getSource();
-                    String choisi = (String)liste.getSelectedItem();
-                    if(choisi=="Utilisateur")
+                    String choisi = (String)liste.getSelectedItem(); //On stocke dans un string l'item selectionné
+                    if(choisi=="Utilisateur") //Si on choisit utilisateur dans la liste
                     {                      
-                        suppPanel(boutons_search);
-                        label_nom.setText("Nom Prof :");
+                        suppPanel(boutons_search); //On remove les anciens boutons
+                        label_nom.setText("Nom Prof :");  //Changement des labels
                         label_semaine.setText("Numéro semaine");
                                    
-                        chercher_utilisateur = new JButton(new AbstractAction("Chercher Prof") {
+                        chercher_utilisateur = new JButton(new AbstractAction("Chercher Prof") { //Création nouveau bouton + invocation classe anonyme
                             @Override
                             public void actionPerformed(ActionEvent actionEvent) {
-                                rechercher_utilisateur(nom.getText(), semaine.getText(), 1);
+                                rechercher_utilisateur(nom.getText(), semaine.getText(), 1); //On recherhce et controle s'il y a cet utilisateur
                                 afficherGrille();
                                 String string_semaine = semaine.getText();
                                 
-                                prof = profDao.trouverProfAvecNom(nom.getText());
+                                prof = profDao.trouverProfAvecNom(nom.getText()); //On instancie l'objet prof
                                 
-                                boolean existe = profDao.siExiste(nom.getText());
+                                boolean existe = profDao.siExiste(nom.getText()); //On vérifie s'il existe
                                 
-                                if(existe==true)
+                                if(existe==true)//S'il existe dans la bdd
                                 {
                                     int int_semaine = Integer.valueOf(string_semaine); //Cast en int
-                                    afficherEdtSemaineProf( prof,int_semaine);
+                                    afficherEdtSemaineProf( prof,int_semaine); //On affiche l'edt du prof en question
                                 }
 
                                 /*content.add(panel_recherche, BorderLayout.NORTH);
                                 panel.add(content);*/
                             }
                         });
-                        ajoutPanel(boutons_search,chercher_utilisateur) ;
-                        panel_recherche.add(boutons_search);
+                        ajoutPanel(boutons_search,chercher_utilisateur) ; //On ajoute le bouton dans son layout parent
+                        panel_recherche.add(boutons_search); //Puis on l'ajoute dans le panel recherche
    
                     }
                     else if(choisi=="Groupe")
@@ -375,6 +377,11 @@ public class Edt_Admin extends Edt {
         {
             JOptionPane stop = new JOptionPane();
             stop.showMessageDialog(null, "Non dispo", "ERREUR", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        if(e.getSource()==this.logout)
+        {
+            this.dispose();
         }
    
     }
