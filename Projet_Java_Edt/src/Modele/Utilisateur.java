@@ -81,5 +81,7 @@ public class Utilisateur extends Observable {
     public int getDroit() {
         return this.droit;
     }
+    
+    
 
 }
