@@ -25,7 +25,6 @@ public class CoursDao extends DAO<Cours> {
     public Cours find(int id) {
         Cours cours = new Cours();
         try {
-            //this.conn = Connexion.seConnecter();
             this.rset = this.conn.createStatement(
                     this.rset.TYPE_SCROLL_INSENSITIVE,
                     this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM cours WHERE id = " + id);
