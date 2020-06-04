@@ -30,7 +30,7 @@ public class Edt extends JFrame implements ActionListener {
     protected JPanel panel = new JPanel();
     protected JPanel panel_edt = new JPanel(new GridLayout(0, 1));
 
-    JPanel content = null;
+    JPanel content = new JPanel();
     
     protected JButton rechercher = new JButton("Rechercher");
     protected JButton annule = new JButton("Cours annulé(s)");
@@ -178,11 +178,11 @@ public class Edt extends JFrame implements ActionListener {
         tableau.setRowHeight(90);
         tableau.setDefaultRenderer(Object.class, new CaseLabel());
         
+        
         tableau.setShowGrid(true);
 
         
     }
-    
     
     
     //Méthode de recherche selon nom user

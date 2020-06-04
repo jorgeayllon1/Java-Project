@@ -295,4 +295,36 @@ public class EnseignantDAO extends DAO<Enseignant> {
 
         return les_seances;
     }
+    /**Méthode pour trouver un prof en fonction de son nom
+     * @param nom*/
+    public Enseignant trouverProfAvecNom(String nom)
+    {
+        Enseignant prof = new Enseignant();
+        EnseignantDAO profDao = new EnseignantDAO();
+        int id_user=0;
+        
+        
+        try {
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id FROM utilisateur WHERE nom ='" + nom+"'"); 
+
+
+            while (rset.next())
+            {
+
+                id_user = rset.getInt("id");
+                prof = profDao.find(id_user);
+
+
+            }
+
+
+        } catch (SQLException e) {
+            
+            System.out.println("Connexion echouee : probleme SQL SeanceDAO");
+            e.printStackTrace();
+        }
+        return prof;
+    }
 }

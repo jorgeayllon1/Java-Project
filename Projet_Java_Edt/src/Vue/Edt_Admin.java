@@ -20,14 +20,28 @@ import java.util.*;
  */
 public class Edt_Admin extends Edt {
     
-    JPanel recherche_panel = new JPanel();
+    JPanel panel_recherche = new JPanel();
     JPanel boutons_search = new JPanel();
+    JPanel infos = new JPanel();
     
     JButton chercher_utilisateur=null;
     JButton chercher_salle=null;
     JButton chercher_groupe=null;
     JButton chercher_promotion=null;
     JButton maj = new JButton ("Mise à jour");
+    
+    
+    Utilisateur user = new Utilisateur();
+    Enseignant prof = new Enseignant();
+    Groupe groupe = new Groupe();
+    Salle salle = new Salle();
+
+    GroupeDAO groupeDao = new GroupeDAO();
+    EnseignantDAO profDao = new EnseignantDAO();
+    SeanceDao seanceDao = new SeanceDao();
+    
+    ArrayList<Seance> mes_seances = new ArrayList();
+    ArrayList<Integer> mes_id = new ArrayList();
 
     public Edt_Admin() {
     }
@@ -37,12 +51,119 @@ public class Edt_Admin extends Edt {
         super(user);
         this.rechercher.addActionListener(this);
         this.mes_cours.addActionListener(this);
+        this.summary.addActionListener(this);
+        this.report.addActionListener(this);
+        
         ImageIcon maj_icon = new ImageIcon(new ImageIcon("src/Icones/refresh.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
         maj = new JButton("Mise à jour", maj_icon);
         this.iconFont(maj);
         
-        this.recherche_panel.add(boutons_search);
+        this.panel_recherche.add(boutons_search);
+        
 
+    }
+    
+    public void afficherEdtSemaineProf(Enseignant prof, int semaine) 
+    {
+        suppPanel(infos);
+        ArrayList<JLabel> mes_labels = new ArrayList();
+        content = new JPanel(new BorderLayout());
+        
+            profDao = new EnseignantDAO();
+            mes_id = new ArrayList();
+            mes_id = profDao.trouverIdSeance(prof);
+
+            mes_seances = new ArrayList();
+            mes_seances = profDao.trouverAllSeancesSemaine(prof.getID(), semaine);
+            salle = new Salle();
+
+            for (int i = 0; i < mes_seances.size(); i++) //On parcourt les séances
+            {
+                salle = profDao.trouverSalle(mes_seances.get(i));
+                java.util.Date date = mes_seances.get(i).getDate();
+                Calendar c = Calendar.getInstance();
+                c.setTime(date);
+                int dayOfWeek = c.get(Calendar.DAY_OF_WEEK); //On get le jour de la semaine 1 sunday 2 monday 3 tuesday...
+                for (int jour_semaine = 2; jour_semaine < 7; jour_semaine++) {
+                    if (dayOfWeek == jour_semaine) //Si c un vendredi
+                    {
+                        String str = mes_seances.get(i).getHeureDebut().toString();
+                        char str2 = str.charAt(11);
+                        char str3 = str.charAt(12);
+                        StringBuilder str4 = new StringBuilder();
+                        if (str2 == '0') {
+                            str4.append(str3);
+                        } else {
+                            str4.append(str2).append(str3);
+                        }
+
+                        int n = 0;
+                        String heure = "";
+                        for (int m = 0; m < 7; m++) {
+                            if (m == 0) {
+                                heure = Integer.toString(m + 8 + n);
+                            } else {
+                                if ((m + n) % 2 == 0) {
+                                    n += 2;
+                                    heure = Integer.toString(m + 8 + n);
+                                } else if ((m + n) % 2 != 0) {
+                                    n++;
+                                    heure = Integer.toString(m + 8 + n);
+                                }
+                            }
+
+
+                            int colonne_semaine = jour_semaine - 1;
+                            int ligne_semaine = 0;
+                            if (str4.toString().equals(heure)) //Si ca commence à 10h
+                            {
+                                if (heure.contains("8"))
+                                    ligne_semaine = 1;
+                                if (heure.contains("10"))
+                                    ligne_semaine = 2;
+                                if (heure.contains("12"))
+                                    ligne_semaine = 3;
+                                if (heure.contains("14"))
+                                    ligne_semaine = 4;
+                                if (heure.contains("16"))
+                                    ligne_semaine = 5;
+                                if (heure.contains("18"))
+                                    ligne_semaine = 6;
+                                if (heure.contains("20"))
+                                    ligne_semaine = 7;
+
+
+                                groupe = seanceDao.trouverGroupe(mes_seances.get(i));
+
+
+                                String myString =
+                                        "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + "<br>Groupe :" +
+                                                groupe.getNom()
+                                                + "<br>Salle :" +
+                                                salle.getNom() + "<br>Site :" +
+                                                salle.getSite().getNom() + "</p></html>";
+                                mes_labels.add(new JLabel(myString));
+                                int last = mes_labels.size() - 1;
+                                mes_labels.get(last).setBackground(Color.red);
+                                mes_labels.get(last).setOpaque(true);
+                                
+                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                            }
+                        }
+
+                    }
+                }
+
+            }
+
+            this.panel_recherche.setVisible(false);
+            infos = new JPanel(new BorderLayout() );
+            ajoutPanel(infos,tableau);
+            content.add(infos, BorderLayout.CENTER);
+            this.panel.add(content);
+            this.setVisible(true);
+
+        
     }
     
     public void suppPanel(JComponent parent)
@@ -72,14 +193,16 @@ public class Edt_Admin extends Edt {
         
         if(e.getSource()==this.rechercher)
         {
+            suppPanel(infos);
+            suppPanel(boutons_search);
             content = new JPanel(new BorderLayout());
-            recherche_panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+            panel_recherche = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
             boutons_search = new JPanel(new FlowLayout());
             
             Object[] deroulant = new Object[]{"Rechercher...", "Utilisateur" , "Groupe" , "Promotion" , "Salle"};
             JComboBox liste = new JComboBox(deroulant);
             
-            recherche_panel.add(liste);
+            panel_recherche.add(liste);
             
             JLabel label_nom = new JLabel();
             JLabel label_semaine = new JLabel();
@@ -90,27 +213,27 @@ public class Edt_Admin extends Edt {
             JTextField semaine = new JTextField();
             semaine.setPreferredSize(new Dimension(100, 50));
             
-            suppPanel(boutons_search);
+            
             
             chercher_utilisateur = new JButton();
             chercher_groupe = new JButton();
             chercher_promotion = new JButton();
             chercher_salle = new JButton();
    
-            recherche_panel.add(label_nom);
-            recherche_panel.add(nom);
-            recherche_panel.add(label_semaine);
-            recherche_panel.add(semaine);
+            panel_recherche.add(label_nom);
+            panel_recherche.add(nom);
+            panel_recherche.add(label_semaine);
+            panel_recherche.add(semaine);
             
-            JPanel infos = new JPanel(new BorderLayout() );
+            infos = new JPanel(new BorderLayout() );
             recup_info = new JLabel("", JLabel.CENTER);
-            infos.add(recup_info);
+            //infos.add(recup_info);
             
 
             
-            recherche_panel.add(boutons_search);
-            content.add(recherche_panel, BorderLayout.NORTH);
-            content.add(infos, BorderLayout.CENTER);
+            panel_recherche.add(boutons_search);
+            content.add(panel_recherche, BorderLayout.NORTH);
+            //content.add(infos, BorderLayout.CENTER);
             
             this.panel.add(content);
             
@@ -127,13 +250,18 @@ public class Edt_Admin extends Edt {
                             @Override
                             public void actionPerformed(ActionEvent actionEvent) {
                                 rechercher_utilisateur(nom.getText(), semaine.getText(), 1);
+                                afficherGrille();
+                                String string_semaine = semaine.getText();
+                                prof = profDao.trouverProfAvecNom(nom.getText());
+                                int int_semaine = Integer.valueOf(string_semaine); //Cast en int
+                                afficherEdtSemaineProf(prof, int_semaine);
                             }
                         });
 
                         label_nom.setText("Nom utilisateur :");
                         label_semaine.setText("Numéro semaine");
                         ajoutPanel(boutons_search,chercher_utilisateur) ;
-                        content.add(recherche_panel, BorderLayout.NORTH);
+                        content.add(panel_recherche, BorderLayout.NORTH);
                         panel.add(content);
                         
                     }
@@ -152,7 +280,7 @@ public class Edt_Admin extends Edt {
                         label_semaine.setText("Numéro semaine");
                         ajoutPanel(boutons_search,chercher_groupe) ;  
 
-                        content.add(recherche_panel, BorderLayout.NORTH);
+                        content.add(panel_recherche, BorderLayout.NORTH);
                         panel.add(content);
                     }
                     
@@ -171,7 +299,7 @@ public class Edt_Admin extends Edt {
                         label_semaine.setText("Numéro semaine");
                         ajoutPanel(boutons_search,chercher_promotion) ;  
                         
-                        content.add(recherche_panel, BorderLayout.NORTH);
+                        content.add(panel_recherche, BorderLayout.NORTH);
                         panel.add(content);
                     }
                     
@@ -190,7 +318,7 @@ public class Edt_Admin extends Edt {
                         label_semaine.setText("Numéro semaine");
                         ajoutPanel(boutons_search,chercher_salle) ;  
 
-                        content.add(recherche_panel, BorderLayout.NORTH);
+                        content.add(panel_recherche, BorderLayout.NORTH);
                         panel.add(content);
                     }
                    
