@@ -214,6 +214,8 @@ public class Edt_Admin extends Edt {
             numero_semaine = Integer.parseInt(semaine);
         } catch (NumberFormatException e) {
             System.err.println("Numero de semaine non valide");
+            JOptionPane stop = new JOptionPane();
+            stop.showMessageDialog(null, "Numero de semaine non valide", "ERREUR", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -241,7 +243,13 @@ public class Edt_Admin extends Edt {
                 s+="</p></html>";
                 recup_info.setText(s);
             } else System.out.println("Pas de séance cette semaine");
-        } else System.out.println("Ce groupe n'existe pas");
+        } else 
+        {
+            System.out.println("Ce groupe n'existe pas");
+            JOptionPane stop = new JOptionPane();
+            stop.showMessageDialog(null, "Erreur lors de la saisie", "ERREUR", JOptionPane.ERROR_MESSAGE);
+        }
+            
 
     }
 
@@ -260,6 +268,8 @@ public class Edt_Admin extends Edt {
             numero_promotion = Integer.parseInt(anne_promotion);
         } catch (NumberFormatException e) {
             System.err.println("Numero de semaine ou de année non valide");
+            JOptionPane stop = new JOptionPane();
+            stop.showMessageDialog(null, "Numero de semaine ou annee non valide", "ERREUR", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -285,7 +295,13 @@ public class Edt_Admin extends Edt {
             } else System.out.println("Pas de séance cette semaine");
             
 
-        } else System.out.println("Cette promotion n'existe pas");
+        } else
+        {
+            System.out.println("Cette promotion n'existe pas");
+            JOptionPane stop = new JOptionPane();
+            stop.showMessageDialog(null, "Cette promotion n'existe pas", "ERREUR", JOptionPane.ERROR_MESSAGE);
+            
+        }
 
     }
 
@@ -300,6 +316,8 @@ public class Edt_Admin extends Edt {
             numero_semaine = Integer.parseInt(semaine);
         } catch (NumberFormatException e) {
             System.err.println("Numero de semaine non valide");
+            JOptionPane stop = new JOptionPane();
+            stop.showMessageDialog(null, "Numero de semaine non valide", "ERREUR", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -325,7 +343,12 @@ public class Edt_Admin extends Edt {
                 s+="</p></html>";
                 recup_info.setText(s);
             } else System.out.println("Pas de séance cette semaine");
-        } else System.out.println("Cette salle n'existe pas n'existe pas");
+        } else 
+        {
+            System.out.println("Cette salle n'existe pas");
+            JOptionPane stop = new JOptionPane();
+            stop.showMessageDialog(null, "Cette salle n'existe pas", "ERREUR", JOptionPane.ERROR_MESSAGE);
+        }
 
     }
 

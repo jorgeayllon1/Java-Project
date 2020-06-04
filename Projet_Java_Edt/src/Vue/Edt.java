@@ -196,6 +196,8 @@ public class Edt extends JFrame implements ActionListener {
             numero_semaine = Integer.parseInt(semaine);
         } catch (NumberFormatException e) {
             System.out.println("Numero de semaine non valide");
+            JOptionPane stop = new JOptionPane();
+            stop.showMessageDialog(null, "Numero de semaine non valide", "ERREUR", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -240,8 +242,8 @@ public class Edt extends JFrame implements ActionListener {
 
                 System.out.println("Son emploi du temps est le suivant :");
                 
-                String s = "<html><p>Les informations de la personne sont :\n" +  "<br>" +leusersouhaiter.getID() + " " + leusersouhaiter.getNom() + " " + leusersouhaiter.getPrenom()
-                        + " " + leusersouhaiter.getMail() + " " + leusersouhaiter.getDroit() + "<br>" + "Son emploi du temps pour la semaine "+semaine+" est le suivant : <br> ";
+                String s = "<html><p>Les informations de la personne sont :\n" +  "<br>" + leusersouhaiter.getNom() + " " + leusersouhaiter.getPrenom()
+                        + " " + leusersouhaiter.getMail() + " "+ "<br>" + "Son emploi du temps pour la semaine du "+semaine+" est le suivant : <br> ";
                 for (Seance uneseance :
                         lesSeances) {
                     System.out.println(uneseance.getID() + " " + uneseance.getSemaine() + " " + uneseance.getDate().toString() + " " + uneseance.getHeureDebut()
@@ -254,7 +256,13 @@ public class Edt extends JFrame implements ActionListener {
                 recup_info.setText(s);
             } else System.out.println("Accés non autorisé");
         } else
+        {
             System.out.println("Personne non trouvé dans la BDD : " + nom);
+            JOptionPane stop = new JOptionPane();
+            stop.showMessageDialog(null, "Personne non trouvé dans la BDD", "ERREUR", JOptionPane.ERROR_MESSAGE);
+        }
+            
+        
 
     }
 
