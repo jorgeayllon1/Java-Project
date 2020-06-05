@@ -14,6 +14,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TableLabel extends DefaultTableModel{
     
+    
+    
     Object[][] row = {{new JLabel("8h-10h"), "", "","","","",""},
                       {new JLabel("10h-12h"), "", "","","","",""},
                       {new JLabel("12h-14h"), "", "","","","",""},

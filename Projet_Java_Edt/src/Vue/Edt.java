@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
@@ -41,7 +42,7 @@ public class Edt extends JFrame implements ActionListener {
     
     protected JLabel recup_info=null;
     protected JTable tableau;
-    protected JScrollPane scroll;
+
 
 
     public Edt() {
@@ -181,6 +182,103 @@ public class Edt extends JFrame implements ActionListener {
         
     }
     
+    public void afficherGrille(JPanel panelTab)
+    {
+        //JScrollPane pane = new JScrollPane();
+        
+        /*Object[] columns = {"Horaires/Jours", "Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"};
+        Object[][] rows = {{"8h-10h", "", "","","","",""},
+            {"10h-12h", "", "","","","",""},
+            {"12h-14h", "", "","","","",""},
+            {"14h-16h", "", "","","","",""},
+            {"16h-18h", "", "","","","",""},
+            {"18h-20h", "", "","","","",""}
+        
+                };*/
+        
+        /*DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Horaires/Jours");
+        model.addColumn("Lundi");
+        model.addColumn("Mardi");
+        model.addColumn("Mercredi");
+        model.addColumn("Jeudi");
+        model.addColumn("Vendredi");
+        model.addColumn("Samedi");
+
+        Object[] row = new Object[1];
+        row[0] = "";
+        model.addRow(row);
+        row = new Object[1];
+        row[0] = "8h-10h";
+
+        model.addRow(row);
+        
+        row = new Object[1];
+        row[0] = "10h-12h";
+ 
+
+        model.addRow(row);
+
+        row = new Object[1];
+        row[0] = "12h-14h";
+
+        model.addRow(row);
+        
+         row = new Object[1];
+        row[0] = "14h-16h";
+
+
+        model.addRow(row);
+
+        row = new Object[1];
+        row[0] = "16h-18h";
+
+        model.addRow(row);
+        row = new Object[1];
+        row[0] = "18h-20h";
+
+        model.addRow(row);
+        row = new Object[1];
+        
+
+        tableau = new JTable();
+        tableau.setModel(model);
+        tableau.setRowHeight(panel.getHeight()/9);
+        tableau.setDefaultRenderer(JLabel.class, new CaseLabel());
+        tableau.setShowGrid(true);*/
+        Object[][] donnees =
+        {
+            {"Horaires/Jours", "Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"},
+            {"8h-10h", "", "","","","",""},
+            {"10h-12h", "", "","","","",""},
+            {"12h-14h", "", "","","","",""},
+            {"14h-16h", "", "","","","",""},
+            {"16h-18h", "", "","","","",""},
+            {"18h-20h", "", "","","","",""},
+                
+        };
+
+        String  titre[] = {"Horaires", "Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"};
+
+        tableau = new JTable(donnees,titre);
+        tableau.setEnabled(false); //Non éditable
+        //tableau.setTableHeader(null);
+        //tableau = new JTable();
+        //tableau.setModel(new TableLabel());
+        tableau.setRowHeight(panel.getHeight()/9);
+
+        tableau.setDefaultRenderer(Object.class, new CaseLabel());
+        //tableau.setDefaultRenderer(JLabel.class, new CaseLabel());
+        tableau.setShowGrid(true); //Affichage quadrillage*/
+        /*pane.setViewportView(tableau);
+        panelTab.add(pane);*/
+        
+        panelTab.add(tableau);
+        
+        
+        
+    }
+    
     //Méthode de recherche selon nom user
     public void rechercher_utilisateur(String nom, String semaine, int droit) {
 
@@ -249,7 +347,7 @@ public class Edt extends JFrame implements ActionListener {
                 }
                 s+="</p></html>";
                 
-                recup_info.setText(s);
+               // recup_info.setText(s);
             } else System.out.println("Accés non autorisé");
         } else
         {
