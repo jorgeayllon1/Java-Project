@@ -1,5 +1,6 @@
 
 package Vue;
+
 import Modele.*;
 
 import java.awt.*;
@@ -18,7 +19,7 @@ public class Edt_Etudiant extends Edt {
     private Groupe groupe = null;
     private GroupeDAO groupeDao = null;
     private EtudiantDao etudiantDao = null;
-    
+
     private ArrayList<Seance> mes_seances = new ArrayList();
     private ArrayList<Integer> mes_id = new ArrayList();
     private SeanceDao seanceDao = new SeanceDao();
@@ -38,12 +39,12 @@ public class Edt_Etudiant extends Edt {
         etudiant = (Etudiant) etudiantDao.find(etudiant.getID());//*****************
         groupeDao = new GroupeDAO();
         groupe = groupeDao.find(etudiant.getGroupe().getId());
-        
+
         afficherEdtEtudiantAccueil();
         this.mes_cours.addActionListener(this);
         this.rechercher.addActionListener(this);
         this.summary.addActionListener(this);
- 
+
         ///Si on clique sur l'un des boutons de la grille de semaine
         for (int nb_week = 0; nb_week < this.week_button.size(); nb_week++) {
             this.week_button.get(nb_week).addActionListener(this);
@@ -65,9 +66,11 @@ public class Edt_Etudiant extends Edt {
 
     }
 
-    /**Méthode qui va afficher l'edt lors de la connexion ainsi que 
+    /**
+     * Méthode qui va afficher l'edt lors de la connexion ainsi que
      * quand il clique sur l'onglet cours
-     * @param droit 
+     *
+     * @param droit
      */
 
     public void afficherEdtEtudiant(int droit) {
@@ -183,10 +186,12 @@ public class Edt_Etudiant extends Edt {
         this.setVisible(true);
     }
 
-    /**Méthode qui va afficher l'edt de l'étudiant 
+    /**
+     * Méthode qui va afficher l'edt de l'étudiant
      * en fonction d'une semaine
+     *
      * @param droit
-     * @param semaine 
+     * @param semaine
      */
     public void afficherEdtSemaineEtudiant(int droit, int semaine) {
         panel_edt.removeAll();
@@ -386,9 +391,8 @@ public class Edt_Etudiant extends Edt {
             java.sql.Date fin = new java.sql.Date(temps_fin);
             voirrecap(debut, fin);
         }
-        
-        if(e.getSource()==this.logout)
-        {
+
+        if (e.getSource() == this.logout) {
             this.dispose(); //Fermeture fenêtre
         }
 
@@ -413,7 +417,7 @@ public class Edt_Etudiant extends Edt {
         if (lesseances_eleve.size() != 0) {
 
             for (Seance uneseance : lesseances_eleve) {
-                System.out.println(uneseance.getID() + " " + uneseance.getCours().getNom() + " " + uneseance.getDate());
+                System.out.println(uneseance.getID() + " " + uneseance.getCours().getNom() + " " + uneseance.getDate() + " " + uneseance.getEtat());
             }
 
             ArrayList<Cours> cours_des_seances = new ArrayList<>();///C'est une liste des cours des seances
