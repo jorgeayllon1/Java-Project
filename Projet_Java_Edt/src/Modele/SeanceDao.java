@@ -52,6 +52,7 @@ public class SeanceDao extends DAO<Seance> {
                         rset.getDate("date"),
                         rset.getTimestamp("heure_debut"),
                         rset.getTimestamp("heure_fin"),
+                        rset.getInt("etat"),
                         cours,
                         type
                 );

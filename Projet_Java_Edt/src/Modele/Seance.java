@@ -19,6 +19,7 @@ public class Seance {
     private Date date=null;
     private Timestamp heure_debut=null;
     private Timestamp heure_fin=null;
+    private int etat=0;
     private Cours cours=null;
     private TypeCours type=null;
 
@@ -27,13 +28,14 @@ public class Seance {
     
     public Seance(){};
     
-    public Seance(int id, int semaine, Date date, Timestamp heure_debut, Timestamp heure_fin, Cours cours, TypeCours type)
+    public Seance(int id, int semaine, Date date, Timestamp heure_debut, Timestamp heure_fin, int etat, Cours cours, TypeCours type)
     {
         this.id=id;
         this.semaine=semaine;
         this.date=date;
         this.heure_debut=heure_debut;
         this.heure_fin=heure_fin;
+        this.etat=etat;
         this.cours=cours;
         this.type=type;
     }
@@ -71,5 +73,10 @@ public class Seance {
     public TypeCours getType()
     {
         return this.type;
+    }
+    
+    public int getEtat()
+    {
+        return this.etat;
     }
 }

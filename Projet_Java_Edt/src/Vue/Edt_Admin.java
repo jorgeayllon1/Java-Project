@@ -542,7 +542,6 @@ public class Edt_Admin extends Edt {
         System.out.println("je suis " + prof.getNom() + " je veux mon emplois du temps du " + date_debut + " au " + date_fin);
     }
     
-    
     //////////////////////////////////----------------------------MISE A JOUR DES DONNEES----------------------------------///////////////////////////
     public void afficherInterfaceMaj()
     {

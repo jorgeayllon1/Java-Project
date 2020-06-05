@@ -111,12 +111,13 @@ public class SalleDAO extends DAO<Salle> {
                 Date date = rset.getDate("date");
                 Timestamp heure_debut = rset.getTimestamp("heure_debut");
                 Timestamp heure_fin = rset.getTimestamp("heure_fin");
+                int etat = rset.getInt("etat");
                 int id_cours = rset.getInt("id_cours");
                 Cours cours = coursDAO.find(id_cours);
                 int id_type = rset.getInt("id_type");
                 TypeCours typeCours = typeCoursDAO.find(id_type);
 
-                lesseances.add(new Seance(id, semaine, date, heure_debut, heure_fin, cours, typeCours));
+                lesseances.add(new Seance(id, semaine, date, heure_debut, heure_fin,etat, cours, typeCours));
 
             }
 

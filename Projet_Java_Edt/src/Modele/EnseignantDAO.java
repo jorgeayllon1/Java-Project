@@ -110,6 +110,7 @@ public class EnseignantDAO extends DAO<Enseignant> {
                             rset.getDate("date"),
                             rset.getTimestamp("heure_debut"),
                             rset.getTimestamp("heure_fin"),
+                            rset.getInt("etat"),
                             cours,
                             type));
                 }
@@ -230,12 +231,13 @@ public class EnseignantDAO extends DAO<Enseignant> {
                     Date date = rset.getDate("date");
                     Timestamp heure_debut = rset.getTimestamp("heure_debut");
                     Timestamp heure_fin = rset.getTimestamp("heure_fin");
+                    int etat = rset.getInt("etat");
                     int id_cours = rset.getInt("id_cours");
                     Cours cours = coursDAO.find(id_cours);
                     int id_type = rset.getInt("id_type");
                     TypeCours typeCours = typeCoursDAO.find(id_type);
                     deja_compte.add(rset.getInt("id"));
-                    les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, cours, typeCours));
+                    les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin,etat, cours, typeCours));
                 }
 
 
@@ -277,12 +279,13 @@ public class EnseignantDAO extends DAO<Enseignant> {
                     Date date = rset.getDate("date");
                     Timestamp heure_debut = rset.getTimestamp("heure_debut");
                     Timestamp heure_fin = rset.getTimestamp("heure_fin");
+                    int etat = rset.getInt("etat");
                     int id_cours = rset.getInt("id_cours");
                     Cours cours = coursDAO.find(id_cours);
                     int id_type = rset.getInt("id_type");
                     TypeCours typeCours = typeCoursDAO.find(id_type);
                     deja_compte.add(rset.getInt("id"));
-                    les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, cours, typeCours));
+                    les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, etat,cours, typeCours));
                 }
 
 
