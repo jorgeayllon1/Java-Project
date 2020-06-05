@@ -1,12 +1,8 @@
-package Controlleur.Maj;
+package Controlleur;
 
-import Controlleur.Controleur;
+import Modele.DAO;
 
 import java.awt.event.ActionEvent;
-
-/**
- * @author jorge
- */
 
 public class MajControleur extends Controleur {
 
@@ -14,7 +10,11 @@ public class MajControleur extends Controleur {
         super();
     }
 
-    public void affecterEnseignat() {
+    public MajControleur(DAO dao) {
+        super(dao);
+    }
+
+    public void affecterEnseignant() {
         System.out.println("Coucou");
     }
 

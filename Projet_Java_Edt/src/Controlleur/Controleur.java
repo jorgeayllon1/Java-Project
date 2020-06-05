@@ -34,5 +34,4 @@ public abstract class Controleur implements ActionListener {
         this.dao = dao;
     }
 
-
 }

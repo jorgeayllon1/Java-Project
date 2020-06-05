@@ -5,7 +5,7 @@
  */
 package Vue;
 
-import Controlleur.Maj.MajControleur;
+import Controlleur.MajControleur;
 import Modele.*;
 
 import javax.swing.*;
@@ -19,17 +19,17 @@ import java.util.*;
  * @author Wang David
  */
 public class Edt_Admin extends Edt {
-    
+
     private JPanel panel_recherche = new JPanel();
     private JPanel boutons_search = new JPanel();
     private JPanel infos = new JPanel();
-    
-    private JButton chercher_utilisateur=null;
-    private JButton chercher_salle=null;
-    private JButton chercher_groupe=null;
-    private JButton chercher_promotion=null;
-    private JButton maj = new JButton ("Mise à jour");
-    
+
+    private JButton chercher_utilisateur = null;
+    private JButton chercher_salle = null;
+    private JButton chercher_groupe = null;
+    private JButton chercher_promotion = null;
+    private JButton maj = new JButton("Mise à jour");
+
     private Utilisateur user = new Utilisateur();
     private Enseignant prof = new Enseignant();
     private Groupe groupe = new Groupe();
@@ -38,12 +38,13 @@ public class Edt_Admin extends Edt {
     private GroupeDAO groupeDao = new GroupeDAO();
     private EnseignantDAO profDao = new EnseignantDAO();
     private SeanceDao seanceDao = new SeanceDao();
-    
+
     private ArrayList<Seance> mes_seances = new ArrayList();
     private ArrayList<Integer> mes_id = new ArrayList();
-    
+
     ///Mise à jour des données///
     private JPanel content2 = new JPanel();
+    MajControleur majControleur = new MajControleur();
 
     public Edt_Admin() {
     }
@@ -51,9 +52,8 @@ public class Edt_Admin extends Edt {
 
     public Edt_Admin(Utilisateur user) {
         super(user);
-       
+
         this.annule.setVisible(false);
-        
 
 
         ImageIcon maj_icon = new ImageIcon(new ImageIcon("src/Icones/refresh.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
@@ -173,11 +173,10 @@ public class Edt_Admin extends Edt {
 
 
     }
-    
+
     ///Méthodes de redirection de panel///
-    
-    public void suppPanel(JComponent parent)
-    {
+
+    public void suppPanel(JComponent parent) {
 
         parent.removeAll();
         parent.validate();
@@ -192,15 +191,14 @@ public class Edt_Admin extends Edt {
         child.setVisible(true);
     }
 
-    public void ajoutPanel2(JComponent parent)
-    {
+    public void ajoutPanel2(JComponent parent) {
         parent.revalidate();
         parent.repaint();
         parent.setVisible(true);
         this.add(parent);
         this.setVisible(true);
     }
-    
+
     ///ACTIONS///
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -209,9 +207,8 @@ public class Edt_Admin extends Edt {
             JOptionPane stop = new JOptionPane();
             stop.showMessageDialog(null, "Vous n'etes ni etudiant ni enseignant", "ERREUR", JOptionPane.ERROR_MESSAGE);
         }
-        
-        if(e.getSource()==this.rechercher)
-        {
+
+        if (e.getSource() == this.rechercher) {
             ///SUPRESSION///
             suppPanel(panel); //Vider le panel
             suppPanel(content2); //Supprimer le content2 pour maj        
@@ -224,7 +221,7 @@ public class Edt_Admin extends Edt {
 
             Object[] deroulant = new Object[]{"Rechercher...", "Utilisateur", "Groupe", "Promotion", "Salle"};
             JComboBox liste = new JComboBox(deroulant);
-            
+
 
             panel_recherche.add(liste);
 
@@ -236,8 +233,8 @@ public class Edt_Admin extends Edt {
 
             JTextField semaine = new JTextField();
             semaine.setPreferredSize(new Dimension(100, 50));
-            
-            
+
+
             ///INSTANTICATION DES BOUTONS///
 
 
@@ -245,7 +242,7 @@ public class Edt_Admin extends Edt {
             chercher_groupe = new JButton();
             chercher_promotion = new JButton();
             chercher_salle = new JButton();
-   
+
             ///AJOUT DANS LE PANEL SUPERIEUR DE RECHERCHE///
 
             panel_recherche.add(label_nom);
@@ -269,40 +266,38 @@ public class Edt_Admin extends Edt {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     e.getSource();
-                    String choisi = (String)liste.getSelectedItem(); //On stocke dans un string l'item selectionné
-                    if(choisi=="Utilisateur") //Si on choisit utilisateur dans la liste
-                    {                      
+                    String choisi = (String) liste.getSelectedItem(); //On stocke dans un string l'item selectionné
+                    if (choisi == "Utilisateur") //Si on choisit utilisateur dans la liste
+                    {
                         suppPanel(boutons_search); //On remove les anciens boutons
                         label_nom.setText("Nom Prof :");  //Changement des labels
                         label_semaine.setText("Numéro semaine");
-                                   
+
                         chercher_utilisateur = new JButton(new AbstractAction("Chercher Prof") { //Création nouveau bouton + invocation classe anonyme
                             @Override
                             public void actionPerformed(ActionEvent actionEvent) {
                                 rechercher_utilisateur(nom.getText(), semaine.getText(), 1); //On recherhce et controle s'il y a cet utilisateur
                                 afficherGrille();
                                 String string_semaine = semaine.getText();
-                                
+
                                 prof = profDao.trouverProfAvecNom(nom.getText()); //On instancie l'objet prof
-                                
+
                                 boolean existe = profDao.siExiste(nom.getText()); //On vérifie s'il existe
-                                
-                                if(existe==true)//S'il existe dans la bdd
+
+                                if (existe == true)//S'il existe dans la bdd
                                 {
                                     int int_semaine = Integer.valueOf(string_semaine); //Cast en int
-                                    afficherEdtSemaineProf( prof,int_semaine); //On affiche l'edt du prof en question
+                                    afficherEdtSemaineProf(prof, int_semaine); //On affiche l'edt du prof en question
                                 }
 
                                 /*content.add(panel_recherche, BorderLayout.NORTH);
                                 panel.add(content);*/
                             }
                         });
-                        ajoutPanel(boutons_search,chercher_utilisateur) ; //On ajoute le bouton dans son layout parent
+                        ajoutPanel(boutons_search, chercher_utilisateur); //On ajoute le bouton dans son layout parent
                         panel_recherche.add(boutons_search); //Puis on l'ajoute dans le panel recherche
-   
-                    }
-                    else if(choisi=="Groupe")
-                    {
+
+                    } else if (choisi == "Groupe") {
                         suppPanel(boutons_search);
                         chercher_groupe = new JButton(new AbstractAction("Chercher Groupe") {
                             @Override
@@ -363,24 +358,21 @@ public class Edt_Admin extends Edt {
             System.out.println("Mise a jour");
             afficherInterfaceMaj();
         }
-        
-        
-        if(e.getSource()==this.report)
-        {
+
+
+        if (e.getSource() == this.report) {
             JOptionPane stop = new JOptionPane();
             stop.showMessageDialog(null, "Non dispo", "ERREUR", JOptionPane.ERROR_MESSAGE);
         }
-        
-        if(e.getSource()==this.logout)
-        {
+
+        if (e.getSource() == this.logout) {
             this.dispose();
         }
-   
+
 
         /// ICI les test de mise à jours
         if (e.getSource() == this.summary) {
-            MajControleur controleur_maj = new MajControleur();
-            controleur_maj.affecterEnseignat();
+            this.majControleur.affecterEnseignant();
         }
         /// Finf des test
 
@@ -541,33 +533,30 @@ public class Edt_Admin extends Edt {
     }
 
     //////////////////////////////////----------------------------MISE A JOUR DES DONNEES----------------------------------///////////////////////////
-    public void afficherInterfaceMaj()
-    {
+    public void afficherInterfaceMaj() {
         suppPanel(panel);
         suppPanel(content2);
         suppPanel(this.content);
-        
+
         JButton enlever = new JButton("ENLEVER");
         JButton affecter = new JButton("AFFECTER");
         JButton modifier = new JButton("MODIFIER");
         JButton ajouter = new JButton("AJOUTER");
         JButton annuler = new JButton("ANNULER");
         JButton valider = new JButton("VALIDER");
-        
-        ajoutPanel(content2,enlever);
-        ajoutPanel(content2,affecter);
-        ajoutPanel(content2,modifier);
-        ajoutPanel(content2,ajouter);
-        ajoutPanel(content2,annuler);
-        ajoutPanel(content2,valider);
-        
-        ajoutPanel(panel,content2);
+
+        ajoutPanel(content2, enlever);
+        ajoutPanel(content2, affecter);
+        ajoutPanel(content2, modifier);
+        ajoutPanel(content2, ajouter);
+        ajoutPanel(content2, annuler);
+        ajoutPanel(content2, valider);
+
+        ajoutPanel(panel, content2);
         panel.setVisible(true);
-        
-        
+
+
     }
-
-
 
 
 }
