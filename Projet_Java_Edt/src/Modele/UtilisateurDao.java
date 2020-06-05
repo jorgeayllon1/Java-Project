@@ -57,33 +57,7 @@ public class UtilisateurDao extends DAO<Utilisateur> {
     }
 
     public boolean create(Utilisateur user) {
-        int id = this.trouverIdDispo(); //Trouver id dispo
-
-        try {
-            if (rset.first()) {
-
-                PreparedStatement prepare = this.conn
-                        .prepareStatement(
-                                "INSERT INTO utilisateur (id, email,passwd,nom,prenom,droit) VALUES(?,?,?,?,?,?)"
-                        );
-                ///On insère les données
-                prepare.setInt(1, id);
-                prepare.setString(2, user.getMail());
-                prepare.setString(3, user.getMdp());
-                prepare.setString(4, user.getNom());
-                prepare.setString(5, user.getPrenom());
-                prepare.setInt(6, user.getDroit());
-
-                //On éxécute
-                prepare.executeUpdate();
-                user = this.find(id);    //On trouve le nouvel utilisateur qui a été crée pour le retourner
-
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return true;
+        return false;
     }
 
     /**

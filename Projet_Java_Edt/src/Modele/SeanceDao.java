@@ -69,32 +69,29 @@ public class SeanceDao extends DAO<Seance> {
     @Override
     public boolean create(Seance obj) {
 
-        int id = this.trouverIdDispo(); //Trouver id dispo
+        int id_dispo = this.idmax() + 1; //Trouver id dispo
+
+        obj.setId(id_dispo);
+        System.out.println(obj.getID());
 
         try {
-            if (rset.first()) {
 
-                PreparedStatement prepare = this.conn
-                        .prepareStatement(
-                                "INSERT INTO seance (id, semaine,date,heure_debut,heure_fin,id_cours,id_type) VALUES(?,?,?,?,?,?,?)"
-                        );
-                ///On insère les données
-                prepare.setInt(1, id);
-                prepare.setInt(2, obj.getSemaine());
-                prepare.setDate(3, obj.getDate());
-                prepare.setTimestamp(4, obj.getHeureDebut());
-                prepare.setTimestamp(5, obj.getHeureFin());
-                prepare.setInt(6, obj.getCours().getID());
-                prepare.setInt(7, obj.getType().getId());
+            this.conn
+                    .createStatement(
+                            rset.TYPE_SCROLL_INSENSITIVE,
+                            rset.CONCUR_UPDATABLE
+                    ).executeUpdate(
+                    "INSERT INTO seance\n" +
+                            "VALUES (" + obj.getID() + "," + obj.getSemaine() + ",'" + obj.getDate() + "'," +
+                            "'" + obj.getHeureDebut() + "','" + obj.getHeureFin() + "'," +
+                            obj.getEtat() + "," + obj.getCours().getID() + "," + obj.getType().getId() + ")"
+            );
 
-                //On éxécute
-                prepare.executeUpdate();
-                obj = this.find(id);
-
-            }
         } catch (SQLException e) {
+            System.err.println("ERROR SQL Update Seance");
             e.printStackTrace();
         }
+
         return true;
     }
 
@@ -251,6 +248,30 @@ public class SeanceDao extends DAO<Seance> {
 
         return seance;
 
+    }
+
+    int idmax() {
+        int id_max = 0;
+
+        try {
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT MAX(id) FROM seance"
+            );
+
+            while (rset.next()) {
+                id_max = rset.getInt("MAX(id)");
+            }
+
+
+        } catch (SQLException e) {
+
+            System.out.println("Connexion echouee : probleme SQL SeanceDAO");
+            e.printStackTrace();
+        }
+
+        return id_max;
     }
 
 }

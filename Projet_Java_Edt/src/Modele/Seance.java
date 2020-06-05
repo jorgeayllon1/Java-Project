@@ -70,4 +70,8 @@ public class Seance {
     public int getEtat() {
         return this.etat;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

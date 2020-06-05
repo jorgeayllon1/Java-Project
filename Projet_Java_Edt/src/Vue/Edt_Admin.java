@@ -375,18 +375,24 @@ public class Edt_Admin extends Edt {
         }
 
 
-        /// ICI les test de mise à jours
+        /// ICI les test de MAJ
         if (e.getSource() == this.summary) {
 
-            long temps_debut = 1591185600000L;
-            long temps_fin = 1591192800000L;
+            // TEST MODIFICATION
+            //SeanceDao seanceDao = new SeanceDao();
+            //Seance test = seanceDao.find(9);
+            //this.majControleur.modifierSeance(test, "Java POO", "TP");
 
-            SeanceDao seanceDao = new SeanceDao();
-            Seance test = seanceDao.find(9);
+            //long date = 1583058600000L;//01/03/2020 à 11:30:00
+            //long date = 1591444800000L;//06/06/2020 à 14:00:00
+            long date = 1591329600000L;//05/06/2020 à 06:00:00
+            long temps_debut = 1583053200000L;
+            long temps_fin = 1583058600000L;
 
-            this.majControleur.modifierSeance(test, "Java POO", "TP");
+            this.majControleur.creationSeance(23, new Date(date), new Timestamp(temps_debut), new Timestamp(temps_fin),
+                    "Java POO", "TP");
         }
-        /// Finf des test
+        /// Finf des test MAJ
 
     }
 
