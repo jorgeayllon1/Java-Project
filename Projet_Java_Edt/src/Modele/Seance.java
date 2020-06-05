@@ -22,11 +22,8 @@ public class Seance {
     private Cours cours = null;
     private TypeCours type = null;
 
-
     public Seance() {
     }
-
-    ;
 
     public Seance(int id, int semaine, Date date, Timestamp heure_debut, Timestamp heure_fin, int etat, Cours cours, TypeCours type) {
         this.id = id;
@@ -73,5 +70,9 @@ public class Seance {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setEtat(int etat) {
+        this.etat = etat;
     }
 }

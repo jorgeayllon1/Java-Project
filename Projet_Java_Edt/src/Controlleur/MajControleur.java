@@ -50,6 +50,21 @@ public class MajControleur extends Controleur {
 
     }
 
+    // Etat 0 : non validable, il manque un prof ou une salle ou un groupe
+    // Etat 1 : en cours de validation, il y a tout mais c'est pas validé
+    // Etat 2 : validé, il y a tout et c'est validé
+    // Etat 3 : annulée, il y a tout mais c'est pas validé
+
+    /**
+     * Crée une séance à l'état 0
+     *
+     * @param semaine
+     * @param date
+     * @param heure_debut
+     * @param heure_fin
+     * @param nom_cours
+     * @param nom_typecours
+     */
     public void creationSeance(int semaine, Date date, Timestamp heure_debut, Timestamp heure_fin, String nom_cours, String nom_typecours) {
         CoursDao coursDao = new CoursDao();
         TypeCoursDAO typeCoursDAO = new TypeCoursDAO();
@@ -73,9 +88,39 @@ public class MajControleur extends Controleur {
         Seance seance = new Seance(0, semaine, date, heure_debut, heure_fin, 0, new Cours(id_cours, nom_cours), new TypeCours(id_typecours, nom_typecours));
 
         System.out.println("Je crée une séance la semaine " + seance.getSemaine() + " le " + seance.getDate() + " de " + seance.getHeureDebut() + " à " + seance.getHeureFin()
-                + "\n" + seance.getEtat() + " " + seance.getCours().getNom() + " " + seance.getType().getNom());
+                + seance.getEtat() + " " + seance.getCours().getNom() + " " + seance.getType().getNom());
 
         seanceDao.create(seance);
+    }
+
+    public void enleverEnseignantdeSeance(Seance seance) {
+
+        SeanceDao seanceDao = new SeanceDao();
+
+        // Si il y a un enseignant dans la séance
+        if (seanceDao.trouverEnseignant(seance) != null) {
+
+            System.out.println("j'enleve le prof de la seance " + seance.getID());
+            seance.setEtat(0);
+            seanceDao.update(seance);
+            seanceDao.enleverProf(seance);
+
+        } else System.out.println("Il n'y a pas d'enseignant à ce cours");
+
+    }
+
+    public void enleverSalledeSeance(Seance seance) {
+        SeanceDao seanceDao = new SeanceDao();
+
+        // Si il y a un salle associée à la séance
+        if (seanceDao.trouverSalle(seance) != null) {
+
+            System.out.println("j'enleve la salle pour la seance " + seance.getID());
+            seance.setEtat(0);
+            seanceDao.update(seance);
+            seanceDao.enleverSalle(seance);
+
+        } else System.out.println("Il n'y a pas de salle pour ce cours");
     }
 
     @Override

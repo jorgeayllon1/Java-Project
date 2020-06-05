@@ -72,7 +72,6 @@ public class SeanceDao extends DAO<Seance> {
         int id_dispo = this.idmax() + 1; //Trouver id dispo
 
         obj.setId(id_dispo);
-        System.out.println(obj.getID());
 
         try {
 
@@ -139,9 +138,9 @@ public class SeanceDao extends DAO<Seance> {
     }
 
     public Enseignant trouverEnseignant(Seance seance) {
-        Enseignant prof = new Enseignant();
+        Enseignant prof = null;
         EnseignantDAO profDao = new EnseignantDAO();
-        int id_prof = 0;
+        int id_prof;
 
         try {
             this.rset = this.conn.createStatement(
@@ -168,31 +167,23 @@ public class SeanceDao extends DAO<Seance> {
     }
 
     public Groupe trouverGroupe(Seance seance) {
-        Groupe groupe = new Groupe();
+        Groupe groupe = null;
         GroupeDAO groupeDao = new GroupeDAO();
-        int id_groupe = 0;
+        int id_groupe;
 
         try {
             this.rset = this.conn.createStatement(
                     this.rset.TYPE_SCROLL_INSENSITIVE,
                     this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id_groupe FROM seance_groupes WHERE id_seance = " + seance.getID()); //On cherche tout les ID des séances de ce groupe
 
-
             while (rset.next()) {
-
                 id_groupe = rset.getInt("id_groupe");
                 groupe = groupeDao.find(id_groupe);
-
-
             }
-
-
         } catch (SQLException e) {
-
             System.out.println("Connexion echouee : probleme SQL SeanceDAO");
             e.printStackTrace();
         }
-
         return groupe;
     }
 
@@ -267,11 +258,66 @@ public class SeanceDao extends DAO<Seance> {
 
         } catch (SQLException e) {
 
-            System.out.println("Connexion echouee : probleme SQL SeanceDAO");
+            System.err.println("Connexion echouee : probleme SQL SeanceDAO");
             e.printStackTrace();
         }
 
         return id_max;
+    }
+
+    public void enleverProf(Seance seance) {
+        try {
+            this.conn
+                    .createStatement(
+                            rset.TYPE_SCROLL_INSENSITIVE,
+                            rset.CONCUR_UPDATABLE
+                    ).executeUpdate(
+                    "DELETE FROM seance_enseignants\n" +
+                            "WHERE id_seance=" + seance.getID()
+            );
+
+        } catch (SQLException e) {
+            System.err.println("ERROR SQL EnleverProf Seance");
+            e.printStackTrace();
+        }
+    }
+
+    public Salle trouverSalle(Seance seance) {
+        Salle salle = null;
+        SalleDAO salleDAO = new SalleDAO();
+        int id_salle;
+
+        try {
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id_salle FROM seance_salles WHERE id_seance = " + seance.getID()); //On cherche tout les ID des séances de ce groupe
+
+            while (rset.next()) {
+                id_salle = rset.getInt("id_salle");
+                salle = salleDAO.find(id_salle);
+            }
+        } catch (SQLException e) {
+            System.out.println("Connexion echouee : probleme SQL SeanceDAO");
+            e.printStackTrace();
+        }
+        return salle;
+    }
+
+    public void enleverSalle(Seance seance) {
+        try {
+            this.conn
+                    .createStatement(
+                            rset.TYPE_SCROLL_INSENSITIVE,
+                            rset.CONCUR_UPDATABLE
+                    ).executeUpdate(
+                    "DELETE FROM seance_salles\n" +
+                            "WHERE id_seance=" + seance.getID()
+            );
+
+        } catch (SQLException e) {
+            System.err.println("ERROR SQL EnleverSalle SeanceDAO");
+            e.printStackTrace();
+        }
     }
 
 }
