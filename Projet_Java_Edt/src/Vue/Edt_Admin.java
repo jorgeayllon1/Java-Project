@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -50,6 +51,7 @@ public class Edt_Admin extends Edt {
     }
 
 
+    //public Edt_Admin(Utilisateur user,MajControleur){
     public Edt_Admin(Utilisateur user) {
         super(user);
 
@@ -67,6 +69,9 @@ public class Edt_Admin extends Edt {
         this.maj.addActionListener(this);
 
         this.panel_recherche.add(boutons_search);
+
+        //Mise à jours données
+        this.majControleur = majControleur;
 
     }
 
@@ -372,7 +377,12 @@ public class Edt_Admin extends Edt {
 
         /// ICI les test de mise à jours
         if (e.getSource() == this.summary) {
-            this.majControleur.creationSeance();
+
+            long temps_debut = 1591185600000L;
+            long temps_fin = 1591192800000L;
+
+            this.majControleur.modifierSeance("445", new Timestamp(temps_debut), new Timestamp(temps_fin),
+                    "Thermoc'estchaud", "coursàl'exteiruer");
         }
         /// Finf des test
 

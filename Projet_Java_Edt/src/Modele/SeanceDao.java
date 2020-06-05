@@ -8,6 +8,7 @@ package Modele;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 /**
  * @author Wang David
@@ -112,7 +113,6 @@ public class SeanceDao extends DAO<Seance> {
         return true;
     }
 
-
     @Override
     public boolean update(Seance obj) {
         try {
@@ -192,5 +192,58 @@ public class SeanceDao extends DAO<Seance> {
         return groupe;
     }
 
+    public Seance chercherSeance(String nom_salle, Timestamp heure_debut, Timestamp heure_fin) {
+
+        Seance seance = new Seance();
+        Cours cours;
+        CoursDao coursDao = new CoursDao();
+        int id_cours;
+
+        TypeCours type;
+        TypeCoursDAO typeDao = new TypeCoursDAO();
+        int id_type;
+
+        try {
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT * FROM seance\n" +
+                            "INNER JOIN seance_salles\n" +
+                            "ON seance.id=seance_salles.id_seance\n" +
+                            "INNER JOIN salle\n" +
+                            "ON salle.nom='" + nom_salle + "'\n" +
+                            "WHERE seance.heure_debut='" + heure_debut + "'\n" +
+                            "AND seance.heure_fin='" + heure_fin + "'"
+            );
+
+            if (rset.first()) {
+                id_cours = rset.getInt("id_cours");
+                cours = coursDao.find(id_cours);
+                id_type = rset.getInt("id_type");
+                type = typeDao.find(id_type);
+                seance = new Seance(
+                        rset.getInt("id"),
+                        rset.getInt("semaine"),
+                        rset.getDate("date"),
+                        heure_debut,
+                        heure_fin,
+                        rset.getInt("etat"),
+                        cours,
+                        type
+                );
+            } else {
+                System.err.println("Error : séance non trouvée");
+                return null;
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println("Connexion echouee : probleme SQL SeanceDAO");
+            e.printStackTrace();
+        }
+
+        return seance;
+
+    }
 
 }

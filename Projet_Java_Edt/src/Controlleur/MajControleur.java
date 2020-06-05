@@ -3,6 +3,7 @@ package Controlleur;
 import Modele.*;
 
 import java.awt.event.ActionEvent;
+import java.sql.Timestamp;
 
 public class MajControleur extends Controleur {
 
@@ -14,10 +15,15 @@ public class MajControleur extends Controleur {
         super(dao);
     }
 
-    public void creationSeance() {
-        Seance nouv_seance;
-        Seance test = (Seance) this.dao.find(1);
-        System.out.println(test.getCours().getNom() + " " + test.getDate());
+    //On caractèrise une séance par son heure debut, heure fin et par sa salle
+    // Deux séance differentes ne peuvent avoir lieu en même temps dans une même salle
+    public void modifierSeance(String salle, Timestamp heure_debut, Timestamp heure_fin, String nouv_cours_nom, String nouv_typeCours_nom) {
+        SeanceDao seanceDao = new SeanceDao();
+        Seance seance = seanceDao.chercherSeance(salle, heure_debut, heure_fin);
+
+        if (seance != null) {
+            System.out.println(seance.getCours().getNom() + " " + seance.getDate() + " " + seance.getID());
+        } else System.out.println("Pas de séance trouvée");
     }
 
     @Override
