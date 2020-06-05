@@ -29,17 +29,12 @@ public class Projet_Java_Edt {
 
         ///MAIN POUR FAIRE DES TEST///
 
-        DAO<Utilisateur> userDao = new UtilisateurDao();
+        //DAO<Utilisateur> userDao = new UtilisateurDao();
 
 
-        /*for (int i = 1; i < 13; i++) {
-            Utilisateur user = userDao.find(i);
-            System.out.println("id: " + user.getID() + " email: " + user.getMail() + " nom: " + user.getNom() + " prenom: " + user.getPrenom());
-            // if(i==12) //erreur
-            //{
-            //  userDao.delete(user); //Test pour delete un user (marche)
-            //}
-        }*/
+        UIManager.setLookAndFeel(new NimbusLookAndFeel());
+        Accueil accueil = new Accueil();
+
 
         //userDao.afficherChampTable("utilisateur"); //Afficher champ table
 
@@ -55,12 +50,6 @@ public class Projet_Java_Edt {
 
         ///AFFICHAGE OAGE CONNEXION///
         //Affichage page connexion OK
-        
-
-        UIManager.setLookAndFeel(new NimbusLookAndFeel());
-        Accueil accueil = new Accueil();
-        
-        
 
 
         //Test pour ajouter un nouvel user en trouvant l'id max (marche)

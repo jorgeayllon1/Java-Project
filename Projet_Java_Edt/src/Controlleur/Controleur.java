@@ -21,6 +21,7 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 /**
  * @author Wang David
  */
+
 public abstract class Controleur implements ActionListener {
 
     protected DAO dao;
@@ -33,9 +34,5 @@ public abstract class Controleur implements ActionListener {
         this.dao = dao;
     }
 
-
-    public static void main(String args[]) throws UnsupportedLookAndFeelException {
-
-    }
 
 }
