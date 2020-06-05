@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Controlleur;
 
 import Modele.*;
@@ -17,8 +13,7 @@ import javax.swing.JOptionPane;
  * @author Wang David
  */
 public class AccueilControleur extends Controleur {
-    Accueil accueil;
-    int auth=0;
+    private int auth=0;
     public AccueilControleur() {
         super();
     }
@@ -31,8 +26,7 @@ public class AccueilControleur extends Controleur {
             Utilisateur user = userDao.find(i);
             mesUsers.add(user);
         }
-        
-
+       
         for (int i = 0; i < mesUsers.size(); i++) //On parcourt toute la liste des utilisateurs dans la bdd
         {
             if ((identifiant.equals(mesUsers.get(i).getNom())) && (mdp.equals(mesUsers.get(i).getMdp()))) //Si id et mdp juste

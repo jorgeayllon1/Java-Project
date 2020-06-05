@@ -1,5 +1,4 @@
 package Vue;
-
 import Modele.*;
 
 import javax.swing.*;
@@ -14,23 +13,18 @@ import java.util.concurrent.TimeUnit;
  */
 public class Edt_Enseignant extends Edt {
 
-    Utilisateur user;
-    Enseignant prof;
-    Groupe groupe = null;
-    Salle salle = new Salle();
+    private  Enseignant prof;
+    private  Groupe groupe = null;
+    private  Salle salle = new Salle();
 
-    GroupeDAO groupeDao = null;
-    EnseignantDAO profDao = null;
-    SeanceDao seanceDao = new SeanceDao();
+    private  GroupeDAO groupeDao = null;
+    private  EnseignantDAO profDao = null;
+    private  SeanceDao seanceDao = new SeanceDao();
 
-    GridBagConstraints grille = new GridBagConstraints();
-    JPanel schear = new JPanel();
+    private  ArrayList<Seance> mes_seances = new ArrayList();
+    private  ArrayList<Integer> mes_id = new ArrayList();
 
-
-    ArrayList<Seance> mes_seances = new ArrayList();
-    ArrayList<Integer> mes_id = new ArrayList();
-
-    JPanel panel_recherche = new JPanel();
+    private  JPanel panel_recherche = new JPanel();
 
 
     ///Constructeurs
@@ -39,12 +33,13 @@ public class Edt_Enseignant extends Edt {
 
     public Edt_Enseignant(Utilisateur user, Enseignant prof) {
         super(user);
-        this.summary.addActionListener(this::actionPerformed);
         this.prof = prof;
         afficherEdtProfAccueil();
-
+        
+        this.summary.addActionListener(this::actionPerformed);
         this.mes_cours.addActionListener(this);
         this.rechercher.addActionListener(this);
+        
         ///Si on clique sur l'un des boutons de la grille de semaine
         for (int nb_week = 0; nb_week < this.week_button.size(); nb_week++) {
             this.week_button.get(nb_week).addActionListener(this);
@@ -56,7 +51,6 @@ public class Edt_Enseignant extends Edt {
 
     }
 
-
     ///Affichage de l'onglet cours qui sert de page d'accueil lors de la connexion
     public void afficherEdtProfAccueil() {
 
@@ -65,6 +59,10 @@ public class Edt_Enseignant extends Edt {
 
     }
 
+    /**Méthode qui va afficher l'edt quand il attérit sur la page d'accueil
+     * ou lorsqu'il clique sur l'onglet cours
+     * @param droit 
+     */
     public void afficherEdtProf(int droit) {
         panel_edt.removeAll();
         panel_edt.validate();
@@ -169,6 +167,11 @@ public class Edt_Enseignant extends Edt {
         this.panel_edt.setVisible(true);
         this.setVisible(true);
     }
+    /**Méthode qui va afficher l'edt en fonction de la 
+     * semaine
+     * @param droit
+     * @param semaine 
+     */
 
     public void afficherEdtSemaineProf(int droit, int semaine) {
         panel_edt.removeAll();
@@ -361,15 +364,18 @@ public class Edt_Enseignant extends Edt {
 
             }
         }
-        
+        //Si on clique sur déconnexion
         if(e.getSource()==this.logout)
         {
-            this.dispose();
+            this.dispose(); //Fermeture 
         }
     }
 
     /**
      * Renvoie un recap de toutes les informations d'un enseignant
+     * @param nomGroupe
+     * @param date_debut
+     * @param date_fin
      */
     public void voirrecap(String nomGroupe, Date date_debut, Date date_fin) {
 

@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Vue;
 import Controlleur.Recherche.RechercheControleur;
 import Modele.*;
@@ -17,8 +13,6 @@ import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.TableColumn;
 
-
-
 /**
  * @author Wang David
  */
@@ -31,7 +25,6 @@ public class Edt extends JFrame implements ActionListener {
     protected JPanel panel = new JPanel();
     protected JPanel panel_edt = new JPanel(new GridLayout(0, 1));
     
-
     JPanel content = new JPanel();
     
     protected JButton rechercher = new JButton("Rechercher");
@@ -75,7 +68,6 @@ public class Edt extends JFrame implements ActionListener {
         this.semaine.setBackground(new java.awt.Color(224, 235, 235));
         this.semaine.setOpaque(true);
         
-  
         ImageIcon cours_icon = new ImageIcon(new ImageIcon("src/Icones/book.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
         mes_cours = new JButton("Cours", cours_icon);
         this.iconFont(mes_cours);
@@ -125,28 +117,22 @@ public class Edt extends JFrame implements ActionListener {
         toolbars.add(menu);
         toolbars.add(semaine);
 
-        //panel.add(toolbars, BorderLayout.NORTH);
         this.add(toolbars, BorderLayout.NORTH);
 
         String mesInfos = "HYPERPLANNING 2019-2020";
-        
         
         info = new JLabel(mesInfos, JLabel.CENTER);
         info.setPreferredSize(new Dimension(20,50));
         info.setBackground( new java.awt.Color(153, 230, 230));
         info.setOpaque(true);
         info.setFont(new Font("Verdana", Font.PLAIN, 18));
-        //panel.add(info, BorderLayout.SOUTH);
+
         this.add(info, BorderLayout.SOUTH);
 
-        //panel = (JPanel) this.getContentPane();
-        //panel.setLayout(new BorderLayout());
         this.add(panel);
         panel.setLayout(new OverlayLayout(panel));
         this.panel.setBackground(new java.awt.Color(112, 219, 219));
         this.panel.setOpaque(true);
-
-        
 
         this.setVisible(true);
     }
@@ -156,12 +142,10 @@ public class Edt extends JFrame implements ActionListener {
         
         if(e.getSource()==this.logout)
         {
-
             this.dispose();
         }
 
     }
-    
     
     //Méthode de personnalisation font
     public void iconFont(JButton j)
@@ -171,38 +155,31 @@ public class Edt extends JFrame implements ActionListener {
         j.setFont(f.deriveFont(f.getStyle() | Font.BOLD));
         menu.add(j);
     }
-
-    //Getter panel
-    public JPanel getPanel() {
-        return this.panel;
-    }
     
-        public void afficherGrille()
+    public void afficherGrille()
+    {
+        Object[][] donnees =
         {
-            Object[][] data =
-            {
-                {"Horaires/Jours", "Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"},
-                {"8h-10h", "", "","","","",""},
-                {"10h-12h", "", "","","","",""},
-                {"12h-14h", "", "","","","",""},
-                {"14h-16h", "", "","","","",""},
-                {"16h-18h", "", "","","","",""},
-                {"18h-20h", "", "","","","",""}
-            };
+            {"Horaires/Jours", "Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"},
+            {"8h-10h", "", "","","","",""},
+            {"10h-12h", "", "","","","",""},
+            {"12h-14h", "", "","","","",""},
+            {"14h-16h", "", "","","","",""},
+            {"16h-18h", "", "","","","",""},
+            {"18h-20h", "", "","","","",""}
+        };
 
-        String  title[] = {"Horaires", "Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"};
-        
-        tableau = new JTable(data,title);
+        String  titre[] = {"Horaires", "Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"};
+
+        tableau = new JTable(donnees,titre);
         //tableau = new JTable();
         //tableau.setModel(new TableLabel());
         tableau.setRowHeight(90);
         tableau.setDefaultRenderer(Object.class, new CaseLabel());
         //tableau.setDefaultRenderer(JLabel.class, new CaseLabel());
         tableau.setShowGrid(true); //Affichage quadrillage
-
         
     }
-    
     
     //Méthode de recherche selon nom user
     public void rechercher_utilisateur(String nom, String semaine, int droit) {
@@ -281,7 +258,6 @@ public class Edt extends JFrame implements ActionListener {
             stop.showMessageDialog(null, "Personne non trouvé dans la BDD", "ERREUR", JOptionPane.ERROR_MESSAGE);
         }
             
-        
 
     }
 

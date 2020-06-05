@@ -13,21 +13,19 @@ import javax.swing.*;
  */
 public class Edt_Etudiant extends Edt {
 
-    Utilisateur user = null;
-    Etudiant etudiant = null;
+    private Utilisateur user = null;
+    private Etudiant etudiant = null;
+    private Groupe groupe = null;
+    private GroupeDAO groupeDao = null;
+    private EtudiantDao etudiantDao = null;
+    
+    private ArrayList<Seance> mes_seances = new ArrayList();
+    private ArrayList<Integer> mes_id = new ArrayList();
+    private SeanceDao seanceDao = new SeanceDao();
+    private Salle salle = null;
+    private Enseignant prof = null;
 
-    Groupe groupe = null;
-    GroupeDAO groupeDao = null;
-    EtudiantDao etudiantDao = null;
-    ArrayList<Seance> mes_seances = new ArrayList();
-    ArrayList<Integer> mes_id = new ArrayList();
-    SeanceDao seanceDao = new SeanceDao();
-    Salle salle = null;
-    Enseignant prof = null;
-    JPanel schear = null;
-
-    JPanel panel_recherche = new JPanel();
-
+    private JPanel panel_recherche = new JPanel();
 
     public Edt_Etudiant() {
     }
@@ -36,28 +34,26 @@ public class Edt_Etudiant extends Edt {
 
         super(user);
         this.etudiant = etudiant;
-        afficherEdtEtudiantAccueil();
-        this.mes_cours.addActionListener(this);
-        this.rechercher.addActionListener(this);
-        this.summary.addActionListener(this);
-
-
         etudiantDao = new EtudiantDao(); //********************
         etudiant = (Etudiant) etudiantDao.find(etudiant.getID());//*****************
         groupeDao = new GroupeDAO();
         groupe = groupeDao.find(etudiant.getGroupe().getId());
+        
+        afficherEdtEtudiantAccueil();
+        this.mes_cours.addActionListener(this);
+        this.rechercher.addActionListener(this);
+        this.summary.addActionListener(this);
+ 
         ///Si on clique sur l'un des boutons de la grille de semaine
         for (int nb_week = 0; nb_week < this.week_button.size(); nb_week++) {
             this.week_button.get(nb_week).addActionListener(this);
 
         }
-
         panel.add(panel_recherche);
         panel_edt.add(tableau);
         panel.add(panel_edt);
 
     }
-
 
     /**
      * Méthode qui va afficher l'edt  de l'étudiant en fonction de la semaine actuelle
@@ -67,9 +63,12 @@ public class Edt_Etudiant extends Edt {
         this.afficherGrille();
         this.afficherEdtEtudiant(4);
 
-
     }
 
+    /**Méthode qui va afficher l'edt lors de la connexion ainsi que 
+     * quand il clique sur l'onglet cours
+     * @param droit 
+     */
 
     public void afficherEdtEtudiant(int droit) {
         panel_edt.removeAll();
@@ -88,10 +87,8 @@ public class Edt_Etudiant extends Edt {
             System.out.println(" Groupe :" + groupe.getNom() + " Promotion :" + groupe.getPromo().getAnnee());
 
             ///Affichage des séances relatives à cet eleve
-
             mes_id = new ArrayList();
             mes_id = groupeDao.trouverIdSeance(groupe);
-
 
             mes_seances = new ArrayList();
             mes_seances = groupeDao.trouverAllSeances(mes_id);
@@ -100,8 +97,6 @@ public class Edt_Etudiant extends Edt {
             prof = new Enseignant();
 
         }
-
-
         salle = new Salle();
 
         for (int i = 0; i < mes_seances.size(); i++) //On parcourt toutes séances relatives à cet etudiant
@@ -182,14 +177,17 @@ public class Edt_Etudiant extends Edt {
         }
         this.panel_recherche.setVisible(false);
         this.panel_edt.add(tableau);
-
         this.panel_edt.revalidate();
         this.panel_edt.repaint();
         this.panel_edt.setVisible(true);
         this.setVisible(true);
     }
 
-
+    /**Méthode qui va afficher l'edt de l'étudiant 
+     * en fonction d'une semaine
+     * @param droit
+     * @param semaine 
+     */
     public void afficherEdtSemaineEtudiant(int droit, int semaine) {
         panel_edt.removeAll();
         panel_edt.validate();
@@ -221,7 +219,6 @@ public class Edt_Etudiant extends Edt {
 
             for (int i = 0; i < mes_seances.size(); i++) //On parcourt toutes séances relatives à cet etudiant
             {
-
                 salle = etudiantDao.trouverSalle(mes_seances.get(i));
                 Date date = mes_seances.get(i).getDate();
                 Calendar c = Calendar.getInstance();
@@ -294,12 +291,10 @@ public class Edt_Etudiant extends Edt {
             }
             this.panel_recherche.setVisible(false);
             this.panel_edt.add(tableau);
-
             this.panel_edt.revalidate();
             this.panel_edt.repaint();
             this.panel_edt.setVisible(true);
             this.setVisible(true);
-
 
         }
     }
@@ -394,9 +389,8 @@ public class Edt_Etudiant extends Edt {
         
         if(e.getSource()==this.logout)
         {
-            this.dispose();
+            this.dispose(); //Fermeture fenêtre
         }
-
 
     }
 

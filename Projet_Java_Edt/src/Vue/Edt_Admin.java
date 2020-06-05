@@ -20,31 +20,30 @@ import java.util.*;
  */
 public class Edt_Admin extends Edt {
     
-    JPanel panel_recherche = new JPanel();
-    JPanel boutons_search = new JPanel();
-    JPanel infos = new JPanel();
+    private JPanel panel_recherche = new JPanel();
+    private JPanel boutons_search = new JPanel();
+    private JPanel infos = new JPanel();
     
-    JButton chercher_utilisateur=null;
-    JButton chercher_salle=null;
-    JButton chercher_groupe=null;
-    JButton chercher_promotion=null;
-    JButton maj = new JButton ("Mise à jour");
+    private JButton chercher_utilisateur=null;
+    private JButton chercher_salle=null;
+    private JButton chercher_groupe=null;
+    private JButton chercher_promotion=null;
+    private JButton maj = new JButton ("Mise à jour");
     
-    Utilisateur user = new Utilisateur();
-    Enseignant prof = new Enseignant();
-    Groupe groupe = new Groupe();
-    Salle salle = new Salle();
+    private Utilisateur user = new Utilisateur();
+    private Enseignant prof = new Enseignant();
+    private Groupe groupe = new Groupe();
+    private Salle salle = new Salle();
 
-    GroupeDAO groupeDao = new GroupeDAO();
-    EnseignantDAO profDao = new EnseignantDAO();
-    SeanceDao seanceDao = new SeanceDao();
+    private GroupeDAO groupeDao = new GroupeDAO();
+    private EnseignantDAO profDao = new EnseignantDAO();
+    private SeanceDao seanceDao = new SeanceDao();
     
-    ArrayList<Seance> mes_seances = new ArrayList();
-    ArrayList<Integer> mes_id = new ArrayList();
-    
+    private ArrayList<Seance> mes_seances = new ArrayList();
+    private ArrayList<Integer> mes_id = new ArrayList();
     
     ///Mise à jour des données///
-    JPanel content2 = new JPanel();
+    private JPanel content2 = new JPanel();
 
     public Edt_Admin() {
     }
