@@ -34,21 +34,18 @@ public class SiteDAO extends DAO<Site> {
     }
 
     @Override
-    public Site create(Site obj) {
-        return new Site();
+    public boolean create(Site obj) {
+        return false;
 
     }
 
     @Override
-    public void delete(Site obj) {
-
+    public boolean delete(Site obj) {
+        return false;
     }
 
     @Override
-    public Site update(Site obj) {
-        return new Site();
-
+    public boolean update(Site obj) {
+        return false;
     }
-
-    
 }

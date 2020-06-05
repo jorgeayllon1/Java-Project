@@ -44,22 +44,22 @@ public class GroupeDAO extends DAO<Groupe> {
     }
 
     @Override
-    public Groupe create(Groupe obj) {
-        return new Groupe();
+    public boolean create(Groupe obj) {
+        return false;
 
     }
 
     @Override
-    public void delete(Groupe obj) {
+    public boolean delete(Groupe obj) {
 
+        return false;
     }
 
     @Override
-    public Groupe update(Groupe obj) {
-        return new Groupe();
+    public boolean update(Groupe obj) {
+        return false;
 
     }
-
 
     public ArrayList<Integer> trouverIdSeance(Groupe groupe) {
 
@@ -234,7 +234,7 @@ public class GroupeDAO extends DAO<Groupe> {
                 int id_type = rset.getInt("id_type");
                 TypeCours typeCours = typeCoursDAO.find(id_type);
 
-                les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin,etat, cours, typeCours));
+                les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, etat, cours, typeCours));
 
             }
 

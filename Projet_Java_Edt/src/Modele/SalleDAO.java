@@ -45,17 +45,18 @@ public class SalleDAO extends DAO<Salle> {
     }
 
     @Override
-    public Salle create(Salle obj) {
-        return new Salle();
+    public boolean create(Salle obj) {
+        return false;
     }
 
     @Override
-    public void delete(Salle obj) {
+    public boolean delete(Salle obj) {
+        return false;
     }
 
     @Override
-    public Salle update(Salle obj) {
-        return new Salle();
+    public boolean update(Salle obj) {
+        return false;
     }
 
     public int idCelonNom(String nom) {
@@ -117,7 +118,7 @@ public class SalleDAO extends DAO<Salle> {
                 int id_type = rset.getInt("id_type");
                 TypeCours typeCours = typeCoursDAO.find(id_type);
 
-                lesseances.add(new Seance(id, semaine, date, heure_debut, heure_fin,etat, cours, typeCours));
+                lesseances.add(new Seance(id, semaine, date, heure_debut, heure_fin, etat, cours, typeCours));
 
             }
 

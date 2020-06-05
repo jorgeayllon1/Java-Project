@@ -6,7 +6,6 @@
 package Modele;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
@@ -43,15 +42,16 @@ public class CoursDao extends DAO<Cours> {
         return cours;
     }
 
-    public Cours create(Cours cours) {
-        return new Cours();
+    public boolean create(Cours cours) {
+        return false;
     }
 
-    public void delete(Cours cours) {
+    public boolean delete(Cours cours) {
+        return false;
     }
 
-    public Cours update(Cours cours) {
-        return new Cours();
+    public boolean update(Cours cours) {
+        return false;
     }
 
 

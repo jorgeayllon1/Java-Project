@@ -48,19 +48,19 @@ public class EnseignantDAO extends DAO<Enseignant> {
     }
 
     @Override
-    public Enseignant create(Enseignant obj) {
-        return new Enseignant();
-
+    public boolean create(Enseignant obj) {
+        return false;
     }
 
     @Override
-    public void delete(Enseignant obj) {
+    public boolean delete(Enseignant obj) {
 
+        return false;
     }
 
     @Override
-    public Enseignant update(Enseignant obj) {
-        return new Enseignant();
+    public boolean update(Enseignant obj) {
+        return false;
 
     }
 
@@ -237,7 +237,7 @@ public class EnseignantDAO extends DAO<Enseignant> {
                     int id_type = rset.getInt("id_type");
                     TypeCours typeCours = typeCoursDAO.find(id_type);
                     deja_compte.add(rset.getInt("id"));
-                    les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin,etat, cours, typeCours));
+                    les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, etat, cours, typeCours));
                 }
 
 
@@ -285,7 +285,7 @@ public class EnseignantDAO extends DAO<Enseignant> {
                     int id_type = rset.getInt("id_type");
                     TypeCours typeCours = typeCoursDAO.find(id_type);
                     deja_compte.add(rset.getInt("id"));
-                    les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, etat,cours, typeCours));
+                    les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, etat, cours, typeCours));
                 }
 
 
@@ -298,23 +298,25 @@ public class EnseignantDAO extends DAO<Enseignant> {
 
         return les_seances;
     }
-    /**Méthode pour trouver un prof en fonction de son nom
-     * @param nom*/
-    public Enseignant trouverProfAvecNom(String nom)
-    {
+
+    /**
+     * Méthode pour trouver un prof en fonction de son nom
+     *
+     * @param nom
+     */
+    public Enseignant trouverProfAvecNom(String nom) {
         Enseignant prof = new Enseignant();
         EnseignantDAO profDao = new EnseignantDAO();
-        int id_user=0;
-        
-        
+        int id_user = 0;
+
+
         try {
             this.rset = this.conn.createStatement(
                     this.rset.TYPE_SCROLL_INSENSITIVE,
-                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id FROM utilisateur WHERE nom ='" + nom+"'"); 
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id FROM utilisateur WHERE nom ='" + nom + "'");
 
 
-            while (rset.next())
-            {
+            while (rset.next()) {
 
                 id_user = rset.getInt("id");
                 prof = profDao.find(id_user);
@@ -324,42 +326,43 @@ public class EnseignantDAO extends DAO<Enseignant> {
 
 
         } catch (SQLException e) {
-            
+
             System.out.println("Connexion echouee : probleme SQL SeanceDAO");
             e.printStackTrace();
         }
         return prof;
     }
-    
-    /**Méthode qui renvoie vrai si le nom existe dans la bdd false sinon
-     * @param nom*/
-    public boolean siExiste(String nom)
-    {
+
+    /**
+     * Méthode qui renvoie vrai si le nom existe dans la bdd false sinon
+     *
+     * @param nom
+     */
+    public boolean siExiste(String nom) {
         Enseignant prof = new Enseignant();
         EnseignantDAO profDao = new EnseignantDAO();
-        int id_user=0;
+        int id_user = 0;
         boolean existe = false;
-        
-        
+
+
         try {
             this.rset = this.conn.createStatement(
                     this.rset.TYPE_SCROLL_INSENSITIVE,
-                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id FROM utilisateur WHERE nom ='" + nom+"'"); 
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id FROM utilisateur WHERE nom ='" + nom + "'");
 
 
-            while (rset.next())
-            {
+            while (rset.next()) {
 
                 id_user = rset.getInt("id");
                 prof = profDao.find(id_user);
-                existe=true;
+                existe = true;
 
 
             }
 
 
         } catch (SQLException e) {
-            
+
             System.out.println("Connexion echouee : probleme SQL SeanceDAO");
             e.printStackTrace();
         }

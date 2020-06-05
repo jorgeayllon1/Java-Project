@@ -6,10 +6,8 @@
 package Modele;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 /**
  * @author Wang David
@@ -27,26 +25,25 @@ public class SeanceDao extends DAO<Seance> {
     @Override
     public Seance find(int id) {
         Seance seance = new Seance();
-        Cours cours=new Cours();
-        CoursDao coursDao=new CoursDao();
-        int id_cours=0;
-        
-        TypeCours type=new TypeCours();
+        Cours cours = new Cours();
+        CoursDao coursDao = new CoursDao();
+        int id_cours = 0;
+
+        TypeCours type = new TypeCours();
         TypeCoursDAO typeDao = new TypeCoursDAO();
-        int id_type=0;
+        int id_type = 0;
         try {
             //this.conn = Connexion.seConnecter();
             this.rset = this.conn.createStatement(
                     this.rset.TYPE_SCROLL_INSENSITIVE,
                     this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM seance WHERE id = " + id);
 
-            if (rset.first())
-            {
-                id_cours=rset.getInt("id_cours");
-                    cours = coursDao.find(id_cours);
-                    id_type=rset.getInt("id_type");
-                    type = typeDao.find(id_type);
-                    seance = new Seance(
+            if (rset.first()) {
+                id_cours = rset.getInt("id_cours");
+                cours = coursDao.find(id_cours);
+                id_type = rset.getInt("id_type");
+                type = typeDao.find(id_type);
+                seance = new Seance(
                         id,
                         rset.getInt("semaine"),
                         rset.getDate("date"),
@@ -69,7 +66,7 @@ public class SeanceDao extends DAO<Seance> {
     }
 
     @Override
-    public Seance create(Seance obj) {
+    public boolean create(Seance obj) {
 
         int id = this.trouverIdDispo(); //Trouver id dispo
 
@@ -88,7 +85,6 @@ public class SeanceDao extends DAO<Seance> {
                 prepare.setTimestamp(5, obj.getHeureFin());
                 prepare.setInt(6, obj.getCours().getID());
                 prepare.setInt(7, obj.getType().getId());
-                
 
                 //On éxécute
                 prepare.executeUpdate();
@@ -98,12 +94,11 @@ public class SeanceDao extends DAO<Seance> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return obj;
+        return true;
     }
 
     @Override
-    public void delete(Seance seance) {
+    public boolean delete(Seance seance) {
         try {
             this.conn.createStatement(rset.TYPE_SCROLL_INSENSITIVE,
                     rset.CONCUR_UPDATABLE
@@ -114,11 +109,12 @@ public class SeanceDao extends DAO<Seance> {
             e.printStackTrace();
         }
 
+        return true;
     }
 
 
     @Override
-    public Seance update(Seance obj) {
+    public boolean update(Seance obj) {
         try {
 
             this.conn
@@ -135,26 +131,23 @@ public class SeanceDao extends DAO<Seance> {
             e.printStackTrace();
         }
 
-        return obj;
-
+        return true;
     }
-    
-    public Enseignant trouverEnseignant(Seance seance)
-    {
+
+    public Enseignant trouverEnseignant(Seance seance) {
         Enseignant prof = new Enseignant();
         EnseignantDAO profDao = new EnseignantDAO();
-        int id_prof=0;
-        
+        int id_prof = 0;
+
         try {
             this.rset = this.conn.createStatement(
                     this.rset.TYPE_SCROLL_INSENSITIVE,
                     this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id_enseignant FROM seance_enseignants WHERE id_seance = " + seance.getID()); //On cherche tout les ID des séances de ce groupe
 
 
-            while (rset.next())
-            {
+            while (rset.next()) {
 
-                id_prof=rset.getInt("id_enseignant");
+                id_prof = rset.getInt("id_enseignant");
                 prof = profDao.find(id_prof);
 
 
@@ -162,30 +155,28 @@ public class SeanceDao extends DAO<Seance> {
 
 
         } catch (SQLException e) {
-            
+
             System.out.println("Connexion echouee : probleme SQL SeanceDAO");
             e.printStackTrace();
         }
-        
+
         return prof;
     }
-    
-    public Groupe trouverGroupe(Seance seance)
-    {
+
+    public Groupe trouverGroupe(Seance seance) {
         Groupe groupe = new Groupe();
         GroupeDAO groupeDao = new GroupeDAO();
-        int id_groupe=0;
-        
+        int id_groupe = 0;
+
         try {
             this.rset = this.conn.createStatement(
                     this.rset.TYPE_SCROLL_INSENSITIVE,
                     this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id_groupe FROM seance_groupes WHERE id_seance = " + seance.getID()); //On cherche tout les ID des séances de ce groupe
 
 
-            while (rset.next())
-            {
+            while (rset.next()) {
 
-                id_groupe=rset.getInt("id_groupe");
+                id_groupe = rset.getInt("id_groupe");
                 groupe = groupeDao.find(id_groupe);
 
 
@@ -193,11 +184,11 @@ public class SeanceDao extends DAO<Seance> {
 
 
         } catch (SQLException e) {
-            
+
             System.out.println("Connexion echouee : probleme SQL SeanceDAO");
             e.printStackTrace();
         }
-        
+
         return groupe;
     }
 

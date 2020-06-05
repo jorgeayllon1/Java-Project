@@ -38,11 +38,11 @@ public abstract class DAO<T> {
 
     public abstract T find(int id);
 
-    public abstract T create(T obj);
+    public abstract boolean create(T obj);
 
-    public abstract void delete(T obj);
+    public abstract boolean delete(T obj);
 
-    public abstract T update(T obj);
+    public abstract boolean update(T obj);
 
     /**
      * Méthode qui va trouver l'id le plus haut disponible

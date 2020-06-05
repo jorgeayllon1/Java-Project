@@ -32,18 +32,17 @@ public class TypeCoursDAO extends DAO<TypeCours> {
         return letype;
     }
 
-    public TypeCours create(TypeCours obj) {
-        return new TypeCours();
+    public boolean create(TypeCours obj) {
+        return false;
 
     }
 
-    public void delete(TypeCours obj) {
-
+    public boolean delete(TypeCours obj) {
+        return false;
     }
 
-    public TypeCours update(TypeCours obj) {
-        return new TypeCours();
-
+    public boolean update(TypeCours obj) {
+        return false;
     }
 
 }

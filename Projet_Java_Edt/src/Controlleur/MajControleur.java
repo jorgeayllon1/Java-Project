@@ -1,6 +1,6 @@
 package Controlleur;
 
-import Modele.DAO;
+import Modele.*;
 
 import java.awt.event.ActionEvent;
 
@@ -14,8 +14,10 @@ public class MajControleur extends Controleur {
         super(dao);
     }
 
-    public void affecterEnseignant() {
-        System.out.println("Coucou");
+    public void creationSeance() {
+        Seance nouv_seance;
+        Seance test = (Seance) this.dao.find(1);
+        System.out.println(test.getCours().getNom() + " " + test.getDate());
     }
 
     @Override

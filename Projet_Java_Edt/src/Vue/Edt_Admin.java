@@ -372,7 +372,7 @@ public class Edt_Admin extends Edt {
 
         /// ICI les test de mise à jours
         if (e.getSource() == this.summary) {
-            this.majControleur.affecterEnseignant();
+            this.majControleur.creationSeance();
         }
         /// Finf des test
 

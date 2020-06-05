@@ -16,7 +16,7 @@ public class DAOFactory {
         return new UtilisateurDao(conn);
     }
 
-    public static DAO<Utilisateur> getEtudiant() {
+    public static DAO<Etudiant> getEtudiant() {
         return new EtudiantDao(conn);
     }
 

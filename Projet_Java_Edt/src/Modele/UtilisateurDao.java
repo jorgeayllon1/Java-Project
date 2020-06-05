@@ -56,8 +56,7 @@ public class UtilisateurDao extends DAO<Utilisateur> {
 
     }
 
-
-    public Utilisateur create(Utilisateur user) {
+    public boolean create(Utilisateur user) {
         int id = this.trouverIdDispo(); //Trouver id dispo
 
         try {
@@ -84,15 +83,16 @@ public class UtilisateurDao extends DAO<Utilisateur> {
             e.printStackTrace();
         }
 
-        return user; //On retourne le nouvel utilisateur
+        return true;
     }
 
     /**
      * Supprimer un élément dans la table
      *
      * @param user
+     * @return
      */
-    public void delete(Utilisateur user) {
+    public boolean delete(Utilisateur user) {
         try {
             this.conn.createStatement(rset.TYPE_SCROLL_INSENSITIVE,
                     rset.CONCUR_UPDATABLE
@@ -105,10 +105,11 @@ public class UtilisateurDao extends DAO<Utilisateur> {
 
         //this.taille--;
 
+        return true;
     }
 
     //Changer mail
-    public Utilisateur update(Utilisateur user) {
+    public boolean update(Utilisateur user) {
         try {
 
             this.conn
@@ -125,7 +126,7 @@ public class UtilisateurDao extends DAO<Utilisateur> {
             e.printStackTrace();
         }
 
-        return user;
+        return true;
     }
 
     /**
@@ -160,7 +161,7 @@ public class UtilisateurDao extends DAO<Utilisateur> {
                 int id_type = rset.getInt("id_type");
                 TypeCours typeCours = typeCoursDAO.find(id_type);
 
-                les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin,etat, cours, typeCours));
+                les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, etat, cours, typeCours));
 
             }
 
