@@ -381,8 +381,10 @@ public class Edt_Admin extends Edt {
             long temps_debut = 1591185600000L;
             long temps_fin = 1591192800000L;
 
-            this.majControleur.modifierSeance("445", new Timestamp(temps_debut), new Timestamp(temps_fin),
-                    "Thermoc'estchaud", "coursàl'exteiruer");
+            SeanceDao seanceDao = new SeanceDao();
+            Seance test = seanceDao.find(9);
+
+            this.majControleur.modifierSeance(test, "Java POO", "TP");
         }
         /// Finf des test
 

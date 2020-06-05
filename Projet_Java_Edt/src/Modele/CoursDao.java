@@ -7,6 +7,7 @@ package Modele;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * @author Wang David
@@ -54,5 +55,42 @@ public class CoursDao extends DAO<Cours> {
         return false;
     }
 
+    public boolean nomCoherent(String nom) {
+
+        for (int i = 1; i < this.taille; i++) {
+            if (nom.equals(this.find(i).getNom())) {
+                return true;
+            }
+        }
+        System.out.println("Nom de cours incohérent");
+        return false;
+    }
+
+    public int id_celon_nom(String nom) {
+
+        int id = -1;
+
+        try {
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id FROM cours WHERE nom ='" + nom + "'");
+
+
+            while (rset.next()) {
+
+                id = rset.getInt("id");
+            }
+
+
+        } catch (SQLException e) {
+
+            System.err.println("Connexion echouee : probleme SQL CoursDAO");
+            e.printStackTrace();
+        }
+        if (id == -1) {
+            System.err.println("ERREUR : nom de cours non trouvé");
+        }
+        return id;
+    }
 
 }

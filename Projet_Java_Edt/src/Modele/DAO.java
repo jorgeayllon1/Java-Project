@@ -92,6 +92,7 @@ public abstract class DAO<T> {
      * @param nomTable
      * @return La taille de la table
      */
+
     public int getTaille(String nomTable) {
 
         try {

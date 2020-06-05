@@ -122,12 +122,19 @@ public class SeanceDao extends DAO<Seance> {
                             rset.TYPE_SCROLL_INSENSITIVE,
                             rset.CONCUR_UPDATABLE
                     ).executeUpdate(
-                    "UPDATE seance SET date = '" + obj.getDate() + "'" +
-                            " WHERE id = " + obj.getID()
+                    "UPDATE seance\n" +
+                            "SET seance.semaine=" + obj.getSemaine() + ",\n" +
+                            "seance.date='" + obj.getDate() + "',\n" +
+                            "seance.heure_debut='" + obj.getHeureDebut() + "',\n" +
+                            "seance.heure_fin='" + obj.getHeureFin() + "',\n" +
+                            "seance.etat=" + obj.getEtat() + ",\n" +
+                            "seance.id_cours=" + obj.getCours().getID() + ",\n" +
+                            "seance.id_type=" + obj.getType().getId() + "\n" +
+                            "WHERE seance.id=" + obj.getID()
             );
 
-            obj = this.find(obj.getID());
         } catch (SQLException e) {
+            System.err.println("ERROR SQL Update Seance");
             e.printStackTrace();
         }
 
