@@ -53,6 +53,34 @@ public class CoursDao extends DAO<Cours> {
     public Cours update(Cours cours) {
         return new Cours();
     }
+    
+    public boolean siExiste(int id)
+    {
+        Cours cours = new Cours();
+        CoursDao coursDao = new CoursDao();
+        int id_cours=0;
+        boolean existe = false;
+        
+        try {
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id FROM cours WHERE id="+id); 
+
+            while (rset.next())
+            {
+
+                id_cours = rset.getInt("id");
+                cours = coursDao.find(id_cours);
+                existe=true;
+            }
+
+        } catch (SQLException e) {
+            
+            System.out.println("Connexion echouee : probleme SQL SeanceDAO");
+            e.printStackTrace();
+        }
+        return existe;
+    }
 
 
 }

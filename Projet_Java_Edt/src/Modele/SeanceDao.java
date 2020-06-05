@@ -200,6 +200,36 @@ public class SeanceDao extends DAO<Seance> {
         
         return groupe;
     }
+    
+    public boolean siExiste(int id)
+    {
+        Seance seance = new Seance();
+        SeanceDao seanceDao = new SeanceDao();
+        int id_seance=0;
+        boolean existe = false;
+        
+        
+        try {
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id FROM seance WHERE id="+id); 
+
+
+            while (rset.next())
+            {
+
+                id_seance = rset.getInt("id");
+                seance = seanceDao.find(id_seance);
+                existe=true;
+            }
+
+        } catch (SQLException e) {
+            
+            System.out.println("Connexion echouee : probleme SQL SeanceDAO");
+            e.printStackTrace();
+        }
+        return existe;
+    }
 
 
 }

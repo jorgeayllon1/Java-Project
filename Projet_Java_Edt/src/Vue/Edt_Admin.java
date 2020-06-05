@@ -230,7 +230,6 @@ public class Edt_Admin extends Edt {
             Object[] deroulant = new Object[]{"Rechercher...", "Utilisateur", "Groupe", "Promotion", "Salle"};
             JComboBox liste = new JComboBox(deroulant);
             
-
             panel_recherche.add(liste);
 
             JLabel label_nom = new JLabel();
@@ -244,8 +243,6 @@ public class Edt_Admin extends Edt {
             
             
             ///INSTANTICATION DES BOUTONS///
-
-
             chercher_utilisateur = new JButton();
             chercher_groupe = new JButton();
             chercher_promotion = new JButton();
@@ -263,9 +260,8 @@ public class Edt_Admin extends Edt {
             recup_info = new JLabel("", JLabel.CENTER);
             //infos.add(recup_info);
 
-            //panel_recherche.add(boutons_search);
+
             content.add(panel_recherche, BorderLayout.NORTH);//Ajout en haut des composants de recherche
-            //content.add(infos, BorderLayout.CENTER);
 
             this.panel.add(content);
             this.panel.setVisible(true);
@@ -554,11 +550,11 @@ public class Edt_Admin extends Edt {
         
         JPanel panel_enlever = new JPanel(new BorderLayout());
         JPanel panel_affecter = new JPanel(new BorderLayout());
-        JPanel panel_modifier = new JPanel();
-        JPanel panel_ajouter = new JPanel();
-        JPanel panel_annuler = new JPanel();
-        JPanel panel_valider= new JPanel();
-        JPanel panel_deplacer = new JPanel();
+        JPanel panel_modifier = new JPanel(new BorderLayout());
+        JPanel panel_ajouter = new JPanel(new BorderLayout());
+        JPanel panel_annuler = new JPanel(new BorderLayout());
+        JPanel panel_valider= new JPanel(new BorderLayout());
+        JPanel panel_deplacer = new JPanel(new BorderLayout());
         
         this.afficherPanelEnlever(panel_enlever);
         this.afficherPanelAffecter(panel_affecter);
@@ -589,6 +585,7 @@ public class Edt_Admin extends Edt {
     
     public void afficherPanelEnlever(JPanel panel)
     {
+        
         ///Panel centre on ajoute la grille dans le panel centre
         JPanel centre = new JPanel(new GridLayout(0,1));
         this.afficherGrille(centre);
@@ -602,7 +599,7 @@ public class Edt_Admin extends Edt {
         JPanel haut = new JPanel(new FlowLayout());
         JLabel text_enlever = new JLabel("Veuillez choisir quel type d'user :");
         JRadioButton radio_prof=new JRadioButton("Enseignant");    
-        JRadioButton radio_eleve=new JRadioButton("Etudiant");  
+        JRadioButton radio_eleve=new JRadioButton("Groupe");  
         ButtonGroup bg=new ButtonGroup();  
         bg.add(radio_prof); bg.add(radio_eleve);
         JLabel text_user = new JLabel("");
@@ -623,7 +620,7 @@ public class Edt_Admin extends Edt {
             public void actionPerformed(ActionEvent e) {
                 if(radio_eleve.isSelected())
                 {
-                    text_user.setText("Nom eleve : ");
+                    text_user.setText("Nom groupe : ");
                 }
                 
             }
@@ -670,7 +667,7 @@ public class Edt_Admin extends Edt {
                                     {
                                         System.out.println(stock_seances[row][col].getID());
                                         JFrame frame =new JFrame();
-                                        JOptionPane.showConfirmDialog(frame,"Voulez-vous supprimer cet séance : \n" 
+                                        JOptionPane.showConfirmDialog(frame,"Voulez-vous supprimer cette séance : \n" 
                                                 + "Nom séance : " +stock_seances[row][col].getCours().getNom()
                                                 + " Date séance : " +stock_seances[row][col].getDate());
                                         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -708,8 +705,123 @@ public class Edt_Admin extends Edt {
     
     public void afficherPanelModifier(JPanel panel)
     {
-        JButton test = new JButton("modifier");
-        panel.add(test);
+        ///Panel centre on  dans le panel centre
+        JPanel centre = new JPanel(new FlowLayout());
+        JTextArea donnees_seance = new JTextArea();
+        donnees_seance.setPreferredSize(new Dimension(600,200));
+        centre.add(donnees_seance);
+        
+        JLabel text_cours = new JLabel("Id du cours remplaçant : ");
+        JTextField field_cours = new JTextField();
+        field_cours.setPreferredSize(new Dimension(30,30));
+        String liste[] = new String[]{"Cours interactif", "Cours magistral" , "TD" , "TP" , "Projet", "Soutien"};
+        JLabel text_type = new JLabel("Type du cours : ");
+        JComboBox liste_type = new JComboBox(liste);
+        JButton nom_cours = new JButton("Modifier nom");
+        JButton type_cours = new JButton("Modifier type cours");
+        
+        centre.add(text_cours);
+        centre.add(field_cours);
+        centre.add(text_type);
+        centre.add(liste_type);
+        centre.add(nom_cours);
+        centre.add(type_cours);
+        
+        nom_cours.setVisible(false);
+        type_cours.setVisible(false);
+        panel.add(centre, BorderLayout.CENTER); //On ajoute le panel au centre
+
+        
+        ///Bouton à ajouter dans le bas
+        JButton modifier = new JButton("MODIFIER");
+        panel.add(modifier,BorderLayout.SOUTH);
+        
+        ///Panel haut grid layout pour prendre toute la largeur
+        JPanel haut = new JPanel(new FlowLayout());
+        JLabel text_seance = new JLabel("Veuillez entrer l'id de la séance à modifier :");
+                
+        JTextField field_seance = new JTextField();
+        field_seance.setPreferredSize(new Dimension(80,30));
+
+        JButton chercher = new JButton("Chercher");
+        
+        chercher.addActionListener(new ActionListener() { //Si clique sur bouton chercher
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String seance_str = field_seance.getText(); //On get l'id de la seance
+                int id_seance = Integer.parseInt(seance_str); //Cast en int
+                SeanceDao sDao = new SeanceDao();
+                boolean existe = sDao.siExiste(id_seance); 
+                if(existe==true) //Si existe
+                {
+                    Seance s = sDao.find(id_seance); //On crée l'objet, c'est avec cet objet qu'on va modifier ses données
+                    String donnees = "Nom du cours : " +s.getCours().getNom()
+                                           +"<br> Date du cours : " + s.getDate() 
+                                           +"<br>Type du cours : " + s.getType().getNom();
+                    donnees_seance.setText(donnees);
+                    nom_cours.setVisible(true);
+                    type_cours.setVisible(true);
+                }
+                else
+                {
+                    JOptionPane stop = new JOptionPane();
+                    stop.showMessageDialog(null, "Seance inconnue", "ERREUR", JOptionPane.ERROR_MESSAGE);
+                }
+                
+                
+            }
+        });
+        
+        nom_cours.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String cours_str = field_cours.getText(); //On get la saisie dans le field
+                if(cours_str.equals("")) //Si vide
+                {
+                    JOptionPane stop = new JOptionPane();
+                    stop.showMessageDialog(null, "Champ vide ", "ERREUR", JOptionPane.ERROR_MESSAGE);
+                }
+                else
+                {
+                    int cours_id = Integer.parseInt(cours_str);
+                    CoursDao cDao = new CoursDao();
+                    Cours c = new Cours();
+                    boolean existe = cDao.siExiste(cours_id);
+                    c = cDao.find(cours_id); //On trouve le cours
+
+                    if(existe==true)
+                    {
+                        JOptionPane stop = new JOptionPane();
+                        stop.showMessageDialog(null, "Cours modifié en : "+c.getNom(), "ERREUR", JOptionPane.ERROR_MESSAGE);
+                    }
+                    else
+                    {
+                        JOptionPane stop = new JOptionPane();
+                        stop.showMessageDialog(null, "Cours id inconnu", "ERREUR", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                
+                
+            }
+        });
+        
+        type_cours.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                e.getSource();
+                String choisi = (String)liste_type.getSelectedItem();
+                JOptionPane stop = new JOptionPane();
+                stop.showMessageDialog(null, "Type modifié en : "+choisi, "ERREUR", JOptionPane.ERROR_MESSAGE);
+   
+            }
+        });
+        
+        
+        haut.add(text_seance);
+        haut.add(field_seance);
+        haut.add(chercher);
+        
+        panel.add(haut,BorderLayout.NORTH);
     }
     
     public void afficherPanelAjouter(JPanel panel)
@@ -720,8 +832,123 @@ public class Edt_Admin extends Edt {
     
     public void afficherPanelAnnuler(JPanel panel)
     {
-        JButton test = new JButton("annuler");
-        panel.add(test);
+        
+        ///Panel centre on ajoute la grille dans le panel centre
+        JPanel centre = new JPanel(new GridLayout(0,1));
+        this.afficherGrille(centre);
+        panel.add(centre, BorderLayout.CENTER); //On ajoute le panel au centre
+        
+        ///Bouton à ajouter dans le bas
+        JButton annuler = new JButton("ANNULER");
+        panel.add(annuler,BorderLayout.SOUTH);
+        
+        ///Panel haut grid layout pour prendre toute la largeur
+        JPanel haut = new JPanel(new FlowLayout());
+        JLabel text_enlever = new JLabel("Veuillez choisir quel type d'user :");
+        JRadioButton radio_prof=new JRadioButton("Enseignant");    
+        JRadioButton radio_eleve=new JRadioButton("Groupe");  
+        ButtonGroup bg=new ButtonGroup();  
+        bg.add(radio_prof); bg.add(radio_eleve);
+        JLabel text_user = new JLabel("");
+        
+        radio_prof.addActionListener(new ActionListener() { //Si clique sur prof
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(radio_prof.isSelected())
+                {
+                    text_user.setText("Nom prof : ");
+                }
+                
+            }
+        });
+        
+        radio_eleve.addActionListener(new ActionListener() { //Si clique sur etudiant
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(radio_eleve.isSelected())
+                {
+                    text_user.setText("Nom groupe : ");
+                }
+                
+            }
+        });
+        JTextField field_nom = new JTextField();
+        field_nom.setPreferredSize(new Dimension(80,30));
+        
+        JLabel text_semaine = new JLabel("Veuillez choisir quelle semaine : ");
+        String semaine[]=new String[52];
+        
+        
+        for(int i=0;i<52;i++) //Initialisation des numéros de semaine
+        { 
+            semaine[i]=""+(int)(i+1); 
+
+        } 
+        JComboBox list_semaine = new JComboBox(semaine);
+
+        JButton chercher = new JButton("Chercher");
+        
+        chercher.addActionListener(new ActionListener() { //Si clique sur bouton chercher
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String semaine_str = (String)list_semaine.getSelectedItem();
+                
+                rechercher_utilisateur(field_nom.getText(), semaine_str, 1); //On recherhce et controle s'il y a cet utilisateur         
+                prof = profDao.trouverProfAvecNom(field_nom.getText()); //On instancie l'objet prof
+                boolean existe = profDao.siExiste(field_nom.getText()); //On vérifie s'il existe
+
+                if(existe==true)//S'il existe dans la bdd
+                {
+                    
+                    int int_semaine = Integer.valueOf(semaine_str); //Cast en int
+                    afficherDateEdt(int_semaine);
+                    afficherEdtSemaineProf( prof,int_semaine,centre); //On affiche l'edt du prof en question
+                }
+                tableau.addMouseListener(new java.awt.event.MouseAdapter() { //Si clique sur une cellule du tableau
+                            @Override
+                            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                int row = tableau.rowAtPoint(evt.getPoint()); //Get les coord du click
+                                int col = tableau.columnAtPoint(evt.getPoint());
+                                
+                                    if(stock_seances[row][col]!=null) //Si il y a une séance dans la cellule
+                                    {
+                                        Date today = new Date(System.currentTimeMillis());
+                                        if(stock_seances[row][col].getDate().compareTo(today)>0) //Si la séance selectionnée vennat après la date actuelle
+                                        {
+                                            System.out.println(stock_seances[row][col].getID());
+                                            JFrame frame =new JFrame();
+                                            JOptionPane.showConfirmDialog(frame,"Voulez-vous annuler cette séance : \n" 
+                                                    + "Nom séance : " +stock_seances[row][col].getCours().getNom()
+                                                    + " Date séance : " +stock_seances[row][col].getDate());
+                                            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                                        }
+                                        else
+                                        {
+                                            JOptionPane stop = new JOptionPane();
+                                             stop.showMessageDialog(null, "Vous ne pouvez pas annuler une séance avant la date actuelle", "ERREUR", JOptionPane.ERROR_MESSAGE);
+                                        }
+                                        
+
+                                    }
+
+                    }
+                });
+                
+                
+            }
+        });
+        
+        
+        haut.add(text_enlever);
+        haut.add(radio_prof); haut.add(radio_eleve);
+        haut.add(text_user);
+        haut.add(field_nom);
+        
+        haut.add(text_semaine);
+        haut.add(list_semaine);
+        haut.add(chercher);
+        
+        panel.add(haut,BorderLayout.NORTH);
     }
     
     public void afficherPanelValider(JPanel panel)
