@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 /**
  * @author Wang David
  */
+
 public class AccueilControleur extends Controleur {
     private int auth=0;
     public AccueilControleur() {

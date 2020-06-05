@@ -14,6 +14,10 @@ public class MajControleur extends Controleur {
         super();
     }
 
+    public void affecterEnseignat() {
+        System.out.println("Coucou");
+    }
+
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
 
