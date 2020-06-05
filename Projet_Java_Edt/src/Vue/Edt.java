@@ -27,7 +27,7 @@ public class Edt extends JFrame implements ActionListener {
     protected JPanel panel = new JPanel();
     protected JPanel panel_edt = new JPanel(new GridLayout(0, 1));
     
-    JPanel content = new JPanel();
+    JPanel content = new JPanel(new GridLayout(0,1));
     
     protected JButton rechercher = new JButton("Rechercher");
     protected JButton annule = new JButton("Cours annulé(s)");

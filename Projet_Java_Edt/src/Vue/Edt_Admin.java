@@ -197,15 +197,195 @@ public class Edt_Admin extends Edt {
         child.setVisible(true);
     }
 
-    public void ajoutPanel2(JComponent parent)
+    public void afficherPanelUser(JPanel panel)
     {
-        parent.revalidate();
-        parent.repaint();
-        parent.setVisible(true);
-        this.add(parent);
-        this.setVisible(true);
+        
+        ///Panel centre on ajoute la grille dans le panel centre
+        JPanel centre = new JPanel(new GridLayout(0,1));
+        this.afficherGrille(centre);
+        panel.add(centre, BorderLayout.CENTER); //On ajoute le panel au centre
+        
+        ///Bouton à ajouter dans le bas
+        JButton enlever = new JButton("ENLEVER");
+        panel.add(enlever,BorderLayout.SOUTH);
+        
+        ///Panel haut grid layout pour prendre toute la largeur
+        JPanel haut = new JPanel(new FlowLayout());
+        JLabel text_enlever = new JLabel("Veuillez choisir quel type d'user :");
+        JRadioButton radio_prof=new JRadioButton("Enseignant");    
+        JRadioButton radio_eleve=new JRadioButton("Groupe");  
+        ButtonGroup bg=new ButtonGroup();  
+        bg.add(radio_prof); bg.add(radio_eleve);
+        JLabel text_user = new JLabel("");
+        
+        radio_prof.addActionListener(new ActionListener() { //Si clique sur prof
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(radio_prof.isSelected())
+                {
+                    text_user.setText("Nom prof : ");
+                }
+                
+            }
+        });
+        
+        radio_eleve.addActionListener(new ActionListener() { //Si clique sur etudiant
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(radio_eleve.isSelected())
+                {
+                    text_user.setText("Nom groupe : ");
+                }
+                
+            }
+        });
+        JTextField field_nom = new JTextField();
+        field_nom.setPreferredSize(new Dimension(80,30));
+        
+        JLabel text_semaine = new JLabel("Veuillez choisir quelle semaine : ");
+        String semaine[]=new String[52];
+        
+        
+        for(int i=0;i<52;i++) //Initialisation des numéros de semaine
+        { 
+            semaine[i]=""+(int)(i+1); 
+
+        } 
+        JComboBox list_semaine = new JComboBox(semaine);
+
+        JButton chercher = new JButton("Chercher");
+        
+        chercher.addActionListener(new ActionListener() { //Si clique sur bouton chercher
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String semaine_str = (String)list_semaine.getSelectedItem();
+                
+                rechercher_utilisateur(field_nom.getText(), semaine_str, 1); //On recherhce et controle s'il y a cet utilisateur         
+                prof = profDao.trouverProfAvecNom(field_nom.getText()); //On instancie l'objet prof
+                boolean existe = profDao.siExiste(field_nom.getText()); //On vérifie s'il existe
+
+                if(existe==true)//S'il existe dans la bdd
+                {
+                    
+                    int int_semaine = Integer.valueOf(semaine_str); //Cast en int
+                    afficherDateEdt(int_semaine);
+                    afficherEdtSemaineProf( prof,int_semaine,centre); //On affiche l'edt du prof en question
+                }
+                
+                
+            }
+        });
+        
+        
+        haut.add(text_enlever);
+        haut.add(radio_prof); haut.add(radio_eleve);
+        haut.add(text_user);
+        haut.add(field_nom);
+        
+        haut.add(text_semaine);
+        haut.add(list_semaine);
+        haut.add(chercher);
+        
+        panel.add(haut,BorderLayout.NORTH);
+        
     }
     
+    public void afficherPanelGroupe(JPanel panel)
+    {
+        ///Panel centre on ajoute la grille dans le panel centre
+        JPanel centre = new JPanel(new GridLayout(0,1));
+        this.afficherGrille(centre);
+        panel.add(centre, BorderLayout.CENTER); //On ajoute le panel au centre
+        
+        ///Bouton à ajouter dans le bas
+        JButton groupe = new JButton("GROUPE");
+        panel.add(groupe,BorderLayout.SOUTH);
+        
+        ///Panel haut grid layout pour prendre toute la largeur
+        JPanel haut = new JPanel(new FlowLayout());
+        JLabel text_promo = new JLabel("Veuillez choisir la promo :");
+        
+        
+        PromotionDAO pDao = new PromotionDAO();
+        Promotion p = new Promotion();
+        Integer[]liste_promo = new Integer[pDao.getTaille("promotion")];
+        for(int i=1;i<pDao.getTaille("promotion")+1;i++)
+        {
+            p = pDao.find(i);
+            liste_promo[i-1]=p.getAnnee();
+            
+        }
+        JComboBox jcombo_promo= new JComboBox(liste_promo);
+        JLabel text_groupe = new JLabel("Veuillez choisir le groupe");
+        JComboBox jcombo_groupe = new JComboBox();
+        
+        ////FAIRE UN BOUTON APPLIQUER LE FILTRE///
+        
+        jcombo_promo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                int annee_promo= (Integer)jcombo_promo.getSelectedItem();
+                ArrayList<Groupe> mes_groupes = new ArrayList();
+                mes_groupes = pDao.allGroupes(annee_promo);
+                String []liste_groupe = new String[mes_groupes.size()]; //Liste de groupe de taille nombre de groupe dans cette promo
+                
+                for(int j=0;j<mes_groupes.size();j++)
+                {
+                    liste_groupe[j] = mes_groupes.get(j).getNom();
+                    System.out.println(mes_groupes.get(j).getNom());
+                }
+                DefaultComboBoxModel model = new DefaultComboBoxModel( liste_groupe );
+                jcombo_groupe.setModel( model );
+                
+               
+            }
+        });
+        
+        JButton chercher = new JButton("Chercher");
+        
+        chercher.addActionListener(new ActionListener() { //Si clique sur bouton chercher
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //String semaine_str = (String)list_semaine.getSelectedItem();
+                
+                /*rechercher_utilisateur(field_nom.getText(), semaine_str, 1); //On recherhce et controle s'il y a cet utilisateur         
+                prof = profDao.trouverProfAvecNom(field_nom.getText()); //On instancie l'objet prof
+                boolean existe = profDao.siExiste(field_nom.getText()); //On vérifie s'il existe
+
+                if(existe==true)//S'il existe dans la bdd
+                {
+                    
+                    int int_semaine = Integer.valueOf(semaine_str); //Cast en int
+                    afficherDateEdt(int_semaine);
+                    afficherEdtSemaineProf( prof,int_semaine,centre); //On affiche l'edt du prof en question
+                }*/
+                
+                
+            }
+        });
+        
+        
+        haut.add(text_promo);
+        haut.add(jcombo_promo);
+
+        haut.add(text_groupe);
+        haut.add(jcombo_groupe);
+
+        haut.add(chercher);
+        
+        panel.add(haut,BorderLayout.NORTH);
+    }
+    
+    public void afficherPanelPromo(JPanel panel)
+    {
+        
+    }
+    
+    public void afficherPanelSalle(JPanel panel)
+    {
+        
+    }
     ///ACTIONS///
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -217,145 +397,36 @@ public class Edt_Admin extends Edt {
         
         if(e.getSource()==this.rechercher)
         {
-            ///SUPRESSION///
-            suppPanel(panel); //Vider le panel
-            suppPanel(content2); //Supprimer le content2 pour maj        
-            this.info.setVisible(false);
-            suppPanel(boutons_search);
-            ///INSTANCIATION
-            content = new JPanel(new BorderLayout());
-            panel_recherche = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
-            boutons_search = new JPanel(new FlowLayout());
+            suppPanel(this.panel);
+            suppPanel(this.content2);
+            suppPanel(this.content);
 
-            Object[] deroulant = new Object[]{"Rechercher...", "Utilisateur", "Groupe", "Promotion", "Salle"};
-            JComboBox liste = new JComboBox(deroulant);
-            
-            panel_recherche.add(liste);
-
-            JLabel label_nom = new JLabel();
-            JLabel label_semaine = new JLabel();
-
-            JTextField nom = new JTextField();
-            nom.setPreferredSize(new Dimension(100, 50));
-
-            JTextField semaine = new JTextField();
-            semaine.setPreferredSize(new Dimension(100, 50));
-            
-            
-            ///INSTANTICATION DES BOUTONS///
-            chercher_utilisateur = new JButton();
-            chercher_groupe = new JButton();
-            chercher_promotion = new JButton();
-            chercher_salle = new JButton();
-   
-            ///AJOUT DANS LE PANEL SUPERIEUR DE RECHERCHE///
-
-            panel_recherche.add(label_nom);
-            panel_recherche.add(nom);
-            panel_recherche.add(label_semaine);
-            panel_recherche.add(semaine);
-
-            infos = new JPanel(new GridLayout(0, 1));
-            //infos = new JPanel(new BorderLayout() );
-            recup_info = new JLabel("", JLabel.CENTER);
-            //infos.add(recup_info);
+            JPanel panel_user = new JPanel(new BorderLayout());
+            JPanel panel_groupe = new JPanel(new BorderLayout());
+            JPanel panel_modifier = new JPanel(new BorderLayout());
+            JPanel panel_ajouter = new JPanel(new BorderLayout());
 
 
-            content.add(panel_recherche, BorderLayout.NORTH);//Ajout en haut des composants de recherche
-
-            this.panel.add(content);
-            this.panel.setVisible(true);
-
-            liste.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    e.getSource();
-                    String choisi = (String)liste.getSelectedItem(); //On stocke dans un string l'item selectionné
-                    if(choisi=="Utilisateur") //Si on choisit utilisateur dans la liste
-                    {                      
-                        suppPanel(boutons_search); //On remove les anciens boutons
-                        label_nom.setText("Nom Prof :");  //Changement des labels
-                        label_semaine.setText("Numéro semaine");
-                                   
-                        chercher_utilisateur = new JButton(new AbstractAction("Chercher Prof") { //Création nouveau bouton + invocation classe anonyme
-                            @Override
-                            public void actionPerformed(ActionEvent actionEvent) {
-                                rechercher_utilisateur(nom.getText(), semaine.getText(), 1); //On recherhce et controle s'il y a cet utilisateur
-                                afficherGrille();
-                                String string_semaine = semaine.getText();
-                                
-                                prof = profDao.trouverProfAvecNom(nom.getText()); //On instancie l'objet prof
-                                
-                                boolean existe = profDao.siExiste(nom.getText()); //On vérifie s'il existe
-                                
-                                if(existe==true)//S'il existe dans la bdd
-                                {
-                                    int int_semaine = Integer.valueOf(string_semaine); //Cast en int
-                                    afficherEdtSemaineProf( prof,int_semaine); //On affiche l'edt du prof en question
-                                }
-
-                                /*content.add(panel_recherche, BorderLayout.NORTH);
-                                panel.add(content);*/
-                            }
-                        });
-                        ajoutPanel(boutons_search,chercher_utilisateur) ; //On ajoute le bouton dans son layout parent
-                        panel_recherche.add(boutons_search); //Puis on l'ajoute dans le panel recherche
-   
-                    }
-                    else if(choisi=="Groupe")
-                    {
-                        suppPanel(boutons_search);
-                        chercher_groupe = new JButton(new AbstractAction("Chercher Groupe") {
-                            @Override
-                            public void actionPerformed(ActionEvent actionEvent) {
-                                rechercher_groupe(nom.getText(), semaine.getText());
-                            }
-                        });
+            this.afficherPanelUser(panel_user);
+            this.afficherPanelGroupe(panel_groupe);
+            this.afficherPanelModifier(panel_modifier);
+            this.afficherPanelAjouter(panel_ajouter);
 
 
-                        label_nom.setText("Nom groupe :");
-                        label_semaine.setText("Numéro semaine");
-                        ajoutPanel(boutons_search, chercher_groupe);
-                        panel_recherche.add(boutons_search);
-                        content.add(panel_recherche, BorderLayout.NORTH);
-                        panel.add(content);
-                    } else if (choisi == "Promotion") {
-                        suppPanel(boutons_search);
+            JTabbedPane bar_onglets = new JTabbedPane(JTabbedPane.TOP);
+            Font font = new Font("Script", Font.CENTER_BASELINE, 18);
+            bar_onglets.setFont(font);
 
-                        chercher_promotion = new JButton(new AbstractAction("Chercher Promotion") {
-                            @Override
-                            public void actionPerformed(ActionEvent actionEvent) {
-                                rechercher_promotion(nom.getText(), semaine.getText());
-                            }
-                        });
 
-                        label_nom.setText("Promotion :");
-                        label_semaine.setText("Numéro semaine");
-                        ajoutPanel(boutons_search, chercher_promotion);
-                        panel_recherche.add(boutons_search);
-                        content.add(panel_recherche, BorderLayout.NORTH);
-                        panel.add(content);
-                    } else if (choisi == "Salle") {
+            bar_onglets.addTab("Utilisateur", panel_user);
+            bar_onglets.addTab("Groupe", panel_groupe);
+            bar_onglets.addTab("Promotion", panel_modifier);
+            bar_onglets.addTab("Salle", panel_ajouter);
 
-                        suppPanel(boutons_search);
-                        chercher_salle = new JButton(new AbstractAction("Chercher Salle") {
-                            @Override
-                            public void actionPerformed(ActionEvent actionEvent) {
-                                rechercher_salle(nom.getText(), semaine.getText());
-                            }
-                        });
-
-                        label_nom.setText("Salle :");
-                        label_semaine.setText("Numéro semaine");
-                        ajoutPanel(boutons_search, chercher_salle);
-                        panel_recherche.add(boutons_search);
-                        content.add(panel_recherche, BorderLayout.NORTH);
-                        panel.add(content);
-                    }
-
-                }
-            });
-
+            ajoutPanel(content,bar_onglets);
+            ajoutPanel(panel,content);
+            panel.setVisible(true);
+           
 
         }
 
@@ -544,8 +615,8 @@ public class Edt_Admin extends Edt {
     //////////////////////////////////----------------------------MISE A JOUR DES DONNEES----------------------------------///////////////////////////
     public void afficherInterfaceMaj()
     {
-        suppPanel(panel);
-        suppPanel(content2);
+        suppPanel(this.panel);
+        suppPanel(this.content2);
         suppPanel(this.content);
         
         JPanel panel_enlever = new JPanel(new BorderLayout());

@@ -120,4 +120,37 @@ public class PromotionDAO extends DAO<Promotion> {
         }
         return lesseances;
     }
+    
+    /**Retourne la liste de tous les groupes issus de cette promo
+     * 
+     * @param promo
+     * @return 
+     */
+    public ArrayList<Groupe> allGroupes(int promo)
+    {
+        ArrayList<Groupe> mes_groupes = new ArrayList();
+        Promotion promotion = new Promotion();
+        PromotionDAO promoDao = new PromotionDAO();
+
+        try {
+            //this.conn = Connexion.seConnecter();
+
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM groupe WHERE id="+promo);
+
+            while (rset.next()) {
+
+                    promotion = promoDao.find(promo);
+                    mes_groupes.add(new Groupe(rset.getInt("id"), rset.getString("nom"),promotion));
+                
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println("Connexion echouee : probleme SQL EnseignantDao");
+            e.printStackTrace();
+        }
+        return mes_groupes;
+    }
 }
