@@ -62,6 +62,7 @@ public class Edt_Etudiant extends Edt {
     public void afficherEdtEtudiantAccueil() {
 
         this.afficherGrille();
+        this.afficherDateEdt(num_semaine);
         this.afficherEdtEtudiant(4);
 
     }
@@ -342,10 +343,12 @@ public class Edt_Etudiant extends Edt {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
                     rechercher_utilisateur(nom.getText(), semaine.getText(), 4);
-                    afficherGrille();
+                    
                     String string_semaine = semaine.getText();
 
                     int int_semaine = Integer.valueOf(string_semaine); //Cast en int
+                    afficherGrille();
+                    afficherDateEdt(int_semaine);
                     afficherEdtSemaineEtudiant(4, int_semaine);//On peut que rechercher ses propres cours
 
                 }
@@ -364,12 +367,14 @@ public class Edt_Etudiant extends Edt {
             //Si c'est cliqué
             if (e.getActionCommand().equals(this.week_button.get(s).getText())) {
                 System.out.println(this.week_button.get(s).getText()); //On affiche le texte du bouton cliqué
-
-                this.afficherGrille();
+                
+                
 
                 String string_semaine = this.week_button.get(s).getText(); //On get le string du numero de semaine
 
-                int int_semaine = Integer.valueOf(string_semaine); //Cast en int
+                int int_semaine = Integer.valueOf(string_semaine); //Cast en int           
+                this.afficherGrille();
+                this.afficherDateEdt(int_semaine);
                 this.afficherEdtSemaineEtudiant(4, int_semaine);
 
 

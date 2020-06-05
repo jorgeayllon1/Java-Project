@@ -7,6 +7,7 @@ import java.awt.*;
 import static java.awt.Color.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 
 import java.util.*;
 import javax.swing.*;
@@ -173,6 +174,7 @@ public class Edt extends JFrame implements ActionListener {
         String  titre[] = {"Horaires", "Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"};
 
         tableau = new JTable(donnees,titre);
+        tableau.setEnabled(false); //Non éditable
         //tableau = new JTable();
         //tableau.setModel(new TableLabel());
         tableau.setRowHeight(90);
@@ -184,68 +186,6 @@ public class Edt extends JFrame implements ActionListener {
     
     public void afficherGrille(JPanel panelTab)
     {
-        //JScrollPane pane = new JScrollPane();
-        
-        /*Object[] columns = {"Horaires/Jours", "Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"};
-        Object[][] rows = {{"8h-10h", "", "","","","",""},
-            {"10h-12h", "", "","","","",""},
-            {"12h-14h", "", "","","","",""},
-            {"14h-16h", "", "","","","",""},
-            {"16h-18h", "", "","","","",""},
-            {"18h-20h", "", "","","","",""}
-        
-                };*/
-        
-        /*DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("Horaires/Jours");
-        model.addColumn("Lundi");
-        model.addColumn("Mardi");
-        model.addColumn("Mercredi");
-        model.addColumn("Jeudi");
-        model.addColumn("Vendredi");
-        model.addColumn("Samedi");
-
-        Object[] row = new Object[1];
-        row[0] = "";
-        model.addRow(row);
-        row = new Object[1];
-        row[0] = "8h-10h";
-
-        model.addRow(row);
-        
-        row = new Object[1];
-        row[0] = "10h-12h";
- 
-
-        model.addRow(row);
-
-        row = new Object[1];
-        row[0] = "12h-14h";
-
-        model.addRow(row);
-        
-         row = new Object[1];
-        row[0] = "14h-16h";
-
-
-        model.addRow(row);
-
-        row = new Object[1];
-        row[0] = "16h-18h";
-
-        model.addRow(row);
-        row = new Object[1];
-        row[0] = "18h-20h";
-
-        model.addRow(row);
-        row = new Object[1];
-        
-
-        tableau = new JTable();
-        tableau.setModel(model);
-        tableau.setRowHeight(panel.getHeight()/9);
-        tableau.setDefaultRenderer(JLabel.class, new CaseLabel());
-        tableau.setShowGrid(true);*/
         Object[][] donnees =
         {
             {"Horaires/Jours", "Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"},
@@ -278,6 +218,28 @@ public class Edt extends JFrame implements ActionListener {
         
         
     }
+    
+    public void afficherDateEdt(int semaine)
+     {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM dd yyyy");
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.WEEK_OF_YEAR, semaine);        
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        String lundi = sdf.format((cal.getTime()));
+        tableau.setValueAt("Lundi "+lundi, 0, 1);
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
+        String mardi = sdf.format((cal.getTime()));
+        tableau.setValueAt("Mardi "+mardi, 0, 2);
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+        String mercredi = sdf.format((cal.getTime()));
+        tableau.setValueAt("Mercredi "+mercredi, 0, 3);
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
+        String jeudi = sdf.format((cal.getTime()));
+        tableau.setValueAt("Jeudi "+jeudi, 0, 4);
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+        String vendredi = sdf.format((cal.getTime()));
+        tableau.setValueAt("Vendredi "+vendredi, 0, 5);
+     }
     
     //Méthode de recherche selon nom user
     public void rechercher_utilisateur(String nom, String semaine, int droit) {

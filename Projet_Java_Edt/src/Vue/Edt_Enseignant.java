@@ -54,7 +54,9 @@ public class Edt_Enseignant extends Edt {
     ///Affichage de l'onglet cours qui sert de page d'accueil lors de la connexion
     public void afficherEdtProfAccueil() {
 
+        
         this.afficherGrille();
+        this.afficherDateEdt(num_semaine);
         this.afficherEdtProf(3);
 
     }
@@ -315,10 +317,12 @@ public class Edt_Enseignant extends Edt {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
                     rechercher_utilisateur(nom.getText(), semaine.getText(), 3);
-                    afficherGrille();
+                    
                     String string_semaine = semaine.getText();
 
                     int int_semaine = Integer.valueOf(string_semaine); //Cast en int
+                    afficherGrille();
+                    afficherDateEdt(int_semaine);
                     afficherEdtSemaineProf(3, int_semaine); //On peut que rechercher ses propres cours
 
                 }

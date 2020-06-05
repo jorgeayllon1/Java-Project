@@ -586,6 +586,7 @@ public class Edt_Admin extends Edt {
     public void afficherPanelEnlever(JPanel panel)
     {
         
+        
         ///Panel centre on ajoute la grille dans le panel centre
         JPanel centre = new JPanel(new GridLayout(0,1));
         this.afficherGrille(centre);
@@ -832,6 +833,7 @@ public class Edt_Admin extends Edt {
     
     public void afficherPanelAnnuler(JPanel panel)
     {
+       
         
         ///Panel centre on ajoute la grille dans le panel centre
         JPanel centre = new JPanel(new GridLayout(0,1));
@@ -922,11 +924,11 @@ public class Edt_Admin extends Edt {
                                                     + " Date séance : " +stock_seances[row][col].getDate());
                                             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                                         }
-                                        else
+                                        /*else
                                         {
                                             JOptionPane stop = new JOptionPane();
                                              stop.showMessageDialog(null, "Vous ne pouvez pas annuler une séance avant la date actuelle", "ERREUR", JOptionPane.ERROR_MESSAGE);
-                                        }
+                                        }*/
                                         
 
                                     }
@@ -953,8 +955,123 @@ public class Edt_Admin extends Edt {
     
     public void afficherPanelValider(JPanel panel)
     {
-        JButton test = new JButton("valider");
-        panel.add(test);
+        
+        ///Panel centre on ajoute la grille dans le panel centre
+        JPanel centre = new JPanel(new GridLayout(0,1));
+        this.afficherGrille(centre);
+        panel.add(centre, BorderLayout.CENTER); //On ajoute le panel au centre
+        
+        ///Bouton à valider dans le bas
+        JButton valider = new JButton("VALIDER");
+        panel.add(valider,BorderLayout.SOUTH);
+        
+        ///Panel haut grid layout pour prendre toute la largeur
+        JPanel haut = new JPanel(new FlowLayout());
+        JLabel text_enlever = new JLabel("Veuillez choisir quel type d'user :");
+        JRadioButton radio_prof=new JRadioButton("Enseignant");    
+        JRadioButton radio_eleve=new JRadioButton("Groupe");  
+        ButtonGroup bg=new ButtonGroup();  
+        bg.add(radio_prof); bg.add(radio_eleve);
+        JLabel text_user = new JLabel("");
+        
+        radio_prof.addActionListener(new ActionListener() { //Si clique sur prof
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(radio_prof.isSelected())
+                {
+                    text_user.setText("Nom prof : ");
+                }
+                
+            }
+        });
+        
+        radio_eleve.addActionListener(new ActionListener() { //Si clique sur etudiant
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(radio_eleve.isSelected())
+                {
+                    text_user.setText("Nom groupe : ");
+                }
+                
+            }
+        });
+        JTextField field_nom = new JTextField();
+        field_nom.setPreferredSize(new Dimension(80,30));
+        
+        JLabel text_semaine = new JLabel("Veuillez choisir quelle semaine : ");
+        String semaine[]=new String[52];
+        
+        
+        for(int i=0;i<52;i++) //Initialisation des numéros de semaine
+        { 
+            semaine[i]=""+(int)(i+1); 
+
+        } 
+        JComboBox list_semaine = new JComboBox(semaine);
+
+        JButton chercher = new JButton("Chercher");
+        
+        chercher.addActionListener(new ActionListener() { //Si clique sur bouton chercher
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String semaine_str = (String)list_semaine.getSelectedItem();
+                
+                rechercher_utilisateur(field_nom.getText(), semaine_str, 1); //On recherhce et controle s'il y a cet utilisateur         
+                prof = profDao.trouverProfAvecNom(field_nom.getText()); //On instancie l'objet prof
+                boolean existe = profDao.siExiste(field_nom.getText()); //On vérifie s'il existe
+
+                if(existe==true)//S'il existe dans la bdd
+                {
+                    
+                    int int_semaine = Integer.valueOf(semaine_str); //Cast en int
+                    afficherDateEdt(int_semaine);
+                    afficherEdtSemaineProf( prof,int_semaine,centre); //On affiche l'edt du prof en question
+                }
+                tableau.addMouseListener(new java.awt.event.MouseAdapter() { //Si clique sur une cellule du tableau
+                            @Override
+                            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                int row = tableau.rowAtPoint(evt.getPoint()); //Get les coord du click
+                                int col = tableau.columnAtPoint(evt.getPoint());
+                                
+                                    if(stock_seances[row][col]!=null) //Si il y a une séance dans la cellule
+                                    {
+                                        Date today = new Date(System.currentTimeMillis());
+                                        if(stock_seances[row][col].getDate().compareTo(today)<0) //Si la séance selectionnée venaat après la date actuelle
+                                        {
+                                            System.out.println(stock_seances[row][col].getID());
+                                            JFrame frame =new JFrame();
+                                            JOptionPane.showConfirmDialog(frame,"Voulez-vous valider cette séance : \n" 
+                                                    + "Nom séance : " +stock_seances[row][col].getCours().getNom()
+                                                    + " Date séance : " +stock_seances[row][col].getDate());
+                                            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                                        }
+                                        /*else
+                                        {
+                                            JOptionPane stop = new JOptionPane();
+                                             stop.showMessageDialog(null, "Vous ne pouvez validez que les séances avant la date d'aujourd'hui", "ERREUR", JOptionPane.ERROR_MESSAGE);
+                                        }*/
+                                        
+
+                                    }
+
+                    }
+                });
+                
+                
+            }
+        });
+        
+        
+        haut.add(text_enlever);
+        haut.add(radio_prof); haut.add(radio_eleve);
+        haut.add(text_user);
+        haut.add(field_nom);
+        
+        haut.add(text_semaine);
+        haut.add(list_semaine);
+        haut.add(chercher);
+        
+        panel.add(haut,BorderLayout.NORTH);
     }
     
     public void afficherPanelDeplacer(JPanel panel)
@@ -966,27 +1083,7 @@ public class Edt_Admin extends Edt {
      * de la semaine selon le numéro de semaine en param
      * @param semaine 
      */
-     public void afficherDateEdt(int semaine)
-     {
-        SimpleDateFormat sdf = new SimpleDateFormat("MM dd yyyy");
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.WEEK_OF_YEAR, semaine);        
-        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        String lundi = sdf.format((cal.getTime()));
-        tableau.setValueAt("Lundi "+lundi, 0, 1);
-        cal.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
-        String mardi = sdf.format((cal.getTime()));
-        tableau.setValueAt("Mardi "+mardi, 0, 2);
-        cal.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
-        String mercredi = sdf.format((cal.getTime()));
-        tableau.setValueAt("Mercredi "+mercredi, 0, 3);
-        cal.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
-        String jeudi = sdf.format((cal.getTime()));
-        tableau.setValueAt("Jeudi "+jeudi, 0, 4);
-        cal.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
-        String vendredi = sdf.format((cal.getTime()));
-        tableau.setValueAt("Vendredi "+vendredi, 0, 5);
-     }
+     
      public void afficherEdtSemaineProf(Enseignant prof, int semaine, JPanel pan) {
 
         suppPanel(pan);
