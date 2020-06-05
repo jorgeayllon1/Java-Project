@@ -5,7 +5,7 @@
  */
 package Vue;
 
-import Controlleur.Recherche.RechercheControleur;
+import Controlleur.Maj.MajControleur;
 import Modele.*;
 
 import javax.swing.*;
@@ -19,18 +19,18 @@ import java.util.*;
  * @author Wang David
  */
 public class Edt_Admin extends Edt {
-    
+
     JPanel panel_recherche = new JPanel();
     JPanel boutons_search = new JPanel();
     JPanel infos = new JPanel();
-    
-    JButton chercher_utilisateur=null;
-    JButton chercher_salle=null;
-    JButton chercher_groupe=null;
-    JButton chercher_promotion=null;
-    JButton maj = new JButton ("Mise à jour");
-    
-    
+
+    JButton chercher_utilisateur = null;
+    JButton chercher_salle = null;
+    JButton chercher_groupe = null;
+    JButton chercher_promotion = null;
+    JButton maj = new JButton("Mise à jour");
+
+
     Utilisateur user = new Utilisateur();
     Enseignant prof = new Enseignant();
     Groupe groupe = new Groupe();
@@ -39,11 +39,11 @@ public class Edt_Admin extends Edt {
     GroupeDAO groupeDao = new GroupeDAO();
     EnseignantDAO profDao = new EnseignantDAO();
     SeanceDao seanceDao = new SeanceDao();
-    
+
     ArrayList<Seance> mes_seances = new ArrayList();
     ArrayList<Integer> mes_id = new ArrayList();
-    
-    
+
+
     ///Mise à jour des données///
     JPanel panel_maj = new JPanel();
 
@@ -53,140 +53,134 @@ public class Edt_Admin extends Edt {
 
     public Edt_Admin(Utilisateur user) {
         super(user);
-       
-        
+
+
         ImageIcon maj_icon = new ImageIcon(new ImageIcon("src/Icones/refresh.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
         maj = new JButton("Mise à jour", maj_icon);
         this.iconFont(maj);
-        
+
         this.rechercher.addActionListener(this);
         this.mes_cours.addActionListener(this);
         this.summary.addActionListener(this);
         this.report.addActionListener(this);
         this.maj.addActionListener(this);
-        
+
         this.panel_recherche.add(boutons_search);
-        
-        
-        
-        
+
 
     }
-    
-    public void afficherEdtSemaineProf(Enseignant prof, int semaine) 
-    {
+
+    public void afficherEdtSemaineProf(Enseignant prof, int semaine) {
         suppPanel(infos);
         suppPanel(this.panel_recherche);
         ArrayList<JLabel> mes_labels = new ArrayList();
         content = new JPanel(new BorderLayout());
-        
-            profDao = new EnseignantDAO();
-            mes_id = new ArrayList();
-            mes_id = profDao.trouverIdSeance(prof);
 
-            mes_seances = new ArrayList();
-            mes_seances = profDao.trouverAllSeancesSemaine(prof.getID(), semaine);
-            salle = new Salle();
+        profDao = new EnseignantDAO();
+        mes_id = new ArrayList();
+        mes_id = profDao.trouverIdSeance(prof);
 
-            for (int i = 0; i < mes_seances.size(); i++) //On parcourt les séances
-            {
-                salle = profDao.trouverSalle(mes_seances.get(i));
-                java.util.Date date = mes_seances.get(i).getDate();
-                Calendar c = Calendar.getInstance();
-                c.setTime(date);
-                int dayOfWeek = c.get(Calendar.DAY_OF_WEEK); //On get le jour de la semaine 1 sunday 2 monday 3 tuesday...
-                for (int jour_semaine = 2; jour_semaine < 7; jour_semaine++) {
-                    if (dayOfWeek == jour_semaine) //Si c un vendredi
-                    {
-                        String str = mes_seances.get(i).getHeureDebut().toString();
-                        char str2 = str.charAt(11);
-                        char str3 = str.charAt(12);
-                        StringBuilder str4 = new StringBuilder();
-                        if (str2 == '0') {
-                            str4.append(str3);
-                        } else {
-                            str4.append(str2).append(str3);
-                        }
+        mes_seances = new ArrayList();
+        mes_seances = profDao.trouverAllSeancesSemaine(prof.getID(), semaine);
+        salle = new Salle();
 
-                        int n = 0;
-                        String heure = "";
-                        for (int m = 0; m < 7; m++) {
-                            if (m == 0) {
-                                heure = Integer.toString(m + 8 + n);
-                            } else {
-                                if ((m + n) % 2 == 0) {
-                                    n += 2;
-                                    heure = Integer.toString(m + 8 + n);
-                                } else if ((m + n) % 2 != 0) {
-                                    n++;
-                                    heure = Integer.toString(m + 8 + n);
-                                }
-                            }
-
-
-                            int colonne_semaine = jour_semaine - 1;
-                            int ligne_semaine = 0;
-                            if (str4.toString().equals(heure)) //Si ca commence à 10h
-                            {
-                                if (heure.contains("8"))
-                                    ligne_semaine = 1;
-                                if (heure.contains("10"))
-                                    ligne_semaine = 2;
-                                if (heure.contains("12"))
-                                    ligne_semaine = 3;
-                                if (heure.contains("14"))
-                                    ligne_semaine = 4;
-                                if (heure.contains("16"))
-                                    ligne_semaine = 5;
-                                if (heure.contains("18"))
-                                    ligne_semaine = 6;
-                                if (heure.contains("20"))
-                                    ligne_semaine = 7;
-
-
-                                groupe = seanceDao.trouverGroupe(mes_seances.get(i));
-
-
-                                String myString =
-                                        "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + "<br>Groupe :" +
-                                                groupe.getNom()
-                                                + "<br>Salle :" +
-                                                salle.getNom() + "<br>Site :" +
-                                                salle.getSite().getNom() + "</p></html>";
-                                mes_labels.add(new JLabel(myString));
-                                int last = mes_labels.size() - 1;
-                                mes_labels.get(last).setBackground(Color.red);
-                                mes_labels.get(last).setOpaque(true);
-                                
-                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
-                            }
-                        }
-
+        for (int i = 0; i < mes_seances.size(); i++) //On parcourt les séances
+        {
+            salle = profDao.trouverSalle(mes_seances.get(i));
+            java.util.Date date = mes_seances.get(i).getDate();
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+            int dayOfWeek = c.get(Calendar.DAY_OF_WEEK); //On get le jour de la semaine 1 sunday 2 monday 3 tuesday...
+            for (int jour_semaine = 2; jour_semaine < 7; jour_semaine++) {
+                if (dayOfWeek == jour_semaine) //Si c un vendredi
+                {
+                    String str = mes_seances.get(i).getHeureDebut().toString();
+                    char str2 = str.charAt(11);
+                    char str3 = str.charAt(12);
+                    StringBuilder str4 = new StringBuilder();
+                    if (str2 == '0') {
+                        str4.append(str3);
+                    } else {
+                        str4.append(str2).append(str3);
                     }
-                }
 
+                    int n = 0;
+                    String heure = "";
+                    for (int m = 0; m < 7; m++) {
+                        if (m == 0) {
+                            heure = Integer.toString(m + 8 + n);
+                        } else {
+                            if ((m + n) % 2 == 0) {
+                                n += 2;
+                                heure = Integer.toString(m + 8 + n);
+                            } else if ((m + n) % 2 != 0) {
+                                n++;
+                                heure = Integer.toString(m + 8 + n);
+                            }
+                        }
+
+
+                        int colonne_semaine = jour_semaine - 1;
+                        int ligne_semaine = 0;
+                        if (str4.toString().equals(heure)) //Si ca commence à 10h
+                        {
+                            if (heure.contains("8"))
+                                ligne_semaine = 1;
+                            if (heure.contains("10"))
+                                ligne_semaine = 2;
+                            if (heure.contains("12"))
+                                ligne_semaine = 3;
+                            if (heure.contains("14"))
+                                ligne_semaine = 4;
+                            if (heure.contains("16"))
+                                ligne_semaine = 5;
+                            if (heure.contains("18"))
+                                ligne_semaine = 6;
+                            if (heure.contains("20"))
+                                ligne_semaine = 7;
+
+
+                            groupe = seanceDao.trouverGroupe(mes_seances.get(i));
+
+
+                            String myString =
+                                    "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + "<br>Groupe :" +
+                                            groupe.getNom()
+                                            + "<br>Salle :" +
+                                            salle.getNom() + "<br>Site :" +
+                                            salle.getSite().getNom() + "</p></html>";
+                            mes_labels.add(new JLabel(myString));
+                            int last = mes_labels.size() - 1;
+                            mes_labels.get(last).setBackground(Color.red);
+                            mes_labels.get(last).setOpaque(true);
+
+                            tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                        }
+                    }
+
+                }
             }
 
-            this.panel_recherche.setVisible(false);
-            infos = new JPanel (new GridLayout(0,1));
-            //infos = new JPanel(new BorderLayout() );
-            ajoutPanel(infos,tableau);
-            content.add(infos, BorderLayout.CENTER);
-            this.panel.add(content);
-            this.setVisible(true);
+        }
 
-        
+        this.panel_recherche.setVisible(false);
+        infos = new JPanel(new GridLayout(0, 1));
+        //infos = new JPanel(new BorderLayout() );
+        ajoutPanel(infos, tableau);
+        content.add(infos, BorderLayout.CENTER);
+        this.panel.add(content);
+        this.setVisible(true);
+
+
     }
-    
-    public void suppPanel(JComponent parent)
-    {
+
+    public void suppPanel(JComponent parent) {
         parent.removeAll();
         parent.validate();
         parent.repaint();
     }
-    
-    public void ajoutPanel(JComponent parent, JComponent child)
-    {
+
+    public void ajoutPanel(JComponent parent, JComponent child) {
         parent.add(child);
         parent.revalidate();
         parent.repaint();
@@ -196,15 +190,13 @@ public class Edt_Admin extends Edt {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
-        if(e.getSource()==this.mes_cours)
-        {
+
+        if (e.getSource() == this.mes_cours) {
             JOptionPane stop = new JOptionPane();
             stop.showMessageDialog(null, "Vous n'etes ni etudiant ni enseignant", "ERREUR", JOptionPane.ERROR_MESSAGE);
         }
-        
-        if(e.getSource()==this.rechercher)
-        {
+
+        if (e.getSource() == this.rechercher) {
             suppPanel(panel);
 
             this.info.setVisible(false);
@@ -212,34 +204,33 @@ public class Edt_Admin extends Edt {
             content = new JPanel(new BorderLayout());
             panel_recherche = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
             boutons_search = new JPanel(new FlowLayout());
-            
-            Object[] deroulant = new Object[]{"Rechercher...", "Utilisateur" , "Groupe" , "Promotion" , "Salle"};
+
+            Object[] deroulant = new Object[]{"Rechercher...", "Utilisateur", "Groupe", "Promotion", "Salle"};
             JComboBox liste = new JComboBox(deroulant);
-            
+
             panel_recherche.add(liste);
-            
+
             JLabel label_nom = new JLabel();
             JLabel label_semaine = new JLabel();
-            
+
             JTextField nom = new JTextField();
             nom.setPreferredSize(new Dimension(100, 50));
 
             JTextField semaine = new JTextField();
             semaine.setPreferredSize(new Dimension(100, 50));
-            
-            
-            
+
+
             chercher_utilisateur = new JButton();
             chercher_groupe = new JButton();
             chercher_promotion = new JButton();
             chercher_salle = new JButton();
-   
+
             panel_recherche.add(label_nom);
             panel_recherche.add(nom);
             panel_recherche.add(label_semaine);
             panel_recherche.add(semaine);
-            
-            infos = new JPanel(new GridLayout(0,1));
+
+            infos = new JPanel(new GridLayout(0, 1));
             //infos = new JPanel(new BorderLayout() );
             recup_info = new JLabel("", JLabel.CENTER);
             //infos.add(recup_info);
@@ -247,48 +238,44 @@ public class Edt_Admin extends Edt {
             //panel_recherche.add(boutons_search);
             content.add(panel_recherche, BorderLayout.NORTH);
             //content.add(infos, BorderLayout.CENTER);
-            
+
             this.panel.add(content);
             this.panel.setVisible(true);
-            
+
             liste.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     e.getSource();
-                    String choisi = (String)liste.getSelectedItem();
-                    if(choisi=="Utilisateur")
-                    {                      
+                    String choisi = (String) liste.getSelectedItem();
+                    if (choisi == "Utilisateur") {
                         suppPanel(boutons_search);
                         label_nom.setText("Nom Prof :");
                         label_semaine.setText("Numéro semaine");
-                                   
+
                         chercher_utilisateur = new JButton(new AbstractAction("Chercher Prof") {
                             @Override
                             public void actionPerformed(ActionEvent actionEvent) {
                                 rechercher_utilisateur(nom.getText(), semaine.getText(), 1);
                                 afficherGrille();
                                 String string_semaine = semaine.getText();
-                                
+
                                 prof = profDao.trouverProfAvecNom(nom.getText());
-                                
+
                                 boolean existe = profDao.siExiste(nom.getText());
-                                
-                                if(existe==true)
-                                {
+
+                                if (existe == true) {
                                     int int_semaine = Integer.valueOf(string_semaine); //Cast en int
-                                    afficherEdtSemaineProf( prof,int_semaine);
+                                    afficherEdtSemaineProf(prof, int_semaine);
                                 }
 
                                 /*content.add(panel_recherche, BorderLayout.NORTH);
                                 panel.add(content);*/
                             }
                         });
-                        ajoutPanel(boutons_search,chercher_utilisateur) ;
+                        ajoutPanel(boutons_search, chercher_utilisateur);
                         panel_recherche.add(boutons_search);
-   
-                    }
-                    else if(choisi=="Groupe")
-                    {
+
+                    } else if (choisi == "Groupe") {
                         suppPanel(boutons_search);
                         chercher_groupe = new JButton(new AbstractAction("Chercher Groupe") {
                             @Override
@@ -296,38 +283,32 @@ public class Edt_Admin extends Edt {
                                 rechercher_groupe(nom.getText(), semaine.getText());
                             }
                         });
-                        
-                        
+
+
                         label_nom.setText("Nom groupe :");
                         label_semaine.setText("Numéro semaine");
-                        ajoutPanel(boutons_search,chercher_groupe) ;  
+                        ajoutPanel(boutons_search, chercher_groupe);
                         panel_recherche.add(boutons_search);
                         content.add(panel_recherche, BorderLayout.NORTH);
                         panel.add(content);
-                    }
-                    
-                    else if(choisi=="Promotion")
-                    {
+                    } else if (choisi == "Promotion") {
                         suppPanel(boutons_search);
-                        
+
                         chercher_promotion = new JButton(new AbstractAction("Chercher Promotion") {
                             @Override
                             public void actionPerformed(ActionEvent actionEvent) {
                                 rechercher_promotion(nom.getText(), semaine.getText());
                             }
                         });
-                        
+
                         label_nom.setText("Promotion :");
                         label_semaine.setText("Numéro semaine");
-                        ajoutPanel(boutons_search,chercher_promotion) ;  
+                        ajoutPanel(boutons_search, chercher_promotion);
                         panel_recherche.add(boutons_search);
                         content.add(panel_recherche, BorderLayout.NORTH);
                         panel.add(content);
-                    }
-                    
-                    else if(choisi=="Salle")
-                    {
-                        
+                    } else if (choisi == "Salle") {
+
                         suppPanel(boutons_search);
                         chercher_salle = new JButton(new AbstractAction("Chercher Salle") {
                             @Override
@@ -335,30 +316,36 @@ public class Edt_Admin extends Edt {
                                 rechercher_salle(nom.getText(), semaine.getText());
                             }
                         });
-                        
+
                         label_nom.setText("Salle :");
                         label_semaine.setText("Numéro semaine");
-                        ajoutPanel(boutons_search,chercher_salle) ;  
+                        ajoutPanel(boutons_search, chercher_salle);
                         panel_recherche.add(boutons_search);
                         content.add(panel_recherche, BorderLayout.NORTH);
                         panel.add(content);
                     }
-                   
+
                 }
             });
 
-            
+
         }
-        
-        if(e.getSource()==this.maj)
-        {
+
+        if (e.getSource() == this.maj) {
             ///Méthode affichage maj
             System.out.println("Mise a jour");
             afficherInterfaceMaj();
         }
-   
+
+        /// ICI les test de mise à jours
+        if (e.getSource() == this.summary) {
+            MajControleur controleur_maj = new MajControleur();
+            controleur_maj.affecterEnseignat();
+        }
+        /// Finf des test
+
     }
-   
+
 
     /**
      * Recherche de l'emploi du temps d'un groupe
@@ -379,13 +366,13 @@ public class Edt_Admin extends Edt {
         GroupeDAO groupeDAO = new GroupeDAO();
 
         id_groupe = groupeDAO.idCelonNom(nom_groupe);
-        
+
 
         if (id_groupe != 0) {/// Si le id_groupe = 0 alors le groupe n'existe pas
 
             ArrayList<Seance> lesseances = groupeDAO.trouverAllSeancesSemaine(id_groupe, numero_semaine);
-            
-            String s = "<html><p>Les séances pour le groupe " + nom_groupe +" dans la semaine du " + semaine+ " sont : <br>";
+
+            String s = "<html><p>Les séances pour le groupe " + nom_groupe + " dans la semaine du " + semaine + " sont : <br>";
 
             if (lesseances.size() != 0) {/// Si le nombre de seance = 0 alors il n'y a pas d'emplois du temps
 
@@ -394,19 +381,18 @@ public class Edt_Admin extends Edt {
                 for (int i = 0; i < lesseances.size(); i++) {
                     System.out.println(lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
                             + lesseances.get(i).getCours().getNom());
-                    s+=lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
-                            + lesseances.get(i).getCours().getNom()+"<br>";
+                    s += lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
+                            + lesseances.get(i).getCours().getNom() + "<br>";
                 }
-                s+="</p></html>";
+                s += "</p></html>";
                 recup_info.setText(s);
             } else System.out.println("Pas de séance cette semaine");
-        } else 
-        {
+        } else {
             System.out.println("Ce groupe n'existe pas");
             JOptionPane stop = new JOptionPane();
             stop.showMessageDialog(null, "Erreur lors de la saisie", "ERREUR", JOptionPane.ERROR_MESSAGE);
         }
-            
+
 
     }
 
@@ -434,7 +420,7 @@ public class Edt_Admin extends Edt {
         id_promotion = promotionDAO.idCelonAnne(numero_promotion);
 
         if (id_promotion != 0) {
-            String s = "<html><p>Les séances sont pour la promotion "+anne_promotion+" dans la semaine" +semaine+" : <br>";
+            String s = "<html><p>Les séances sont pour la promotion " + anne_promotion + " dans la semaine" + semaine + " : <br>";
             ArrayList<Seance> lesseances = promotionDAO.lesSeances(id_promotion, numero_semaine);
             if (lesseances.size() != 0) {/// Si le nombre de seance = 0 alors il n'y a pas d'emplois du temps
 
@@ -443,21 +429,20 @@ public class Edt_Admin extends Edt {
                 for (int i = 0; i < lesseances.size(); i++) {
                     System.out.println(lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
                             + lesseances.get(i).getCours().getNom());
-                    
-                    s+=lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
-                            + lesseances.get(i).getCours().getNom()+"<br>";
-                }
-                s+="</p></html>";
-            recup_info.setText(s);
-            } else System.out.println("Pas de séance cette semaine");
-            
 
-        } else
-        {
+                    s += lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
+                            + lesseances.get(i).getCours().getNom() + "<br>";
+                }
+                s += "</p></html>";
+                recup_info.setText(s);
+            } else System.out.println("Pas de séance cette semaine");
+
+
+        } else {
             System.out.println("Cette promotion n'existe pas");
             JOptionPane stop = new JOptionPane();
             stop.showMessageDialog(null, "Cette promotion n'existe pas", "ERREUR", JOptionPane.ERROR_MESSAGE);
-            
+
         }
 
     }
@@ -485,7 +470,7 @@ public class Edt_Admin extends Edt {
         if (id_salle != 0) {/// Si le id_groupe = 0 alors le groupe n'existe pas
 
             ArrayList<Seance> lesseances = salleDAO.lesSeances(id_salle, numero_semaine);// ICI LES SEANCES
-            String s = "<html><p>Les séances pour la salle " +nom_salle+" dans la semaine " +semaine +"  sont : <br>";
+            String s = "<html><p>Les séances pour la salle " + nom_salle + " dans la semaine " + semaine + "  sont : <br>";
 
             if (lesseances.size() != 0) {/// Si le nombre de seance = 0 alors il n'y a pas d'emplois du temps
 
@@ -494,14 +479,13 @@ public class Edt_Admin extends Edt {
                 for (int i = 0; i < lesseances.size(); i++) {
                     System.out.println(lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
                             + lesseances.get(i).getCours().getNom());
-                    s+=lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
-                            + lesseances.get(i).getCours().getNom()+"<br>";
+                    s += lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
+                            + lesseances.get(i).getCours().getNom() + "<br>";
                 }
-                s+="</p></html>";
+                s += "</p></html>";
                 recup_info.setText(s);
             } else System.out.println("Pas de séance cette semaine");
-        } else 
-        {
+        } else {
             System.out.println("Cette salle n'existe pas");
             JOptionPane stop = new JOptionPane();
             stop.showMessageDialog(null, "Cette salle n'existe pas", "ERREUR", JOptionPane.ERROR_MESSAGE);
@@ -515,15 +499,13 @@ public class Edt_Admin extends Edt {
     public void voirrecap(Enseignant prof, Date date_debut, Date date_fin) {
         System.out.println("je suis " + prof.getNom() + " je veux mon emplois du temps du " + date_debut + " au " + date_fin);
     }
-    
-    
-    //////////////////////////////////----------------------------MISE A JOUR DES DONNEES----------------------------------///////////////////////////
-    public void afficherInterfaceMaj()
-    {
-        
-        
-    }
 
+
+    //////////////////////////////////----------------------------MISE A JOUR DES DONNEES----------------------------------///////////////////////////
+    public void afficherInterfaceMaj() {
+
+
+    }
 
 
 }
