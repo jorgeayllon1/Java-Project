@@ -54,29 +54,27 @@ public class CoursDao extends DAO<Cours> {
     public boolean update(Cours cours) {
         return false;
     }
-    
-    public boolean siExiste(int id)
-    {
+
+    public boolean siExiste(int id) {
         Cours cours = new Cours();
         CoursDao coursDao = new CoursDao();
-        int id_cours=0;
+        int id_cours = 0;
         boolean existe = false;
-        
+
         try {
             this.rset = this.conn.createStatement(
                     this.rset.TYPE_SCROLL_INSENSITIVE,
-                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id FROM cours WHERE id="+id); 
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id FROM cours WHERE id=" + id);
 
-            while (rset.next())
-            {
+            while (rset.next()) {
 
                 id_cours = rset.getInt("id");
                 cours = coursDao.find(id_cours);
-                existe=true;
+                existe = true;
             }
 
         } catch (SQLException e) {
-            
+
             System.out.println("Connexion echouee : probleme SQL SeanceDAO");
             e.printStackTrace();
         }
@@ -119,6 +117,26 @@ public class CoursDao extends DAO<Cours> {
             System.err.println("ERREUR : nom de cours non trouvé");
         }
         return id;
+    }
+
+    public int nombreDeSeance(int id_cours) {
+        try {
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT COUNT(id) FROM seance\n" +
+                            "WHERE seance.id_cours=" + id_cours
+            );
+            while (rset.next()) {
+                return rset.getInt("COUNT(id)");
+            }
+
+
+        } catch (SQLException e) {
+            System.err.println("Connexion echouee : probleme SQL CoursDAO");
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 }
