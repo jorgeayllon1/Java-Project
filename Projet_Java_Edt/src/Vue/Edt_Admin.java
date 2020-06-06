@@ -633,10 +633,10 @@ public class Edt_Admin extends Edt {
         JPanel haut = new JPanel(new FlowLayout());
         JLabel text_enlever = new JLabel("Veuillez choisir quel type d'user à enlever :");
         JRadioButton radio_prof = new JRadioButton("Enseignant");
-        JRadioButton radio_eleve = new JRadioButton("Groupe");
+        JRadioButton radio_groupe = new JRadioButton("Groupe");
         ButtonGroup bg = new ButtonGroup();
         bg.add(radio_prof);
-        bg.add(radio_eleve);
+        bg.add(radio_groupe);
         JLabel text_user = new JLabel("");
 
         radio_prof.addActionListener(new ActionListener() { //Si clique sur prof
@@ -649,11 +649,11 @@ public class Edt_Admin extends Edt {
             }
         });
 
-        radio_eleve.addActionListener(new ActionListener() { //Si clique sur etudiant
+        radio_groupe.addActionListener(new ActionListener() { //Si clique sur etudiant
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (radio_eleve.isSelected()) {
-                    text_user.setText("Nom etudiant : ");
+                if (radio_groupe.isSelected()) {
+                    text_user.setText("Nom groupe : ");
                 }
 
             }
@@ -694,18 +694,22 @@ public class Edt_Admin extends Edt {
                         afficherEdtSemaineProf(prof, int_semaine, centre); //On affiche l'edt du prof en question
                     }
 
-                } else if (radio_eleve.isSelected()) //Si etudiant
+                } else if (radio_groupe.isSelected()) //Si etudiant
                 {
-                    rechercher_utilisateur(field_nom.getText(), semaine_str, 1); //On recherhce et controle s'il y a cet utilisateur
-                    etudiant = etudiantDao.trouverEleveAvecNom(field_nom.getText()); //On instancie l'objet prof
-                    boolean existe = etudiantDao.siExiste(field_nom.getText()); //On vérifie s'il existe
-
-                    if (existe == true)//S'il existe dans la bdd
+                    rechercher_groupe(field_nom.getText(), semaine_str); //On recherhce et controle s'il y a cet utilisateur
+                    String groupe_str = field_nom.getText();
+                    int id_groupe = groupeDao.idCelonNom(groupe_str);
+                    groupe = groupeDao.find(id_groupe);
+                    boolean existe = groupeDao.siExiste(groupe_str);
+                    if(existe == true)
                     {
                         int int_semaine = Integer.valueOf(semaine_str); //Cast en int
                         afficherDateEdt(int_semaine);
-                        afficherEdtSemaineEleve(etudiant, int_semaine, centre); //On affiche l'edt du prof en question
+                        afficherEdtSemaineGroupe(groupe, int_semaine, centre); //On affiche l'edt du prof en question
+
                     }
+                    
+
                 }
 
 
@@ -734,8 +738,9 @@ public class Edt_Admin extends Edt {
 
                             if (reponse == 0 && radio_prof.isSelected()) { //Enlever prof
                                 majControleur.enleverEnseignantdeSeance(stock_seances[row][col]);
-                            } else if (reponse == 0 && radio_eleve.isSelected()) { //Enlever élève
-                                majControleur.enleverEnseignantdeSeance(stock_seances[row][col]);
+                            } else if (reponse == 0 && radio_groupe.isSelected()) { //Enlever élève
+                                String nom_groupe = field_nom.getText();
+                                majControleur.enleverGroupeSeance(stock_seances[row][col],nom_groupe);
                             }
 
                         }
@@ -752,7 +757,7 @@ public class Edt_Admin extends Edt {
 
         haut.add(text_enlever);
         haut.add(radio_prof);
-        haut.add(radio_eleve);
+        haut.add(radio_groupe);
         haut.add(text_user);
         haut.add(field_nom);
 
@@ -766,8 +771,192 @@ public class Edt_Admin extends Edt {
 
     public void afficherPanelAffecter(JPanel panel) {
 
-        JButton test = new JButton("affecter");
-        panel.add(test);
+        ///Panel centre on ajoute la grille dans le panel centre
+        JPanel centre = new JPanel(new GridLayout(0, 1));
+        this.afficherGrille(centre);
+        panel.add(centre, BorderLayout.CENTER); //On ajoute le panel au centre
+
+        ///Bouton à ajouter dans le bas
+        JButton affecter = new JButton("AFFECTER");
+        panel.add(affecter, BorderLayout.SOUTH);
+
+        ///Panel haut grid layout pour prendre toute la largeur
+        JPanel haut = new JPanel(new FlowLayout());
+        JLabel text_enlever = new JLabel("Que voulez-vous affecter :");
+        JRadioButton radio_prof = new JRadioButton("Enseignant");
+        JRadioButton radio_groupe = new JRadioButton("Groupe");
+        JRadioButton radio_salle = new JRadioButton("Salle");
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(radio_prof);
+        bg.add(radio_groupe);
+        bg.add(radio_salle);
+        JLabel text_user = new JLabel("");
+
+        radio_prof.addActionListener(new ActionListener() { //Si clique sur prof
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (radio_prof.isSelected()) {
+                    text_user.setText("Nom prof : ");
+                }
+
+            }
+        });
+
+        radio_groupe.addActionListener(new ActionListener() { //Si clique sur etudiant
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (radio_groupe.isSelected()) {
+                    text_user.setText("Nom groupe : ");
+                }
+
+            }
+        });
+        radio_salle.addActionListener(new ActionListener() { //Si clique sur etudiant
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (radio_groupe.isSelected()) {
+                    text_user.setText("Nom salle : ");
+                }
+
+            }
+        });
+        JTextField field_nom = new JTextField();
+        field_nom.setPreferredSize(new Dimension(80, 30));
+
+        JLabel text_semaine = new JLabel("Veuillez choisir quelle semaine : ");
+        String semaine[] = new String[52];
+
+
+        for (int i = 0; i < 52; i++) //Initialisation des numéros de semaine
+        {
+            semaine[i] = "" + (int) (i + 1);
+
+        }
+        JComboBox list_semaine = new JComboBox(semaine);
+
+        JButton chercher = new JButton("Chercher");
+
+        chercher.addActionListener(new ActionListener() { //Si clique sur bouton chercher
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String semaine_str = (String) list_semaine.getSelectedItem();
+
+                if (radio_prof.isSelected()) //Si prof
+                {
+                    rechercher_utilisateur(field_nom.getText(), semaine_str, 1); //On recherhce et controle s'il y a cet utilisateur
+                    prof = profDao.trouverProfAvecNom(field_nom.getText()); //On instancie l'objet prof
+                    boolean existe = profDao.siExiste(field_nom.getText()); //On vérifie s'il existe
+
+                    if (existe == true)//S'il existe dans la bdd
+                    {
+
+                        int int_semaine = Integer.valueOf(semaine_str); //Cast en int
+                        afficherDateEdt(int_semaine);
+                        afficherEdtSemaineProf(prof, int_semaine, centre); //On affiche l'edt du prof en question
+                    }
+
+                } else if (radio_groupe.isSelected()) //Si groupe
+                {
+                    rechercher_groupe(field_nom.getText(), semaine_str); //On recherhce et controle s'il y a cet utilisateur
+                    String groupe_str = field_nom.getText();
+                    int id_groupe = groupeDao.idCelonNom(groupe_str);
+                    groupe = groupeDao.find(id_groupe);
+                    boolean existe = groupeDao.siExiste(groupe_str);
+                    if(existe == true)
+                    {
+                        int int_semaine = Integer.valueOf(semaine_str); //Cast en int
+                        afficherDateEdt(int_semaine);
+                        afficherEdtSemaineGroupe(groupe, int_semaine, centre); //On affiche l'edt du prof en question
+
+                    }
+                    
+
+                }else if(radio_salle.isSelected()) //Si salle
+                {
+                    rechercher_salle(field_nom.getText(), semaine_str); 
+                    String salle_str = field_nom.getText();
+                    int id_salle = salleDao.idCelonNom(salle_str);
+                    salle = salleDao.find(id_salle);
+                    boolean existe = salleDao.siExiste(salle_str);
+                    if(existe == true)
+                    {
+                        int int_semaine = Integer.valueOf(semaine_str); //Cast en int
+                        afficherDateEdt(int_semaine);
+                        afficherEdtSemaineSalle(salle, int_semaine, centre); //On affiche l'edt du prof en question
+
+                    }
+                }
+
+
+                for (MouseListener element : tableau.getMouseListeners()) tableau.removeMouseListener(element);
+
+                tableau.addMouseListener(new java.awt.event.MouseAdapter() { //Si clique sur une cellule du tableau
+                    @Override
+                    public void mouseClicked(java.awt.event.MouseEvent evt) {
+                        int row = tableau.rowAtPoint(evt.getPoint()); //Get les coord du click
+                        int col = tableau.columnAtPoint(evt.getPoint());
+
+                        if (stock_seances[row][col] != null || (stock_seances[row][col].getEtat() == 0)) //Si il n'y a pas de seance ou qu'il n'y pas de salle/prof/groupe
+                        {
+
+                            String nom = field_nom.getText();
+                            JFrame frame = new JFrame();
+                            
+                            if(radio_prof.isSelected())
+                            {
+                                int reponse = JOptionPane.showConfirmDialog(frame, "Voulez-vous affecter un enseignant : \n");
+                                if(reponse==0)
+                                {
+                                    majControleur.affecterEnseignatSeance(stock_seances[row][col],nom );
+                                }
+                            }
+                            else if(radio_groupe.isSelected())
+                            {
+                                int reponse = JOptionPane.showConfirmDialog(frame, "Voulez-vous affecter un groupe : \n");
+                                if(reponse==0)
+                                {
+                                    majControleur.affecterGroupeSeance(stock_seances[row][col], nom);
+                                }
+                            }
+                            else if(radio_salle.isSelected())
+                            {
+                                int reponse = JOptionPane.showConfirmDialog(frame, "Voulez-vous affecter une salle : \n");
+                                if(reponse==0)
+                                {
+                                    majControleur.affecterSalleSeance(stock_seances[row][col], nom);
+                                }
+                            }
+      
+                            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
+
+                            
+
+                        }
+
+
+                    }
+
+                });
+
+
+            }
+        });
+
+
+        haut.add(text_enlever);
+        haut.add(radio_prof);
+        haut.add(radio_groupe);
+        haut.add(radio_salle);
+        haut.add(text_user);
+        haut.add(field_nom);
+
+        haut.add(text_semaine);
+        haut.add(list_semaine);
+        haut.add(chercher);
+
+        panel.add(haut, BorderLayout.NORTH);
 
     }
 

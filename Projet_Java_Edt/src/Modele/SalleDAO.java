@@ -152,6 +152,42 @@ public class SalleDAO extends DAO<Salle> {
         }
         return true;
     }
+    
+    /**
+     * Méthode qui renvoie vrai si le nom existe dans la bdd false sinon
+     *
+     * @param nom
+     */
+    public boolean siExiste(String nom) {
+        Salle s = new Salle();
+        SalleDAO sDao = new SalleDAO();
+        int id_user = 0;
+        boolean existe = false;
+
+
+        try {
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id FROM salle WHERE nom ='" + nom + "'");
+
+
+            while (rset.next()) {
+
+                id_user = rset.getInt("id");
+                s = sDao.find(id_user);
+                existe = true;
+
+
+            }
+
+
+        } catch (SQLException e) {
+
+            System.out.println("Connexion echouee : probleme SQL SeanceDAO");
+            e.printStackTrace();
+        }
+        return existe;
+    }
 
 }
 
