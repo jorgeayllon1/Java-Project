@@ -97,7 +97,7 @@ public class Edt extends JFrame implements ActionListener {
         Calendar cal = new GregorianCalendar();
         Date d = new Date();
         cal.setTime(d);
-        System.out.println("Week number:" + cal.get(Calendar.WEEK_OF_YEAR));
+
         this.num_semaine = cal.get(Calendar.WEEK_OF_YEAR); //Numéro de semaine actuel
 
         JLabel week = new JLabel("SEMAINE");

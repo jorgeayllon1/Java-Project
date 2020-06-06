@@ -458,5 +458,92 @@ public class SeanceDao extends DAO<Seance> {
             e.printStackTrace();
         }
     }
+    /**Méthode qui va retourner oui ou non si il y a une salle affectée à cette séance
+     * 
+     * @param seance
+     * @return 
+     */
+    public boolean siSalle(Seance seance)
+    {
+        boolean existe = false;
+        
+        
+        try {
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM seance_salles WHERE id_seance ="+seance.getID()); 
+
+
+            if (rset.next())
+            {
+                existe=true;
+            }
+
+
+        } catch (SQLException ex) {
+            
+            System.out.println("Connexion echouee : probleme SQL SeanceDAO");
+            ex.printStackTrace();
+        }
+        return existe;
+    }
+    /**Méthode qui va retourner oui ou non si il y a un prof affectée à cette séance
+     * 
+     * @param seance
+     * @return 
+     */
+    public boolean siProf(Seance seance)
+    {
+        boolean existe = false;
+        
+        
+        try {
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM seance_enseignants WHERE id_seance ="+seance.getID()); 
+
+
+            if (rset.next())
+            {
+                existe=true;
+            }
+
+
+        } catch (SQLException ex) {
+            
+            System.out.println("Connexion echouee : probleme SQL SeanceDAO");
+            ex.printStackTrace();
+        }
+        return existe;
+    }
+    /**Méthode qui va retourner oui ou non si il y a un groupe affectée à cette séance
+     * 
+     * @param seance
+     * @return 
+     */
+    public boolean siGroupe(Seance seance)
+    {
+        boolean existe = false;
+        
+        
+        try {
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM seance_groupes WHERE id_seance ="+seance.getID()); 
+
+
+            if (rset.next())
+            {
+                existe=true;
+            }
+
+
+        } catch (SQLException ex) {
+            
+            System.out.println("Connexion echouee : probleme SQL SeanceDAO");
+            ex.printStackTrace();
+        }
+        return existe;
+    }
 
 }

@@ -168,7 +168,21 @@ public class Edt_Etudiant extends Edt {
                             if(mes_seances.get(i).getEtat()==0 || mes_seances.get(i).getEtat()==1)
                             {
                                 String myString =
-                                        "<html><p>" + mes_seances.get(i).getCours().getNom()+ "<br>Invalidable ou en cours <br>Manque salle/prof/groupe</p></html>";
+                                        "<html><p>" + mes_seances.get(i).getCours().getNom();
+                                
+                                if(seanceDao.siProf(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque PROF</p></html>";
+                                }
+                                else if(seanceDao.siGroupe(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque GROUPE</p></html>";
+                                }
+                                else if(seanceDao.siSalle(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque SALLE</p></html>";
+                                }
+                                
 
 
                                 tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
@@ -313,7 +327,21 @@ public class Edt_Etudiant extends Edt {
                             if(mes_seances.get(i).getEtat()==0 || mes_seances.get(i).getEtat()==1)
                             {
                                 String myString =
-                                        "<html><p>" + mes_seances.get(i).getCours().getNom()+ "<br>Invalidable ou en cours <br>Manque salle/prof/groupe</p></html>";
+                                        "<html><p>" + mes_seances.get(i).getCours().getNom();
+                                
+                                if(seanceDao.siProf(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque PROF</p></html>";
+                                }
+                                else if(seanceDao.siGroupe(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque GROUPE</p></html>";
+                                }
+                                else if(seanceDao.siSalle(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque SALLE</p></html>";
+                                }
+                                
 
 
                                 tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
@@ -473,22 +501,28 @@ public class Edt_Etudiant extends Edt {
     /**
      * Renvoie un recap de toutes les informations d'un enseignant
      */
-    public void voirrecap(java.sql.Date date_debut, java.sql.Date date_fin, Etudiant etudiant) {
+    public String voirrecap(java.sql.Date date_debut, java.sql.Date date_fin, Etudiant etudiant) {
 
+        String donnees="";
         EtudiantDao etudiantDao = new EtudiantDao();
 
         System.out.println("Mon ID est " + etudiant.getID() + " je suis " + etudiant.getNom() +
                 " je veux mon emplois du temps du " + date_debut + " au " + date_fin + " pour le " + etudiant.getGroupe().getNom());
+        donnees+="Mon ID est " + etudiant.getID() + " je suis " + etudiant.getNom() +
+                " je veux mon emplois du temps du " + date_debut + " au " + date_fin + " pour le " + etudiant.getGroupe().getNom() +"\n";
 
         /// C'est cette methode qui retourne les seances sur une periode
         ArrayList<Seance> lesseances_eleve =
                 etudiantDao.trouverSeancesSurPeriode(etudiant.getID(), date_debut, date_fin);
 
         System.out.println("Tout les cours de l'eleve sur une periode :");
+        donnees+="Tout les cours de l'eleve sur une periode :\n";
         if (lesseances_eleve.size() != 0) {
 
             for (Seance uneseance : lesseances_eleve) {
                 System.out.println(uneseance.getID() + " " + uneseance.getCours().getNom() + " " + uneseance.getDate() + " " + uneseance.getEtat());
+                donnees+=uneseance.getID() + " " + uneseance.getCours().getNom() + " " + uneseance.getDate() + " " + uneseance.getEtat()+"\n";
+                
             }
 
             ArrayList<Cours> cours_des_seances = new ArrayList<>();///C'est une liste des cours des seances
@@ -506,6 +540,7 @@ public class Edt_Etudiant extends Edt {
             }
 
             System.out.println("Ma liste de cours :");
+            donnees+="Ma liste de cours :\n";
             for (Cours lescours : cours_des_seances) System.out.println(lescours.getNom());
 
             ///C'est une liste de seance celon la matiere
@@ -528,12 +563,14 @@ public class Edt_Etudiant extends Edt {
             /// Parcours Final pour le recap
 
             System.out.println("----RECAP----");
+            donnees+="----RECAP----\n";
             for (ArrayList<Seance> unelistedecours : cours_celon_matiere) {
 
                 Seance premiere_seance = unelistedecours.get(0);
                 Seance derniere_seance = unelistedecours.get(0);
 
                 System.out.println("Pour la matière " + unelistedecours.get(0).getCours().getNom() + " : ");
+                donnees+="Pour la matière " + unelistedecours.get(0).getCours().getNom() + " : \n";
 
                 // on cherche la première et la dernière seance
                 for (Seance uneseance : unelistedecours) {
@@ -546,8 +583,11 @@ public class Edt_Etudiant extends Edt {
                 }
 
                 System.out.println("La premier seance de " + premiere_seance.getCours().getNom() + " est le : " + premiere_seance.getDate());
+                donnees+="La premier seance de " + premiere_seance.getCours().getNom() + " est le : " + premiere_seance.getDate()+"\n";
                 System.out.println("La dernière seance de " + derniere_seance.getCours().getNom() + " est le : " + derniere_seance.getDate());
+                donnees+="La dernière seance de " + derniere_seance.getCours().getNom() + " est le : " + derniere_seance.getDate()+"\n";
                 System.out.println("Le nombre de séance est : " + unelistedecours.size());
+                donnees+="Le nombre de séance est : " + unelistedecours.size()+"\n";
 
                 long temps_seance = 90;
                 int nombre_seance = unelistedecours.size();
@@ -556,11 +596,18 @@ public class Edt_Etudiant extends Edt {
                 int minutes = (int) (temps_final - TimeUnit.HOURS.toMinutes(hours));
 
                 System.out.println("Le volume horaire est : " + hours + "h" + minutes);
+                donnees+="Le volume horaire est : " + hours + "h" + minutes+"\n";
 
             }
 
-        } else System.out.println("Pas de seance en cette periode");
+        } else
+        {
+            System.out.println("Pas de seance en cette periode");
+            donnees+="Pas de seance en cette periode";
+        }
+        return donnees;
 
     }
+    
 
 }

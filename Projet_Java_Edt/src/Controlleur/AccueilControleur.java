@@ -39,7 +39,7 @@ public class AccueilControleur extends Controleur {
                 int droit = mesUsers.get(i).getDroit();
                 switch (droit) {
                     case 1:
-                        System.out.println("Droit : Admin");
+
                         Edt_Admin edt_admin = new Edt_Admin(mesUsers.get(i));
                         break;
                     case 2:
@@ -47,13 +47,13 @@ public class AccueilControleur extends Controleur {
                         Edt_Admin edt_ref = new Edt_Admin(mesUsers.get(i));
                         break;
                     case 3:
-                        System.out.println("Droit : Enseignant");
+
                         EnseignantDAO profDao = new EnseignantDAO();
                         Enseignant prof = (Enseignant) profDao.find(mesUsers.get(i).getID());
                         Edt_Enseignant edt_prof = new Edt_Enseignant(mesUsers.get(i), prof);
                         break;
                     case 4: //C'est un etudiant
-                        System.out.println("Droit : Eleve");
+
                         DAO<Etudiant> etudiantDao = new EtudiantDao(); //********************
                         Etudiant etudiant = (Etudiant) etudiantDao.find(mesUsers.get(i).getID());//*****************
                         Edt_Etudiant edt_etudiant = new Edt_Etudiant(mesUsers.get(i), etudiant);

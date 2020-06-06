@@ -29,11 +29,11 @@ public class TableLabel extends DefaultTableModel{
  
     public TableLabel (){
  
-    //Adding columns
+
         for(Object c: col)
             this.addColumn(c);
  
-    //Adding rows
+
         for(Object[] r: row)
             addRow(r);
  
