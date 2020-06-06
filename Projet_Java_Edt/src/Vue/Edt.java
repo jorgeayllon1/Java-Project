@@ -322,5 +322,23 @@ public class Edt extends JFrame implements ActionListener {
             
 
     }
+        /////////////////////////////------------------------Méthodes de redirection de panel------------------------/////////////////////////////
+    
+
+    public void suppPanel(JComponent parent) {
+
+        parent.removeAll();
+        parent.validate();
+        parent.repaint();
+    }
+
+    public void ajoutPanel(JComponent parent, JComponent child) {
+        parent.add(child);
+        parent.revalidate();
+        parent.repaint();
+        parent.setVisible(true);
+        child.setVisible(true);
+    }
+
 
 }

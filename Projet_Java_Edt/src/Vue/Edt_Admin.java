@@ -83,22 +83,6 @@ public class Edt_Admin extends Edt {
 
     }
 
-    /////////////////////////////Méthodes de redirection de panel/////////////////////////////
-
-    public void suppPanel(JComponent parent) {
-
-        parent.removeAll();
-        parent.validate();
-        parent.repaint();
-    }
-
-    public void ajoutPanel(JComponent parent, JComponent child) {
-        parent.add(child);
-        parent.revalidate();
-        parent.repaint();
-        parent.setVisible(true);
-        child.setVisible(true);
-    }
 
 
     //////////////////////////////////////////////////////////----------------RECHERCHE-----------------/////////////////////////////////////////////////////////////////
@@ -515,6 +499,7 @@ public class Edt_Admin extends Edt {
     }
 
     ////////////////////////////////////////////////////////////////////-------ACTIONS-------//////////////////////////////////////////////////////////////////
+    
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -559,7 +544,7 @@ public class Edt_Admin extends Edt {
 
         if (e.getSource() == this.maj) {
             ///Méthode affichage maj
-            System.out.println("Mise a jour");
+
             afficherInterfaceMaj();
         }
 
@@ -588,6 +573,8 @@ public class Edt_Admin extends Edt {
 
 
     //////////////////////////////////////////////----------------------------MISE A JOUR DES DONNEES----------------------------------//////////////////////////////////////
+    
+    
     public void afficherInterfaceMaj() {
         suppPanel(this.panel);
         suppPanel(this.content2);
@@ -1179,8 +1166,10 @@ public class Edt_Admin extends Edt {
     }
 
     
+    
     /////////////////////////////////////////////-------------------METHODES D'AFFICHAGE D'EDT--------------------////////////////////////////////////////////////////////
 
+    
     public void afficherEdtSemaineProf(Enseignant prof, int semaine, JPanel pan) {
 
         suppPanel(pan);

@@ -27,6 +27,7 @@ public class Edt_Etudiant extends Edt {
     private Enseignant prof = null;
 
     private JPanel panel_recherche = new JPanel();
+    private JPanel content3=new JPanel(new GridLayout(0, 1));
 
     public Edt_Etudiant() {
     }
@@ -75,6 +76,7 @@ public class Edt_Etudiant extends Edt {
      */
 
     public void afficherEdtEtudiant(int droit) {
+        
         panel_edt.removeAll();
         panel_edt.validate();
         panel_edt.repaint();
@@ -222,6 +224,7 @@ public class Edt_Etudiant extends Edt {
      * @param semaine
      */
     public void afficherEdtSemaineEtudiant(int droit, int semaine) {
+        
         panel_edt.removeAll();
         panel_edt.validate();
         panel_edt.repaint();
@@ -362,11 +365,15 @@ public class Edt_Etudiant extends Edt {
 
         //Si clique sur mes cours
         if (e.getSource() == this.mes_cours) {
-
             afficherEdtEtudiantAccueil();
+  
+
         }
         //Si on clique sur rechercher
         if (e.getSource() == this.rechercher) {
+            
+            suppPanel(this.content3);
+            suppPanel(this.content);
             content = new JPanel(new BorderLayout());
             panel_recherche = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
 
@@ -416,6 +423,8 @@ public class Edt_Etudiant extends Edt {
 
         ///Si onclique sur un des boutons de la grille de semaine///
         for (int s = 1; s < this.week_button.size(); s++) {
+            suppPanel(this.content3);
+            suppPanel(this.content);
             //Si c'est cliqué
             if (e.getActionCommand().equals(this.week_button.get(s).getText())) {
                 System.out.println(this.week_button.get(s).getText()); //On affiche le texte du bouton cliqué
@@ -436,8 +445,12 @@ public class Edt_Etudiant extends Edt {
 
         ///Si on clique sur recap///
         if (e.getSource() == this.summary) {
-            //JOptionPane stop = new JOptionPane();
-            //stop.showMessageDialog(null, "Indisponible pour le moment", "ERREUR", JOptionPane.ERROR_MESSAGE);
+            
+
+            
+            JButton hello = new JButton("Hello");
+            content3.add(hello);
+
             /// ATTENTION peut ne pas marcher si la date d'aujourd'hui n'est pas bonne
             /// Pensez à ajuster l'heure par des +- jours
 
@@ -446,7 +459,8 @@ public class Edt_Etudiant extends Edt {
 
             java.sql.Date debut = new java.sql.Date(temps_debut);
             java.sql.Date fin = new java.sql.Date(temps_fin);
-            voirrecap(debut, fin);
+            //voirrecap(debut, fin);
+            Recap recap = new Recap(this.etudiant);
         }
 
         if (e.getSource() == this.logout) {
@@ -459,16 +473,16 @@ public class Edt_Etudiant extends Edt {
     /**
      * Renvoie un recap de toutes les informations d'un enseignant
      */
-    public void voirrecap(java.sql.Date date_debut, java.sql.Date date_fin) {
+    public void voirrecap(java.sql.Date date_debut, java.sql.Date date_fin, Etudiant etudiant) {
 
         EtudiantDao etudiantDao = new EtudiantDao();
 
-        System.out.println("Mon ID est " + this.etudiant.getID() + " je suis " + this.etudiant.getNom() +
-                " je veux mon emplois du temps du " + date_debut + " au " + date_fin + " pour le " + this.etudiant.getGroupe().getNom());
+        System.out.println("Mon ID est " + etudiant.getID() + " je suis " + etudiant.getNom() +
+                " je veux mon emplois du temps du " + date_debut + " au " + date_fin + " pour le " + etudiant.getGroupe().getNom());
 
         /// C'est cette methode qui retourne les seances sur une periode
         ArrayList<Seance> lesseances_eleve =
-                etudiantDao.trouverSeancesSurPeriode(this.etudiant.getID(), date_debut, date_fin);
+                etudiantDao.trouverSeancesSurPeriode(etudiant.getID(), date_debut, date_fin);
 
         System.out.println("Tout les cours de l'eleve sur une periode :");
         if (lesseances_eleve.size() != 0) {
