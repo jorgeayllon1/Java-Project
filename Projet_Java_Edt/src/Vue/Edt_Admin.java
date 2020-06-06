@@ -3,6 +3,7 @@ package Vue;
 
 import Controlleur.MajControleur;
 import Modele.*;
+import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,6 +55,8 @@ public class Edt_Admin extends Edt {
     ///Mise à jour des données///
     private JPanel content2 = new JPanel(new GridLayout(0, 1));
     private MajControleur majControleur = new MajControleur();
+    
+    private int droit=0;
 
 
     public Edt_Admin() {
@@ -63,6 +66,7 @@ public class Edt_Admin extends Edt {
     public Edt_Admin(Utilisateur user) {
         super(user);
 
+        this.droit = user.getDroit();
         this.annule.setVisible(false);
         this.semaine.setVisible(false);
         this.summary.setVisible(false);
@@ -204,30 +208,38 @@ public class Edt_Admin extends Edt {
         SalleDAO salleDAO = new SalleDAO();
 
         id_salle = salleDAO.idCelonNom(nom_salle);
-
-        if (id_salle != 0) {/// Si le id_groupe = 0 alors le groupe n'existe pas
+        try
+        {
+            if (id_salle != 0) {/// Si le id_groupe = 0 alors le groupe n'existe pas
 
             ArrayList<Seance> lesseances = salleDAO.lesSeances(id_salle, numero_semaine);// ICI LES SEANCES
             String s = "<html><p>Les séances pour la salle " + nom_salle + " dans la semaine " + semaine + "  sont : <br>";
 
-            if (lesseances.size() != 0) {/// Si le nombre de seance = 0 alors il n'y a pas d'emplois du temps
+                if (!lesseances.isEmpty()) {/// Si le nombre de seance = 0 alors il n'y a pas d'emplois du temps
 
-                System.out.println("Les seances sont :");
+                    System.out.println("Les seances sont :");
 
-                for (int i = 0; i < lesseances.size(); i++) {
-                    System.out.println(lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
-                            + lesseances.get(i).getCours().getNom());
-                    s += lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
-                            + lesseances.get(i).getCours().getNom() + "<br>";
-                }
-                s += "</p></html>";
-                //recup_info.setText(s);
-            } else System.out.println("Pas de séance cette semaine");
-        } else {
-            System.out.println("Cette salle n'existe pas");
-            JOptionPane stop = new JOptionPane();
-            stop.showMessageDialog(null, "Cette salle n'existe pas", "ERREUR", JOptionPane.ERROR_MESSAGE);
+                    for (int i = 0; i < lesseances.size(); i++) {
+                        System.out.println(lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
+                                + lesseances.get(i).getCours().getNom());
+                        s += lesseances.get(i).getHeureDebut() + " " + lesseances.get(i).getHeureFin() + " " + lesseances.get(i).getCours().getID() + " "
+                                + lesseances.get(i).getCours().getNom() + "<br>";
+                    }
+                    s += "</p></html>";
+                    //recup_info.setText(s);
+                } else System.out.println("Pas de séance cette semaine");
+            } else {
+                System.out.println("Cette salle n'existe pas");
+                JOptionPane stop = new JOptionPane();
+                stop.showMessageDialog(null, "Cette salle n'existe pas", "ERREUR", JOptionPane.ERROR_MESSAGE);
+            }
         }
+        catch(Exception e)
+        {
+            System.out.println("erreur");
+        }
+
+        
 
     }
 
@@ -540,9 +552,19 @@ public class Edt_Admin extends Edt {
         }
 
         if (e.getSource() == this.maj) {
-            ///Méthode affichage maj
-
-            afficherInterfaceMaj();
+            System.out.println(user.getDroit());
+            
+            if(this.droit==1) //Si admin
+            {
+                ///Méthode affichage maj
+                afficherInterfaceMaj();
+            }
+            else //Si référent
+            {
+                JOptionPane stop = new JOptionPane();
+                stop.showMessageDialog(null, "Vous n'avez pas accès aux mises à jour, vous etes referent", "ERREUR", JOptionPane.ERROR_MESSAGE);
+            }
+            
         }
 
 
@@ -728,6 +750,11 @@ public class Edt_Admin extends Edt {
                             }
 
                         }
+                        else
+                        {
+                            JOptionPane stop = new JOptionPane();
+                            stop.showMessageDialog(null, "Aucune séance à enlever", "ERREUR", JOptionPane.ERROR_MESSAGE);
+                        }
 
 
                     }
@@ -795,10 +822,10 @@ public class Edt_Admin extends Edt {
 
             }
         });
-        radio_salle.addActionListener(new ActionListener() { //Si clique sur etudiant
+        radio_salle.addActionListener(new ActionListener() { //Si clique sur salle
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (radio_groupe.isSelected()) {
+                if (radio_salle.isSelected()) {
                     text_user.setText("Nom salle : ");
                 }
 
@@ -879,45 +906,55 @@ public class Edt_Admin extends Edt {
                     public void mouseClicked(java.awt.event.MouseEvent evt) {
                         int row = tableau.rowAtPoint(evt.getPoint()); //Get les coord du click
                         int col = tableau.columnAtPoint(evt.getPoint());
-
-                        if (stock_seances[row][col] != null || (stock_seances[row][col].getEtat() == 0)) //Si il n'y a pas de seance ou qu'il n'y pas de salle/prof/groupe
+                        try
                         {
-
-                            String nom = field_nom.getText();
-                            JFrame frame = new JFrame();
-                            
-                            if(radio_prof.isSelected())
+                            if (stock_seances[row][col] != null || (stock_seances[row][col].getEtat() == 0)) //Si il n'y a pas de seance ou qu'il n'y pas de salle/prof/groupe
                             {
-                                int reponse = JOptionPane.showConfirmDialog(frame, "Voulez-vous affecter un enseignant : \n");
-                                if(reponse==0)
+
+                                String nom = field_nom.getText();
+                                JFrame frame = new JFrame();
+
+                                if(radio_prof.isSelected())
                                 {
-                                    majControleur.affecterEnseignatSeance(stock_seances[row][col],nom );
+                                    int reponse = JOptionPane.showConfirmDialog(frame, "Voulez-vous affecter un enseignant : \n");
+                                    if(reponse==0)
+                                    {
+                                        majControleur.affecterEnseignatSeance(stock_seances[row][col],nom );
+                                    }
                                 }
+                                else if(radio_groupe.isSelected())
+                                {
+                                    int reponse = JOptionPane.showConfirmDialog(frame, "Voulez-vous affecter un groupe : \n");
+                                    if(reponse==0)
+                                    {
+                                        majControleur.affecterGroupeSeance(stock_seances[row][col], nom);
+                                    }
+                                }
+                                else if(radio_salle.isSelected())
+                                {
+                                    int reponse = JOptionPane.showConfirmDialog(frame, "Voulez-vous affecter une salle : \n");
+                                    if(reponse==0)
+                                    {
+                                        majControleur.affecterSalleSeance(stock_seances[row][col], nom);
+                                    }
+                                }
+
+                                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
                             }
-                            else if(radio_groupe.isSelected())
+                            else
                             {
-                                int reponse = JOptionPane.showConfirmDialog(frame, "Voulez-vous affecter un groupe : \n");
-                                if(reponse==0)
-                                {
-                                    majControleur.affecterGroupeSeance(stock_seances[row][col], nom);
-                                }
+                                JOptionPane stop = new JOptionPane();
+                                stop.showMessageDialog(null, "Aucune séance à affecter", "ERREUR", JOptionPane.ERROR_MESSAGE);
                             }
-                            else if(radio_salle.isSelected())
-                            {
-                                int reponse = JOptionPane.showConfirmDialog(frame, "Voulez-vous affecter une salle : \n");
-                                if(reponse==0)
-                                {
-                                    majControleur.affecterSalleSeance(stock_seances[row][col], nom);
-                                }
-                            }
-      
-                            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-
-
-                            
-
                         }
+                        catch(NullPointerException e)
+                        {
+                            System.out.println("Seance vide");
+                        }
+
+                        
 
 
                     }
@@ -1161,21 +1198,42 @@ public class Edt_Admin extends Edt {
                     public void mouseClicked(java.awt.event.MouseEvent evt) {
                         int row = tableau.rowAtPoint(evt.getPoint()); //Get les coord du click
                         int col = tableau.columnAtPoint(evt.getPoint());
-
-                        if (stock_seances[row][col] != null) //Si il y a une séance dans la cellule
+                        
+                        try
                         {
-                            Date today = new Date(System.currentTimeMillis());
-                            if (stock_seances[row][col].getDate().compareTo(today) > 0) //Si la séance selectionnée vennat après la date actuelle
+                            
+                            if (stock_seances[row][col] != null) //Si il y a une séance dans la cellule
                             {
-                                System.out.println(stock_seances[row][col].getID());
-                                JFrame frame = new JFrame();
-                                JOptionPane.showConfirmDialog(frame, "Voulez-vous annuler cette séance : \n"
-                                        + "Nom séance : " + stock_seances[row][col].getCours().getNom()
-                                        + " Date séance : " + stock_seances[row][col].getDate());
-                                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                                majControleur.annulerSeance(stock_seances[row][col]);
+                                Date today = new Date(System.currentTimeMillis());
+                                if (stock_seances[row][col].getDate().compareTo(today) > 0) //Si la séance selectionnée vennat après la date actuelle
+                                {
+                                    System.out.println(stock_seances[row][col].getID());
+                                    JFrame frame = new JFrame();
+                                    JOptionPane.showConfirmDialog(frame, "Voulez-vous annuler cette séance : \n"
+                                            + "Nom séance : " + stock_seances[row][col].getCours().getNom()
+                                            + " Date séance : " + stock_seances[row][col].getDate());
+                                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                                    majControleur.annulerSeance(stock_seances[row][col]);
+                                }
+                                else
+                                {
+                                    JOptionPane stop = new JOptionPane();
+                                    stop.showMessageDialog(null, "Vous ne pouvez qu'annuler une séance après la date d'aujourd'hui", "ERREUR", JOptionPane.ERROR_MESSAGE);
+                                }
                             }
+                            else
+                            {
+                                JOptionPane stop = new JOptionPane();
+                                stop.showMessageDialog(null, "Aucune séance à annuler", "ERREUR", JOptionPane.ERROR_MESSAGE);
+                            }
+                            
                         }
+                        catch(NullPointerException e)
+                        {
+                            System.out.println("Erreur senace");
+                        }
+
+                        
 
                     }
                 });
@@ -1293,23 +1351,42 @@ public class Edt_Admin extends Edt {
                     public void mouseClicked(java.awt.event.MouseEvent evt) {
                         int row = tableau.rowAtPoint(evt.getPoint()); //Get les coord du click
                         int col = tableau.columnAtPoint(evt.getPoint());
-
-                        if (stock_seances[row][col] != null) //Si il y a une séance dans la cellule
+                        
+                        try
                         {
-                            Date today = new Date(System.currentTimeMillis());
-                            if (stock_seances[row][col].getDate().compareTo(today) < 0) //Si la séance selectionnée venaat après la date actuelle
+                            if (stock_seances[row][col] != null) //Si il y a une séance dans la cellule
                             {
-                                System.out.println(stock_seances[row][col].getID());
-                                JFrame frame = new JFrame();
-                                JOptionPane.showConfirmDialog(frame, "Voulez-vous valider cette séance : \n"
-                                        + "Nom séance : " + stock_seances[row][col].getCours().getNom()
-                                        + " Date séance : " + stock_seances[row][col].getDate());
-                                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                                majControleur.validerSeance(stock_seances[row][col]);
+                                Date today = new Date(System.currentTimeMillis());
+                                if (stock_seances[row][col].getDate().compareTo(today) < 0) //Si la séance selectionnée venaat après la date actuelle
+                                {
+                                    System.out.println(stock_seances[row][col].getID());
+                                    JFrame frame = new JFrame();
+                                    JOptionPane.showConfirmDialog(frame, "Voulez-vous valider cette séance : \n"
+                                            + "Nom séance : " + stock_seances[row][col].getCours().getNom()
+                                            + " Date séance : " + stock_seances[row][col].getDate());
+                                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                                    majControleur.validerSeance(stock_seances[row][col]);
+                                }
+                                else
+                                {
+                                    JOptionPane stop = new JOptionPane();
+                                    stop.showMessageDialog(null, "Vous ne pouvez valider qu'une seance une fois celle-ci terminée", "ERREUR", JOptionPane.ERROR_MESSAGE);
+                                }
+
+
                             }
-
-
+                            else
+                            {
+                                JOptionPane stop = new JOptionPane();
+                                stop.showMessageDialog(null, "Aucune séance", "ERREUR", JOptionPane.ERROR_MESSAGE);
+                            }
                         }
+                        catch(NullPointerException e)
+                        {
+                            System.out.println("Erreur seance ");
+                        }
+
+                        
 
                     }
                 });
@@ -1339,7 +1416,15 @@ public class Edt_Admin extends Edt {
 
     /////////////////////////////////////////////-------------------METHODES D'AFFICHAGE D'EDT--------------------////////////////////////////////////////////////////////
 
-
+    /**Méthode qui va afficher l'edt d'une semaine avec la seance qui manque
+     * soit un prof soit un gp soit soit une salle
+     * 
+     */
+    public void afficherEdtManque(Seance seance, JPanel pan)
+    {
+        
+    }
+    
     public void afficherEdtSemaineProf(Enseignant prof, int semaine, JPanel pan) {
 
         suppPanel(pan);
