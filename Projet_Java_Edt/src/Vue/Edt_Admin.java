@@ -25,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class Edt_Admin extends Edt {
 
+    //////////////Attrobuts/////////////////
     private JPanel panel_recherche = new JPanel();
     private JPanel boutons_search = new JPanel();
     private JPanel infos = new JPanel();
@@ -52,9 +53,6 @@ public class Edt_Admin extends Edt {
     Seance[][] stock_seances = null;  //Tableaux pour stocker les seances
 
     ///Mise à jour des données///
-
-
-
     private JPanel content2 = new JPanel(new GridLayout(0, 1));
     private MajControleur majControleur = new MajControleur();
 
@@ -85,7 +83,7 @@ public class Edt_Admin extends Edt {
 
     }
 
-    ///Méthodes de redirection de panel///
+    /////////////////////////////Méthodes de redirection de panel/////////////////////////////
 
     public void suppPanel(JComponent parent) {
 
@@ -251,13 +249,7 @@ public class Edt_Admin extends Edt {
 
     }
 
-    /**
-     * Renvoie un recap de toutes les informations d'un enseignant
-     */
-    public void voirrecap(Enseignant prof, Date date_debut, Date date_fin) {
-        System.out.println("je suis " + prof.getNom() + " je veux mon emplois du temps du " + date_debut + " au " + date_fin);
-    }
-
+    
     public void afficherPanelUser(JPanel panel) {
 
         ///Panel centre on ajoute la grille dans le panel centre
@@ -595,7 +587,7 @@ public class Edt_Admin extends Edt {
     }
 
 
-    //////////////////////////////////----------------------------MISE A JOUR DES DONNEES----------------------------------///////////////////////////
+    //////////////////////////////////////////////----------------------------MISE A JOUR DES DONNEES----------------------------------//////////////////////////////////////
     public void afficherInterfaceMaj() {
         suppPanel(this.panel);
         suppPanel(this.content2);
@@ -1186,6 +1178,8 @@ public class Edt_Admin extends Edt {
         panel.add(test);
     }
 
+    
+    /////////////////////////////////////////////-------------------METHODES D'AFFICHAGE D'EDT--------------------////////////////////////////////////////////////////////
 
     public void afficherEdtSemaineProf(Enseignant prof, int semaine, JPanel pan) {
 

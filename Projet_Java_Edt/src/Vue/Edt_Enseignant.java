@@ -140,15 +140,43 @@ public class Edt_Enseignant extends Edt {
 
                                 groupe = seanceDao.trouverGroupe(mes_seances.get(i));
 
+                                if(mes_seances.get(i).getEtat()==0 || mes_seances.get(i).getEtat()==1)
+                            {
                                 String myString =
-                                        "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + "<br>Groupe :" +
-                                                groupe.getNom()
-                                                + "<br>Salle :" +
-                                                salle.getNom() + "<br>Site :" +
-                                                salle.getSite().getNom() + "</p></html>";
+                                    "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + "<br>Groupe :" +
+                                            groupe.getNom()
+                                             + "<br>Invalidable ou en cours <br>Manque salle/prof/groupe</p></html>";
 
 
                                 tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                
+                            }
+                            else if(mes_seances.get(i).getEtat()==2 )
+                            {
+                                String myString =
+                                    "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + "<br>Groupe :" +
+                                            groupe.getNom()
+                                            + "<br>Salle :" +
+                                            salle.getNom() + "<br>Site :" +
+                                            salle.getSite().getNom() + "Valide</p></html>";
+
+
+                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                
+                            }
+                            else if(mes_seances.get(i).getEtat()==3)
+                            {
+                                String myString =
+                                    "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + "<br>Groupe :" +
+                                            groupe.getNom()
+                                            + "<br>Salle :" +
+                                            salle.getNom() + "<br>Site :" +
+                                            salle.getSite().getNom() + " Annulé</p></html>";
+
+
+                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                
+                            }
 
                             }
                         }
@@ -249,18 +277,43 @@ public class Edt_Enseignant extends Edt {
                                 groupe = seanceDao.trouverGroupe(mes_seances.get(i));
 
 
+                                if(mes_seances.get(i).getEtat()==0 || mes_seances.get(i).getEtat()==1)
+                            {
                                 String myString =
-                                        "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + "<br>Groupe :" +
-                                                groupe.getNom()
-                                                + "<br>Salle :" +
-                                                salle.getNom() + "<br>Site :" +
-                                                salle.getSite().getNom() + "</p></html>";
-                                mes_labels.add(new JLabel(myString));
-                                int last = mes_labels.size() - 1;
-                                mes_labels.get(last).setBackground(Color.red);
-                                mes_labels.get(last).setOpaque(true);
+                                    "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + "<br>Groupe :" +
+                                            groupe.getNom()
+                                             + "<br>Invalidable ou en cours <br>Manque salle/prof/groupe</p></html>";
+
 
                                 tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                
+                            }
+                            else if(mes_seances.get(i).getEtat()==2 )
+                            {
+                                String myString =
+                                    "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + "<br>Groupe :" +
+                                            groupe.getNom()
+                                            + "<br>Salle :" +
+                                            salle.getNom() + "<br>Site :" +
+                                            salle.getSite().getNom() + "Valide</p></html>";
+
+
+                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                
+                            }
+                            else if(mes_seances.get(i).getEtat()==3)
+                            {
+                                String myString =
+                                    "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + "<br>Groupe :" +
+                                            groupe.getNom()
+                                            + "<br>Salle :" +
+                                            salle.getNom() + "<br>Site :" +
+                                            salle.getSite().getNom() + " Annulé</p></html>";
+
+
+                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                
+                            }
                             }
                         }
 

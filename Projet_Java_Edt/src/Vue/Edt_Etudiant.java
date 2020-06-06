@@ -162,13 +162,40 @@ public class Edt_Etudiant extends Edt {
                                     ligne_semaine = 7;
 
                                 prof = seanceDao.trouverEnseignant(mes_seances.get(i));
+                                prof = seanceDao.trouverEnseignant(mes_seances.get(i));
+                            if(mes_seances.get(i).getEtat()==0 || mes_seances.get(i).getEtat()==1)
+                            {
+                                String myString =
+                                        "<html><p>" + mes_seances.get(i).getCours().getNom()+ "<br>Invalidable ou en cours <br>Manque salle/prof/groupe</p></html>";
+
+
+                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                
+                            }
+                            else if(mes_seances.get(i).getEtat()==2 )
+                            {
                                 String myString =
                                         "<html><p>" + mes_seances.get(i).getCours().getNom() + "<br>Prof :" +
                                                 prof.getNom() + "<br>Salle :" +
                                                 salle.getNom() + "<br>Site :" +
-                                                salle.getSite().getNom() + "</p></html>";
+                                                salle.getSite().getNom() + "Valide</p></html>";
+
 
                                 tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                
+                            }
+                            else if(mes_seances.get(i).getEtat()==3)
+                            {
+                                String myString =
+                                        "<html><p>" + mes_seances.get(i).getCours().getNom() + "<br>Prof :" +
+                                                prof.getNom() + "<br>Salle :" +
+                                                salle.getNom() + "<br>Site :" +
+                                                salle.getSite().getNom() + "Annulé</p></html>";
+
+
+                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                
+                            }
                             }
                         }
 
@@ -280,14 +307,39 @@ public class Edt_Etudiant extends Edt {
                                     ligne_semaine = 7;
 
                                 prof = seanceDao.trouverEnseignant(mes_seances.get(i));
+                            if(mes_seances.get(i).getEtat()==0 || mes_seances.get(i).getEtat()==1)
+                            {
+                                String myString =
+                                        "<html><p>" + mes_seances.get(i).getCours().getNom()+ "<br>Invalidable ou en cours <br>Manque salle/prof/groupe</p></html>";
+
+
+                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                
+                            }
+                            else if(mes_seances.get(i).getEtat()==2 )
+                            {
                                 String myString =
                                         "<html><p>" + mes_seances.get(i).getCours().getNom() + "<br>Prof :" +
                                                 prof.getNom() + "<br>Salle :" +
                                                 salle.getNom() + "<br>Site :" +
-                                                salle.getSite().getNom() + "</p></html>";
+                                                salle.getSite().getNom() + "Valide</p></html>";
 
 
                                 tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                
+                            }
+                            else if(mes_seances.get(i).getEtat()==3)
+                            {
+                                String myString =
+                                        "<html><p>" + mes_seances.get(i).getCours().getNom() + "<br>Prof :" +
+                                                prof.getNom() + "<br>Salle :" +
+                                                salle.getNom() + "<br>Site :" +
+                                                salle.getSite().getNom() + "Annulé</p></html>";
+
+
+                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                
+                            }
                             }
                         }
 
