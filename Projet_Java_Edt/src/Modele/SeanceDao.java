@@ -111,7 +111,6 @@ public class SeanceDao extends DAO<Seance> {
     @Override
     public boolean update(Seance obj) {
         try {
-
             this.conn
                     .createStatement(
                             rset.TYPE_SCROLL_INSENSITIVE,
@@ -132,7 +131,6 @@ public class SeanceDao extends DAO<Seance> {
             System.err.println("ERROR SQL Update Seance");
             e.printStackTrace();
         }
-
         return true;
     }
 
@@ -366,8 +364,7 @@ public class SeanceDao extends DAO<Seance> {
         }
     }
     
-    public boolean siExiste(int id)
-    {
+    public boolean siExiste(int id) {
         Seance seance = new Seance();
         SeanceDao seanceDao = new SeanceDao();
         int id_seance=0;

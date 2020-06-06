@@ -76,4 +76,20 @@ public class Seance {
         this.etat = etat;
     }
 
+    public void setSemaine(int semaine) {
+        this.semaine = semaine;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setHeure_debut(Timestamp heure_debut) {
+        this.heure_debut = heure_debut;
+    }
+
+    public void setHeure_fin(Timestamp heure_fin) {
+        this.heure_fin = heure_fin;
+    }
+
 }
