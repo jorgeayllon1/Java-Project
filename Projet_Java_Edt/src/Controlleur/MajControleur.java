@@ -115,7 +115,6 @@ public class MajControleur extends Controleur {
 
         // Si il y a un salle associée à la séance
         if (seanceDao.trouverSalle(seance) != null) {
-
             System.out.println("j'enleve la salle pour la seance " + seance.getID());
             seance.setEtat(0);
             seanceDao.update(seance);
@@ -167,6 +166,26 @@ public class MajControleur extends Controleur {
             System.out.println("j'enleve le groupe " + nom_groupe + " pour la seance " + seance.getID());
             seanceDao.enleverGroupe(seance, id_groupe);
         } else System.out.println("Il n'y a pas CE groupe pour cette séance");
+    }
+
+    public void affecterSalleSeance(Seance seance, String nom_salle) {
+        SeanceDao seanceDao = new SeanceDao();
+        SalleDAO salleDAO = new SalleDAO();
+
+        int id_salle = salleDAO.idCelonNom(nom_salle);
+
+        // Blindage du nom de la salle
+        if (id_salle == 0) {
+            System.out.println("Nom de la salle inconnu");
+            return;
+        }
+
+        if (seanceDao.trouverSalle(seance) == null) {
+            System.out.println("j'ajoute la salle " + nom_salle + " pour la seance " + seance.getID());
+            seanceDao.ajouterSalle(seance, id_salle);
+            seanceDao.majEtat(seance);// Si on ajoute une salle, on change potentielemnt l'état de la séance
+            seanceDao.update(seance);
+        } else System.out.println("Cette seance à déjà une salle");
     }
 
     @Override

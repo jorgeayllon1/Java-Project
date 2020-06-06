@@ -75,4 +75,5 @@ public class Seance {
     public void setEtat(int etat) {
         this.etat = etat;
     }
+
 }

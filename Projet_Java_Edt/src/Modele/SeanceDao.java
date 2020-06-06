@@ -75,7 +75,6 @@ public class SeanceDao extends DAO<Seance> {
         obj.setId(id_dispo);
 
         try {
-
             this.conn
                     .createStatement(
                             rset.TYPE_SCROLL_INSENSITIVE,
@@ -86,7 +85,6 @@ public class SeanceDao extends DAO<Seance> {
                             "'" + obj.getHeureDebut() + "','" + obj.getHeureFin() + "'," +
                             obj.getEtat() + "," + obj.getCours().getID() + "," + obj.getType().getId() + ")"
             );
-
         } catch (SQLException e) {
             System.err.println("ERROR SQL Update Seance");
             e.printStackTrace();
@@ -365,6 +363,28 @@ public class SeanceDao extends DAO<Seance> {
         } catch (SQLException e) {
             System.err.println("ERROR SQL EnleverGroupe SeanceDAO");
             e.printStackTrace();
+        }
+    }
+
+    public void ajouterSalle(Seance seance, int id_salle) {
+        try {
+            this.conn
+                    .createStatement(
+                            rset.TYPE_SCROLL_INSENSITIVE,
+                            rset.CONCUR_UPDATABLE
+                    ).executeUpdate(
+                    "INSERT INTO seance_salles\n" +
+                            "VALUES ( " + seance.getID() + "," + id_salle + ")"
+            );
+        } catch (SQLException e) {
+            System.err.println("ERROR SQL ajouterSalle Seance");
+            e.printStackTrace();
+        }
+    }
+
+    public void majEtat(Seance seance) {
+        if (this.trouverSalle(seance) != null && this.trouverEnseignant(seance) != null && this.allGroupes(seance).size() != 0) {
+            seance.setEtat(1);
         }
     }
 
