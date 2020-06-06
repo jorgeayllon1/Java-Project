@@ -137,6 +137,7 @@ public class MajControleur extends Controleur {
 
         ArrayList<Groupe> groupes = seanceDao.allGroupes(seance);
 
+        //Blindage taille des groupes
         if (groupes.size() == 0) {
             System.out.println("Pas de groupe pour cette séance");
             return;
@@ -180,6 +181,10 @@ public class MajControleur extends Controleur {
             return;
         }
 
+        //Blindage disponibilité salle A FAIRE
+
+        //Blindage Capacité salle A FAIRE
+
         if (seanceDao.trouverSalle(seance) == null) {
             System.out.println("j'ajoute la salle " + nom_salle + " pour la seance " + seance.getID());
             seanceDao.ajouterSalle(seance, id_salle);
@@ -200,6 +205,8 @@ public class MajControleur extends Controleur {
             return;
         }
 
+        //Blindage disponibilité prof A FAIRE
+
         if (seanceDao.trouverEnseignant(seance) == null) {
             System.out.println("j'ajoute le prof " + nom_enseignant + " pour la seance " + seance.getID());
             seanceDao.ajouterProf(seance, id_enseignant);
@@ -207,6 +214,58 @@ public class MajControleur extends Controleur {
             seanceDao.update(seance);
         } else System.out.println("Cette séance à déjà un prof");
     }
+/*
+    public void affecterGroupeSeance(Seance seance, String nom_groupe) {
+        SeanceDao seanceDao = new SeanceDao();
+        GroupeDAO groupeDAO = new GroupeDAO();
+
+        int id_groupe = groupeDAO.idCelonNom(nom_groupe);
+
+        //Blindage du nom de groupe
+        if (id_groupe == 0) {
+            System.out.println("Nom de groupe inconnu");
+            return;
+        }
+
+        //Blindage le groupe a déjà la séance
+        for (Groupe ungroupe : seanceDao.allGroupes(seance)) {
+            if (ungroupe.getId() == id_groupe) {
+                System.out.println("Le groupe a déjà le cours");
+                return;
+            }
+        }
+
+        //Blindage de la taille
+        int somme_eleve = 0;
+        for (Groupe ungroupe : seanceDao.allGroupes(seance)) {
+            somme_eleve += groupeDAO.nombreEleve(ungroupe.getId());
+        }
+
+        somme_eleve += groupeDAO.nombreEleve(id_groupe);
+
+        if (somme_eleve > seanceDao.Capacite(seance)) {
+            System.out.println("Capacité de salle insuffisante");
+            return;
+        }
+        //Fin blindage taille
+
+        //Ce code permet de dire que deux élève au sein d'un même groupe non pas forcement les mêmes cours
+        //Blindage disponibilité du groupe
+        for (Etudiant eleve : groupeDAO.allEleves(id_groupe)) {
+            if (!EtudiantDao.disponible(seance)) {
+                System.out.println("Erreur : un étudiant n'est pas disponible pour ce cours");
+                return;
+            }
+        }
+
+        System.out.println("J'ajoute le groupe " + nom_groupe + " à la séance id :" + seance.getID());
+        seanceDao.ajouterGroupe(seance, id_groupe);
+        seanceDao.majEtat(seance);
+        seanceDao.update(seance);
+
+    }
+
+ */
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
