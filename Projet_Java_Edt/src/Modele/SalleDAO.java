@@ -142,7 +142,13 @@ public class SalleDAO extends DAO<Salle> {
             while (rset.next()) {
                 Timestamp heure_debut = rset.getTimestamp("heure_debut");
                 Timestamp heure_fin = rset.getTimestamp("heure_fin");
-                if (seance.getHeureDebut().getTime() < heure_fin.getTime() || seance.getHeureFin().getTime() > heure_debut.getTime()) {
+                long a = heure_debut.getTime();
+                long b = heure_fin.getTime();
+                long c = seance.getHeureDebut().getTime();
+                long d = seance.getHeureFin().getTime();
+                if (c < a && d > a ||
+                        c > a && d < b ||
+                        c < b && d > b) {
                     return false;
                 }
             }
@@ -189,5 +195,31 @@ public class SalleDAO extends DAO<Salle> {
         return existe;
     }
 
+    public boolean disponible(Timestamp heure_debut, Timestamp heure_fin, int id_salle) {
+        try {
+            this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT seance.heure_debut,seance.heure_fin FROM seance\n" +
+                            "INNER JOIN seance_salles\n" +
+                            "ON seance.id=seance_salles.id_seance\n" +
+                            "INNER JOIN salle\n" +
+                            "ON salle.id=seance_salles.id_salle\n" +
+                            "WHERE salle.id=" + id_salle
+            );
+            while (rset.next()) {
+                Timestamp seance_heure_debut = rset.getTimestamp("heure_debut");
+                Timestamp seance_heure_fin = rset.getTimestamp("heure_fin");
+                long a = seance_heure_debut.getTime();
+                long b = seance_heure_fin.getTime();
+                if (heure_debut.getTime() < a && heure_fin.getTime() > a ||
+                        heure_debut.getTime() > a && heure_fin.getTime() < b ||
+                        heure_debut.getTime() < b && heure_fin.getTime() > b) {
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Probème SQL");
+            e.printStackTrace();
+        }
+        return true;
+    }
 }
-
