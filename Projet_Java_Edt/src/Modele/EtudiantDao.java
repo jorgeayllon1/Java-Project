@@ -141,4 +141,71 @@ public class EtudiantDao extends UtilisateurDao {
 
         return les_seances;
     }
+    
+    /**Méthode pour trouver un eleve en fonction de son nom
+     * @param nom*/
+    public Etudiant trouverEleveAvecNom(String nom)
+    {
+        Etudiant e = new Etudiant();
+        EtudiantDao eDao = new EtudiantDao();
+        int id_user=0;
+        
+        try {
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id FROM utilisateur WHERE nom ='" + nom+"'"); 
+
+
+            while (rset.next())
+            {
+
+                id_user = rset.getInt("id");
+                e= eDao.find(id_user);
+
+
+            }
+
+
+        } catch (SQLException ex) {
+            
+            System.out.println("Connexion echouee : probleme SQL SeanceDAO");
+            ex.printStackTrace();
+        }
+        return e;
+    }
+    
+    /**Méthode qui renvoie vrai si le nom existe dans la bdd false sinon
+     * @param nom*/
+    public boolean siExiste(String nom)
+    {
+        Etudiant e = new Etudiant();
+        EtudiantDao eDao = new EtudiantDao();
+        int id_user=0;
+        boolean existe = false;
+        
+        
+        try {
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id FROM utilisateur WHERE nom ='" + nom+"'"); 
+
+
+            while (rset.next())
+            {
+
+                id_user = rset.getInt("id");
+                e= eDao.find(id_user);
+                existe=true;
+
+
+            }
+
+
+        } catch (SQLException ex) {
+            
+            System.out.println("Connexion echouee : probleme SQL SeanceDAO");
+            ex.printStackTrace();
+        }
+        return existe;
+    }
 }

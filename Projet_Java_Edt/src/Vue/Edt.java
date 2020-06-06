@@ -218,7 +218,10 @@ public class Edt extends JFrame implements ActionListener {
         
         
     }
-    
+    /**Méthode pour afficher la date à coté des différents jours
+     * de la semaine selon le numéro de semaine en param
+     * @param semaine 
+     */
     public void afficherDateEdt(int semaine)
      {
         SimpleDateFormat sdf = new SimpleDateFormat("MM dd yyyy");

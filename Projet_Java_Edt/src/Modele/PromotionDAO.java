@@ -126,7 +126,7 @@ public class PromotionDAO extends DAO<Promotion> {
      * @param promo
      * @return 
      */
-    public ArrayList<Groupe> allGroupes(int promo)
+    public ArrayList<Groupe> allGroupes(Promotion promo)
     {
         ArrayList<Groupe> mes_groupes = new ArrayList();
         Promotion promotion = new Promotion();
@@ -137,11 +137,11 @@ public class PromotionDAO extends DAO<Promotion> {
 
             this.rset = this.conn.createStatement(
                     this.rset.TYPE_SCROLL_INSENSITIVE,
-                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM groupe WHERE id="+promo);
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM groupe WHERE id_promotion="+promo.getId());
 
             while (rset.next()) {
 
-                    promotion = promoDao.find(promo);
+                    promotion = promoDao.find(promo.getId());
                     mes_groupes.add(new Groupe(rset.getInt("id"), rset.getString("nom"),promotion));
                 
             }
@@ -152,5 +152,36 @@ public class PromotionDAO extends DAO<Promotion> {
             e.printStackTrace();
         }
         return mes_groupes;
+    }
+    
+    public Promotion trouverPromoAvecAnnee(int annee)
+    {
+        Promotion promo = new Promotion();
+        PromotionDAO promoDao = new PromotionDAO();
+        int id_promo=0;
+        
+        
+        try {
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT * FROM promotion WHERE annee ="+annee); 
+
+
+            while (rset.next())
+            {
+
+                id_promo = rset.getInt("id");
+                promo = promoDao.find(id_promo);
+
+
+            }
+
+
+        } catch (SQLException e) {
+            
+            System.out.println("Connexion echouee : probleme SQL SeanceDAO");
+            e.printStackTrace();
+        }
+        return promo;
     }
 }
