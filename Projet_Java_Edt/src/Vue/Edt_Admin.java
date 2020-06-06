@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.swing.table.DefaultTableModel;
@@ -582,11 +583,12 @@ public class Edt_Admin extends Edt {
 
 
         /// ICI les test de mise à jours
-        if (e.getSource() == this.summary) {
-
-            //MajControleur controleur_maj = new MajControleur();
-            //controleur_maj.affecterEnseignat();
-
+        if (e.getSource() == this.summary || e.getSource() == this.maj) {
+            //long heure_debut = 1591948800000L;
+            //long heure_fin = 1591956000000L;
+            //SeanceDao seanceDao = new SeanceDao();
+            //Seance test = seanceDao.find(10);
+            //this.majControleur.deplacerSeance(test, new Timestamp(heure_debut), new Timestamp(heure_fin), "445");
         }
         /// Finf des test
 

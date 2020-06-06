@@ -320,6 +320,72 @@ public class MajControleur extends Controleur {
         } else System.out.println("Cette séance ne peut pas être annulée");
     }
 
+    ///Problème DAO : il faut refaire toutes les méthodes et raisonnée en fessant la contraposée
+    /// !!!!!!NE PAS UTILISER CETTE METHODE!!!!!!!!!!!!!!!!!!!!
+    public void deplacerSeance(Seance seance, Timestamp nouv_heure_debut, Timestamp nouv_heure_fin, String nouv_salle) {
+
+        SalleDAO salleDAO = new SalleDAO();
+        GroupeDAO groupeDAO = new GroupeDAO();
+        EnseignantDAO enseignantDAO = new EnseignantDAO();
+        SeanceDao seanceDao = new SeanceDao();
+
+        int id_salle = salleDAO.idCelonNom(nouv_salle);
+
+        // Blindage du nom de la salle
+        if (id_salle == 0) {
+            System.out.println("Nom de salle inconnue");
+        }
+
+        // Blindage weekend + heure
+        int nouv_heure_debut_entier = Integer.parseInt((new SimpleDateFormat("h")).format(nouv_heure_debut.getTime()));
+        int nouv_heure_fin_entier = Integer.parseInt((new SimpleDateFormat("h")).format(nouv_heure_fin.getTime()));
+        String date_txt = (new SimpleDateFormat("EEE")).format(nouv_heure_fin.getTime());
+
+        if (date_txt.equals("dim.") || date_txt.equals("sam.") ||
+                nouv_heure_debut_entier < 8 || nouv_heure_debut_entier > 20 ||
+                nouv_heure_fin_entier < 8 || nouv_heure_fin_entier > 20) {
+            System.out.println("Problème date ou heure");
+            return;
+        }
+        // Fin blindage weekend + heure
+
+        int nouv_semaine = Integer.parseInt((new SimpleDateFormat("h")).format(nouv_heure_debut.getTime()));
+        Date nouv_date = new Date(nouv_heure_debut.getTime());
+
+        seance.setHeure_debut(nouv_heure_debut);
+        seance.setHeure_fin(nouv_heure_fin);
+        seance.setSemaine(nouv_semaine);
+        seance.setDate(nouv_date);
+
+        //Blindage disponibilité salle
+        if (!salleDAO.disponible(seance, id_salle)) {
+            System.out.println("Salle non disponible pour cette seance");
+            return;
+        }
+
+        //Blindage capacité salle
+        if (salleDAO.find(id_salle).getCapacite() < seanceDao.nombreEleve(seance)) {
+            System.out.println("Salle de capacité non suffisante");
+            return;
+        }
+
+        //Blindage disponibilité enseignant
+        if (!enseignantDAO.disponible(seance, seanceDao.trouverEnseignant(seance).getID())) {
+            System.out.println("Enseignant non disponible");
+        }
+
+        //Blindage disponibilité Groupe
+        for (Groupe ungroupe : seanceDao.allGroupes(seance)) {
+            if (!groupeDAO.disponible(seance, ungroupe.getId())) {
+                System.out.println("Au moins un groupe n'est pas disponible pour la seance");
+                return;
+            }
+        }
+
+        seanceDao.majEtat(seance);//Au cas ou
+        seanceDao.update(seance);
+    }
+
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
 
