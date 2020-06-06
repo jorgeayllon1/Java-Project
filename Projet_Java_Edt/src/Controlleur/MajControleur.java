@@ -75,8 +75,8 @@ public class MajControleur extends Controleur {
         int id_typecours = typeCoursDAO.id_celon_nom(nom_typecours);
 
         String jours_semaine = (new SimpleDateFormat("E")).format(date.getTime());
-        int heure_debut_entier = Integer.parseInt((new SimpleDateFormat("h")).format(heure_debut.getTime()));
-        int heure_fin_entier = Integer.parseInt((new SimpleDateFormat("h")).format(heure_fin.getTime()));
+        int heure_debut_entier = Integer.parseInt((new SimpleDateFormat("H")).format(heure_debut.getTime()));
+        int heure_fin_entier = Integer.parseInt((new SimpleDateFormat("H")).format(heure_fin.getTime()));
 
         // Blindage de l'horaire et du week-end
         if (jours_semaine.equals("dim.") || jours_semaine.equals("sam.") ||
@@ -320,8 +320,6 @@ public class MajControleur extends Controleur {
         } else System.out.println("Cette séance ne peut pas être annulée");
     }
 
-    ///Problème DAO : il faut refaire toutes les méthodes et raisonnée en fessant la contraposée
-    /// !!!!!!NE PAS UTILISER CETTE METHODE!!!!!!!!!!!!!!!!!!!!
     public void deplacerSeance(Seance seance, Timestamp nouv_heure_debut, Timestamp nouv_heure_fin, String nouv_salle) {
 
         SalleDAO salleDAO = new SalleDAO();
@@ -337,19 +335,18 @@ public class MajControleur extends Controleur {
         }
 
         // Blindage weekend + heure
-        int nouv_heure_debut_entier = Integer.parseInt((new SimpleDateFormat("h")).format(nouv_heure_debut.getTime()));
-        int nouv_heure_fin_entier = Integer.parseInt((new SimpleDateFormat("h")).format(nouv_heure_fin.getTime()));
+        int nouv_heure_debut_entier = Integer.parseInt((new SimpleDateFormat("H")).format(nouv_heure_debut.getTime()));
+        int nouv_heure_fin_entier = Integer.parseInt((new SimpleDateFormat("H")).format(nouv_heure_fin.getTime()));
         String date_txt = (new SimpleDateFormat("EEE")).format(nouv_heure_fin.getTime());
 
         if (date_txt.equals("dim.") || date_txt.equals("sam.") ||
                 nouv_heure_debut_entier < 8 || nouv_heure_debut_entier > 20 ||
                 nouv_heure_fin_entier < 8 || nouv_heure_fin_entier > 20) {
-            System.out.println("Problème date ou heure");
             return;
         }
         // Fin blindage weekend + heure
 
-        int nouv_semaine = Integer.parseInt((new SimpleDateFormat("h")).format(nouv_heure_debut.getTime()));
+        int nouv_semaine = Integer.parseInt((new SimpleDateFormat("w")).format(nouv_heure_debut.getTime()));
         Date nouv_date = new Date(nouv_heure_debut.getTime());
 
         seance.setHeure_debut(nouv_heure_debut);
@@ -357,9 +354,9 @@ public class MajControleur extends Controleur {
         seance.setSemaine(nouv_semaine);
         seance.setDate(nouv_date);
 
-        //Blindage disponibilité salle
-        if (!salleDAO.disponible(seance, id_salle)) {
-            System.out.println("Salle non disponible pour cette seance");
+        //Blindage disponibilité salle V2
+        if (!salleDAO.disponible(nouv_heure_debut, nouv_heure_fin, id_salle)) {
+            System.out.println("La salle " + salleDAO.find(id_salle).getNom() + " est occupée de " + nouv_heure_debut + " a " + nouv_heure_fin);
             return;
         }
 
@@ -369,14 +366,20 @@ public class MajControleur extends Controleur {
             return;
         }
 
-        //Blindage disponibilité enseignant
-        if (!enseignantDAO.disponible(seance, seanceDao.trouverEnseignant(seance).getID())) {
-            System.out.println("Enseignant non disponible");
+        //Blindage disponibilité enseignant V2
+        //Changer enseignantDAO disponible
+
+        Enseignant prof = seanceDao.trouverEnseignant(seance);
+
+        //Blindage disponibilité prof
+        if (!enseignantDAO.disponible(nouv_heure_debut, nouv_heure_fin, prof.getID())) {
+            System.out.println("Enseignant non disponible pour cette seance");
+            return;
         }
 
         //Blindage disponibilité Groupe
         for (Groupe ungroupe : seanceDao.allGroupes(seance)) {
-            if (!groupeDAO.disponible(seance, ungroupe.getId())) {
+            if (!groupeDAO.disponible(nouv_heure_debut, nouv_heure_fin, ungroupe.getId())) {
                 System.out.println("Au moins un groupe n'est pas disponible pour la seance");
                 return;
             }

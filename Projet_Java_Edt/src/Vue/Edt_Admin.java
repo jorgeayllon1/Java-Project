@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -84,7 +85,6 @@ public class Edt_Admin extends Edt {
         this.panel_recherche.add(boutons_search);
 
     }
-
 
 
     //////////////////////////////////////////////////////////----------------RECHERCHE-----------------/////////////////////////////////////////////////////////////////
@@ -501,7 +501,7 @@ public class Edt_Admin extends Edt {
     }
 
     ////////////////////////////////////////////////////////////////////-------ACTIONS-------//////////////////////////////////////////////////////////////////
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -562,21 +562,27 @@ public class Edt_Admin extends Edt {
 
 
         /// ICI les test de mise à jours
-        if (e.getSource() == this.summary || e.getSource() == this.maj) {
-            //long heure_debut = 1591948800000L;
-            //long heure_fin = 1591956000000L;
-            //SeanceDao seanceDao = new SeanceDao();
-            //Seance test = seanceDao.find(10);
-            //this.majControleur.deplacerSeance(test, new Timestamp(heure_debut), new Timestamp(heure_fin), "445");
+        /*
+        if (e.getSource() == this.maj) {
+
+            long heure_debut = 1590645600000L;
+            long heure_fin = 1590652800000L;
+            Timestamp debut = new Timestamp(heure_debut);
+            Timestamp fin = new Timestamp(heure_fin);
+            SeanceDao seanceDao = new SeanceDao();
+            Seance test = seanceDao.find(10);
+            this.majControleur.deplacerSeance(test, debut, fin, "445");
+
         }
         /// Finf des test
+         */
 
     }
 
 
     //////////////////////////////////////////////----------------------------MISE A JOUR DES DONNEES----------------------------------//////////////////////////////////////
-    
-    
+
+
     public void afficherInterfaceMaj() {
         suppPanel(this.panel);
         suppPanel(this.content2);
@@ -707,7 +713,6 @@ public class Edt_Admin extends Edt {
                         afficherEdtSemaineEleve(etudiant, int_semaine, centre); //On affiche l'edt du prof en question
                     }
                 }
-
 
                 for (MouseListener element : tableau.getMouseListeners()) tableau.removeMouseListener(element);
 
@@ -1167,7 +1172,7 @@ public class Edt_Admin extends Edt {
 
     /////////////////////////////////////////////-------------------METHODES D'AFFICHAGE D'EDT--------------------////////////////////////////////////////////////////////
 
-    
+
     public void afficherEdtSemaineProf(Enseignant prof, int semaine, JPanel pan) {
 
         suppPanel(pan);
