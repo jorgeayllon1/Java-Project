@@ -168,7 +168,21 @@ public class Edt_Etudiant extends Edt {
                             if(mes_seances.get(i).getEtat()==0 || mes_seances.get(i).getEtat()==1)
                             {
                                 String myString =
-                                        "<html><p>" + mes_seances.get(i).getCours().getNom()+ "<br>Invalidable ou en cours <br>Manque salle/prof/groupe</p></html>";
+                                        "<html><p>" + mes_seances.get(i).getCours().getNom();
+                                
+                                if(seanceDao.siProf(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque PROF</p></html>";
+                                }
+                                else if(seanceDao.siGroupe(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque GROUPE</p></html>";
+                                }
+                                else if(seanceDao.siSalle(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque SALLE</p></html>";
+                                }
+                                
 
 
                                 tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
@@ -313,7 +327,21 @@ public class Edt_Etudiant extends Edt {
                             if(mes_seances.get(i).getEtat()==0 || mes_seances.get(i).getEtat()==1)
                             {
                                 String myString =
-                                        "<html><p>" + mes_seances.get(i).getCours().getNom()+ "<br>Invalidable ou en cours <br>Manque salle/prof/groupe</p></html>";
+                                        "<html><p>" + mes_seances.get(i).getCours().getNom();
+                                
+                                if(seanceDao.siProf(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque PROF</p></html>";
+                                }
+                                else if(seanceDao.siGroupe(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque GROUPE</p></html>";
+                                }
+                                else if(seanceDao.siSalle(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque SALLE</p></html>";
+                                }
+                                
 
 
                                 tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);

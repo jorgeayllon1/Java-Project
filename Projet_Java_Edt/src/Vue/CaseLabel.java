@@ -22,9 +22,6 @@ public class CaseLabel extends DefaultTableCellRenderer{
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        /**
-         * Fixer la couleur de fond de la première colonne en jaune
-         */
         
         
         Font  f3  = new Font(Font.DIALOG,  Font.BOLD, 15);
@@ -41,21 +38,11 @@ public class CaseLabel extends DefaultTableCellRenderer{
          for(int j=0; j < table.getColumnCount(); j++) {
             String str = table.getValueAt(i,j).toString();
             if(str.trim().length() != 0) {
-                
-                
-                
-               
+
             }
          }
       }
-        
-        /*if(value instanceof JLabel){
-           //This time return only the JLabel without icon
-            return (JLabel)value;
-        }
- 
-        else
-            return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);*/
+
         return component;
     }
     

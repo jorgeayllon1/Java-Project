@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Vue;
 
 import Controlleur.MajControleur;
@@ -1440,9 +1436,19 @@ public class Edt_Admin extends Edt {
                             if (mes_seances.get(i).getEtat() == 0 || mes_seances.get(i).getEtat() == 1) {
                                 String myString =
                                         "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + "<br>Groupe :" +
-                                                groupe.getNom()
-                                                + "<br>Invalidable ou en cours <br>Manque salle/prof/groupe</p></html>";
-
+                                                groupe.getNom();
+                                if(seanceDao.siProf(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque PROF</p></html>";
+                                }
+                                else if(seanceDao.siGroupe(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque GROUPE</p></html>";
+                                }
+                                else if(seanceDao.siSalle(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque SALLE</p></html>";
+                                }
 
                                 tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
                                 stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
@@ -1575,7 +1581,21 @@ public class Edt_Admin extends Edt {
                             prof = seanceDao.trouverEnseignant(mes_seances.get(i));
                             if (mes_seances.get(i).getEtat() == 0 || mes_seances.get(i).getEtat() == 1) {
                                 String myString =
-                                        "<html><p>" + mes_seances.get(i).getCours().getNom() + "<br>Invalidable ou en cours <br>Manque salle/prof/groupe</p></html>";
+                                        "<html><p>" + mes_seances.get(i).getCours().getNom();
+                                
+                                if(seanceDao.siProf(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque PROF</p></html>";
+                                }
+                                else if(seanceDao.siGroupe(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque GROUPE</p></html>";
+                                }
+                                else if(seanceDao.siSalle(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque SALLE</p></html>";
+                                }
+                                
 
 
                                 tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
@@ -1700,7 +1720,20 @@ public class Edt_Admin extends Edt {
 
                             if (mes_seances.get(i).getEtat() == 0 || mes_seances.get(i).getEtat() == 1) {
                                 String myString =
-                                        "<html><p>" + mes_seances.get(i).getCours().getNom() + "<br>Invalidable ou en cours <br>Manque salle/prof/groupe</p></html>";
+                                        "<html><p>" + mes_seances.get(i).getCours().getNom();
+                                if(seanceDao.siProf(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque PROF</p></html>";
+                                }
+                                else if(seanceDao.siGroupe(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque GROUPE</p></html>";
+                                }
+                                else if(seanceDao.siSalle(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque SALLE</p></html>";
+                                }
+                                
 
 
                                 tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
@@ -1812,8 +1845,22 @@ public class Edt_Admin extends Edt {
 
                             if (mes_seances.get(i).getEtat() == 0 || mes_seances.get(i).getEtat() == 1) {
                                 String myString =
-                                        "<html><p>" + mes_seances.get(i).getCours().getNom()
-                                                + "<br>Invalidable ou en cours</p></html>";
+                                        "<html><p>" + mes_seances.get(i).getCours().getNom();
+                                               
+                                if(seanceDao.siProf(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque PROF</p></html>";
+                                }
+                                else if(seanceDao.siGroupe(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque GROUPE</p></html>";
+                                }
+                                else if(seanceDao.siSalle(mes_seances.get(i))==false)
+                                {
+                                    myString+="<br>Manque SALLE</p></html>";
+                                }
+                                
+                                
                                 tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
                                 stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
                             } else if (mes_seances.get(i).getEtat() == 2) {
