@@ -5,13 +5,14 @@
  */
 package Vue;
 
-import Controlleur.Maj.MajControleur;
+import Controlleur.MajControleur;
 import Modele.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -50,6 +51,8 @@ public class Edt_Admin extends Edt {
     
     ///Mise à jour des données///
     private JPanel content2 = new JPanel(new GridLayout(0,1));
+    
+    private boolean mouse=false;
 
     public Edt_Admin() {
     }
@@ -585,8 +588,7 @@ public class Edt_Admin extends Edt {
 
         /// ICI les test de mise à jours
         if (e.getSource() == this.summary) {
-            MajControleur controleur_maj = new MajControleur();
-            controleur_maj.affecterEnseignat();
+ 
         }
         /// Finf des test
 
@@ -694,6 +696,7 @@ public class Edt_Admin extends Edt {
 
         JButton chercher = new JButton("Chercher");
         
+        
         chercher.addActionListener(new ActionListener() { //Si clique sur bouton chercher
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -727,25 +730,32 @@ public class Edt_Admin extends Edt {
                         afficherEdtSemaineEleve( etudiant,int_semaine,centre); //On affiche l'edt du prof en question
                     }
                 }
-                tableau.addMouseListener(new java.awt.event.MouseAdapter() { //Si clique sur une cellule du tableau
+                tableau.addMouseListener(new MouseAdapter() { //Si clique sur une cellule du tableau
+      
                             @Override
                             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                                int row = tableau.rowAtPoint(evt.getPoint()); //Get les coord du click
-                                int col = tableau.columnAtPoint(evt.getPoint());
-                                
-                                    if(stock_seances[row][col]!=null) //Si il y a une séance dans la cellule
-                                    {
-                                        System.out.println(stock_seances[row][col].getID());
-                                        JFrame frame =new JFrame();
-                                        JOptionPane.showConfirmDialog(frame,"Voulez-vous supprimer cette séance : \n" 
-                                                + "Nom séance : " +stock_seances[row][col].getCours().getNom()
-                                                + " Date séance : " +stock_seances[row][col].getDate());
-                                        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       
+                                    int row = tableau.rowAtPoint(evt.getPoint()); //Get les coord du click
+                                    int col = tableau.columnAtPoint(evt.getPoint());
 
-                                    }
+                                        if(stock_seances[row][col]!=null) //Si il y a une séance dans la cellule
+                                        {
+                                            System.out.println(stock_seances[row][col].getID());
+                                            JFrame frame =new JFrame();
+                                            JOptionPane.showConfirmDialog(frame,"Voulez-vous supprimer cette séance : \n" 
+                                                    + "Nom séance : " +stock_seances[row][col].getCours().getNom()
+                                                    + " Date séance : " +stock_seances[row][col].getDate());
+                                            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+                                           
+
+                                        }
 
                     }
+              
                 });
+                
+                
                 
                 
             }
