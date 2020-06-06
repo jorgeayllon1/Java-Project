@@ -38,31 +38,12 @@ public abstract class DAO<T> {
 
     public abstract T find(int id);
 
-    public abstract T create(T obj);
+    public abstract boolean create(T obj);
 
-    public abstract void delete(T obj);
+    public abstract boolean delete(T obj);
 
-    public abstract T update(T obj);
+    public abstract boolean update(T obj);
 
-    /**
-     * Méthode qui va trouver l'id le plus haut disponible
-     */
-    public int trouverIdDispo() {
-        int max = 0;
-        try {
-            this.rset = this.conn.createStatement(
-                    this.rset.TYPE_SCROLL_INSENSITIVE,
-                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT max(id) FROM utilisateur");
-
-            if (rset.first()) {
-                max = rset.getInt("max(id)") + 1; //On prend le prochain id
-            }
-            //System.out.println(max);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return max; //On retourne le max
-    }
 
     /**
      * Méthode pour afficher les champs d'une table en prenant en param le nom de la table
@@ -92,6 +73,7 @@ public abstract class DAO<T> {
      * @param nomTable
      * @return La taille de la table
      */
+
     public int getTaille(String nomTable) {
 
         try {

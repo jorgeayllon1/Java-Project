@@ -28,4 +28,12 @@ public class Cours {
     public String getNom() {
         return this.nom;
     }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

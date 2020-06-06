@@ -45,17 +45,18 @@ public class SalleDAO extends DAO<Salle> {
     }
 
     @Override
-    public Salle create(Salle obj) {
-        return new Salle();
+    public boolean create(Salle obj) {
+        return false;
     }
 
     @Override
-    public void delete(Salle obj) {
+    public boolean delete(Salle obj) {
+        return false;
     }
 
     @Override
-    public Salle update(Salle obj) {
-        return new Salle();
+    public boolean update(Salle obj) {
+        return false;
     }
 
     public int idCelonNom(String nom) {
@@ -117,7 +118,7 @@ public class SalleDAO extends DAO<Salle> {
                 int id_type = rset.getInt("id_type");
                 TypeCours typeCours = typeCoursDAO.find(id_type);
 
-                lesseances.add(new Seance(id, semaine, date, heure_debut, heure_fin,etat, cours, typeCours));
+                lesseances.add(new Seance(id, semaine, date, heure_debut, heure_fin, etat, cours, typeCours));
 
             }
 
@@ -126,6 +127,30 @@ public class SalleDAO extends DAO<Salle> {
             e.printStackTrace();
         }
         return lesseances;
+    }
+
+    public boolean disponible(Seance seance, int id_salle) {
+        try {
+            this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT seance.heure_debut,seance.heure_fin FROM seance\n" +
+                            "INNER JOIN seance_salles\n" +
+                            "ON seance.id=seance_salles.id_seance\n" +
+                            "INNER JOIN salle\n" +
+                            "ON salle.id=seance_salles.id_salle\n" +
+                            "WHERE salle.id=" + id_salle
+            );
+            while (rset.next()) {
+                Timestamp heure_debut = rset.getTimestamp("heure_debut");
+                Timestamp heure_fin = rset.getTimestamp("heure_fin");
+                if (seance.getHeureDebut().getTime() < heure_fin.getTime() || seance.getHeureFin().getTime() > heure_debut.getTime()) {
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Probème SQL");
+            e.printStackTrace();
+        }
+        return true;
     }
 
 }

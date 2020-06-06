@@ -31,19 +31,20 @@ public class PromotionDAO extends DAO<Promotion> {
     }
 
     @Override
-    public Promotion create(Promotion obj) {
-        return new Promotion();
+    public boolean create(Promotion obj) {
+        return false;
 
     }
 
     @Override
-    public void delete(Promotion obj) {
+    public boolean delete(Promotion obj) {
 
+        return false;
     }
 
     @Override
-    public Promotion update(Promotion obj) {
-        return new Promotion();
+    public boolean update(Promotion obj) {
+        return false;
 
     }
 
@@ -110,7 +111,7 @@ public class PromotionDAO extends DAO<Promotion> {
                 int id_type = rset.getInt("id_type");
                 TypeCours typeCours = typeCoursDAO.find(id_type);
 
-                lesseances.add(new Seance(id, semaine, date, heure_debut, heure_fin,etat, cours, typeCours));
+                lesseances.add(new Seance(id, semaine, date, heure_debut, heure_fin, etat, cours, typeCours));
 
             }
 

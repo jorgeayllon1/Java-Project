@@ -48,19 +48,19 @@ public class EnseignantDAO extends DAO<Enseignant> {
     }
 
     @Override
-    public Enseignant create(Enseignant obj) {
-        return new Enseignant();
-
+    public boolean create(Enseignant obj) {
+        return false;
     }
 
     @Override
-    public void delete(Enseignant obj) {
+    public boolean delete(Enseignant obj) {
 
+        return false;
     }
 
     @Override
-    public Enseignant update(Enseignant obj) {
-        return new Enseignant();
+    public boolean update(Enseignant obj) {
+        return false;
 
     }
 
@@ -162,7 +162,6 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return salle;
     }
 
-
     public ArrayList<Enseignant> listeEnseignant() {
         ArrayList<Enseignant> liste_prof = new ArrayList();
         ArrayList<Integer> deja_compte = new ArrayList();
@@ -202,7 +201,6 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return liste_prof;
     }
 
-
     public ArrayList<Seance> trouverAllSeancesSemaine(int id_prof, int numero_semaine) {
 
 
@@ -237,7 +235,7 @@ public class EnseignantDAO extends DAO<Enseignant> {
                     int id_type = rset.getInt("id_type");
                     TypeCours typeCours = typeCoursDAO.find(id_type);
                     deja_compte.add(rset.getInt("id"));
-                    les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin,etat, cours, typeCours));
+                    les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, etat, cours, typeCours));
                 }
 
 
@@ -285,7 +283,7 @@ public class EnseignantDAO extends DAO<Enseignant> {
                     int id_type = rset.getInt("id_type");
                     TypeCours typeCours = typeCoursDAO.find(id_type);
                     deja_compte.add(rset.getInt("id"));
-                    les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, etat,cours, typeCours));
+                    les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, etat, cours, typeCours));
                 }
 
 
@@ -298,23 +296,25 @@ public class EnseignantDAO extends DAO<Enseignant> {
 
         return les_seances;
     }
-    /**Méthode pour trouver un prof en fonction de son nom
-     * @param nom*/
-    public Enseignant trouverProfAvecNom(String nom)
-    {
+
+    /**
+     * Méthode pour trouver un prof en fonction de son nom
+     *
+     * @param nom
+     */
+    public Enseignant trouverProfAvecNom(String nom) {
         Enseignant prof = new Enseignant();
         EnseignantDAO profDao = new EnseignantDAO();
-        int id_user=0;
-        
-        
+        int id_user = 0;
+
+
         try {
             this.rset = this.conn.createStatement(
                     this.rset.TYPE_SCROLL_INSENSITIVE,
-                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id FROM utilisateur WHERE nom ='" + nom+"'"); 
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id FROM utilisateur WHERE nom ='" + nom + "'");
 
 
-            while (rset.next())
-            {
+            while (rset.next()) {
 
                 id_user = rset.getInt("id");
                 prof = profDao.find(id_user);
@@ -324,45 +324,90 @@ public class EnseignantDAO extends DAO<Enseignant> {
 
 
         } catch (SQLException e) {
-            
+
             System.out.println("Connexion echouee : probleme SQL SeanceDAO");
             e.printStackTrace();
         }
         return prof;
     }
-    
-    /**Méthode qui renvoie vrai si le nom existe dans la bdd false sinon
-     * @param nom*/
-    public boolean siExiste(String nom)
-    {
+
+    /**
+     * Méthode qui renvoie vrai si le nom existe dans la bdd false sinon
+     *
+     * @param nom
+     */
+    public boolean siExiste(String nom) {
         Enseignant prof = new Enseignant();
         EnseignantDAO profDao = new EnseignantDAO();
-        int id_user=0;
+        int id_user = 0;
         boolean existe = false;
-        
-        
+
+
         try {
             this.rset = this.conn.createStatement(
                     this.rset.TYPE_SCROLL_INSENSITIVE,
-                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id FROM utilisateur WHERE nom ='" + nom+"'"); 
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id FROM utilisateur WHERE nom ='" + nom + "'");
 
 
-            while (rset.next())
-            {
+            while (rset.next()) {
 
                 id_user = rset.getInt("id");
                 prof = profDao.find(id_user);
-                existe=true;
+                existe = true;
 
 
             }
 
 
         } catch (SQLException e) {
-            
+
             System.out.println("Connexion echouee : probleme SQL SeanceDAO");
             e.printStackTrace();
         }
         return existe;
     }
+
+    public int idCelonNom(String nom) {
+        int le_id = 0;
+        try {
+            //this.conn = Connexion.seConnecter();
+            this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT id FROM utilisateur\n" +
+                            "WHERE nom='" + nom + "'"
+            );
+            while (rset.next()) {
+                le_id = rset.getInt("id");
+            }
+        } catch (SQLException e) {
+            System.err.println("Probème SQL");
+            e.printStackTrace();
+        }
+
+        return le_id;
+    }
+
+    public boolean disponible(Seance seance, int id_enseignant) {
+        try {
+            this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT DISTINCT heure_debut,heure_fin FROM seance\n" +
+                            "INNER JOIN seance_enseignants\n" +
+                            "ON seance_enseignants.id_seance=seance.id\n" +
+                            "INNER JOIN enseignant\n" +
+                            "ON enseignant.id_utilisateur=seance_enseignants.id_enseignant\n" +
+                            "WHERE enseignant.id_utilisateur=" + id_enseignant
+            );
+            while (rset.next()) {
+                Timestamp heure_debut = rset.getTimestamp("heure_debut");
+                Timestamp heure_fin = rset.getTimestamp("heure_fin");
+                if (seance.getHeureDebut().getTime() < heure_fin.getTime() || seance.getHeureFin().getTime() > heure_debut.getTime()) {
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Probème SQL");
+            e.printStackTrace();
+        }
+        return true;
+    }
+
 }
