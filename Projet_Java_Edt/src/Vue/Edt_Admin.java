@@ -61,8 +61,6 @@ public class Edt_Admin extends Edt {
         this.annule.setVisible(false);
         this.semaine.setVisible(false);
         this.semaine.remove(this.semaine);
-        
-
 
         ImageIcon maj_icon = new ImageIcon(new ImageIcon("src/Icones/refresh.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
         maj = new JButton("Mise à jour", maj_icon);
