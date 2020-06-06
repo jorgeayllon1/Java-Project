@@ -1461,9 +1461,7 @@ public class Edt_Admin extends Edt {
             int dayOfWeek = c.get(Calendar.DAY_OF_WEEK); //On get le jour de la semaine 1 sunday 2 monday 3 tuesday...
             for (int jour_semaine = 2; jour_semaine < 7; jour_semaine++) {
                 if (dayOfWeek == jour_semaine) {
-                                    /*SimpleDateFormat sdf = new SimpleDateFormat("h");
-                                    sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-                                    String str = sdf.format(mes_seances.get(i).getHeureDebut()); //On stocke dans un string l'entier de l'heure de début*/
+
                     String str = mes_seances.get(i).getHeureDebut().toString();
                     char str2 = str.charAt(11);
                     char str3 = str.charAt(12);
