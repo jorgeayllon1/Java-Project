@@ -166,7 +166,8 @@ public class MajControleur extends Controleur {
         else if (groupes.size() != 0) {
             System.out.println("j'enleve le groupe " + nom_groupe + " pour la seance " + seance.getID());
             seanceDao.enleverGroupe(seance, id_groupe);
-        } else System.out.println("Il n'y a pas CE groupe pour cette séance");
+        } else
+            System.out.println("Il n'y a pas CE groupe pour cette séance");//Si ce code s'active, il y a peut être un problème dans le code
     }
 
     public void affecterSalleSeance(Seance seance, String nom_salle) {
@@ -291,6 +292,32 @@ public class MajControleur extends Controleur {
         seanceDao.majEtat(seance);
         seanceDao.update(seance);
 
+    }
+
+    public void validerSeance(Seance seance) {
+        SeanceDao seanceDao = new SeanceDao();
+
+        //Pas besoin de recalculer l'état mais on sait jamais
+        seanceDao.majEtat(seance);
+        seanceDao.update(seance);
+        if (seance.getEtat() == 1 || seance.getEtat() == 3) {
+            seance.setEtat(2);
+            seanceDao.update(seance);
+            System.out.println("Seance validée");
+        } else System.out.println("Cette seance ne peut pas être validée");
+    }
+
+    public void annulerSeance(Seance seance) {
+        SeanceDao seanceDao = new SeanceDao();
+
+        //Pas besoin de recalculer l'état mais on sait jamais
+        seanceDao.majEtat(seance);
+        seanceDao.update(seance);
+        if (seance.getEtat() == 2) {
+            seance.setEtat(3);
+            seanceDao.update(seance);
+            System.out.println("Seance annulée");
+        } else System.out.println("Cette séance ne peut pas être annulée");
     }
 
     @Override

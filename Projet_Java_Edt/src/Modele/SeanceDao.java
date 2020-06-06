@@ -384,7 +384,8 @@ public class SeanceDao extends DAO<Seance> {
 
     public void majEtat(Seance seance) {
         if (this.trouverSalle(seance) != null && this.trouverEnseignant(seance) != null && this.allGroupes(seance).size() != 0) {
-            seance.setEtat(1);
+            if (seance.getEtat() == 0)
+                seance.setEtat(1);
         }
     }
 
