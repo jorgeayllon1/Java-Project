@@ -10,6 +10,8 @@ public class TypeCours {
 
     public TypeCours(int id, String nom) {
         this.id = id;
+        this.nom = nom;
+        /*
         switch (this.id) {
             case 1:
                 this.nom = "Cours interactif";
@@ -34,6 +36,7 @@ public class TypeCours {
                 System.out.println("Type de cours inconnue");
                 break;
         }
+         */
     }
 
     public TypeCours() {
@@ -45,5 +48,13 @@ public class TypeCours {
 
     public String getNom() {
         return this.nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

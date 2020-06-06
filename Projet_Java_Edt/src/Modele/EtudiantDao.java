@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /**
  * @author Wang David
  */
-public class EtudiantDao extends UtilisateurDao {
+public class EtudiantDao extends DAO<Etudiant> {
 
     public EtudiantDao() {
         super();
@@ -22,6 +22,7 @@ public class EtudiantDao extends UtilisateurDao {
         super(conn);
     }
 
+    @Override
     public Etudiant find(int id) {
         Etudiant etudiant = new Etudiant();
         int id_user = 0;
@@ -56,6 +57,21 @@ public class EtudiantDao extends UtilisateurDao {
 
         return etudiant;
 
+    }
+
+    @Override
+    public boolean create(Etudiant obj) {
+        return false;
+    }
+
+    @Override
+    public boolean delete(Etudiant obj) {
+        return false;
+    }
+
+    @Override
+    public boolean update(Etudiant obj) {
+        return false;
     }
 
     /**

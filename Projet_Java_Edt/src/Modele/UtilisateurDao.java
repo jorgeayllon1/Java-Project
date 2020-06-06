@@ -56,43 +56,17 @@ public class UtilisateurDao extends DAO<Utilisateur> {
 
     }
 
-
-    public Utilisateur create(Utilisateur user) {
-        int id = this.trouverIdDispo(); //Trouver id dispo
-
-        try {
-            if (rset.first()) {
-
-                PreparedStatement prepare = this.conn
-                        .prepareStatement(
-                                "INSERT INTO utilisateur (id, email,passwd,nom,prenom,droit) VALUES(?,?,?,?,?,?)"
-                        );
-                ///On insère les données
-                prepare.setInt(1, id);
-                prepare.setString(2, user.getMail());
-                prepare.setString(3, user.getMdp());
-                prepare.setString(4, user.getNom());
-                prepare.setString(5, user.getPrenom());
-                prepare.setInt(6, user.getDroit());
-
-                //On éxécute
-                prepare.executeUpdate();
-                user = this.find(id);    //On trouve le nouvel utilisateur qui a été crée pour le retourner
-
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return user; //On retourne le nouvel utilisateur
+    public boolean create(Utilisateur user) {
+        return false;
     }
 
     /**
      * Supprimer un élément dans la table
      *
      * @param user
+     * @return
      */
-    public void delete(Utilisateur user) {
+    public boolean delete(Utilisateur user) {
         try {
             this.conn.createStatement(rset.TYPE_SCROLL_INSENSITIVE,
                     rset.CONCUR_UPDATABLE
@@ -105,10 +79,11 @@ public class UtilisateurDao extends DAO<Utilisateur> {
 
         //this.taille--;
 
+        return true;
     }
 
     //Changer mail
-    public Utilisateur update(Utilisateur user) {
+    public boolean update(Utilisateur user) {
         try {
 
             this.conn
@@ -125,7 +100,7 @@ public class UtilisateurDao extends DAO<Utilisateur> {
             e.printStackTrace();
         }
 
-        return user;
+        return true;
     }
 
     /**
@@ -160,7 +135,7 @@ public class UtilisateurDao extends DAO<Utilisateur> {
                 int id_type = rset.getInt("id_type");
                 TypeCours typeCours = typeCoursDAO.find(id_type);
 
-                les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin,etat, cours, typeCours));
+                les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, etat, cours, typeCours));
 
             }
 

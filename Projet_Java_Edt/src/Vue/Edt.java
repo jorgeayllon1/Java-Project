@@ -1,6 +1,5 @@
 
 package Vue;
-import Controlleur.Recherche.RechercheControleur;
 import Modele.*;
 
 import java.awt.*;

@@ -44,22 +44,22 @@ public class GroupeDAO extends DAO<Groupe> {
     }
 
     @Override
-    public Groupe create(Groupe obj) {
-        return new Groupe();
+    public boolean create(Groupe obj) {
+        return false;
 
     }
 
     @Override
-    public void delete(Groupe obj) {
+    public boolean delete(Groupe obj) {
 
+        return false;
     }
 
     @Override
-    public Groupe update(Groupe obj) {
-        return new Groupe();
+    public boolean update(Groupe obj) {
+        return false;
 
     }
-
 
     public ArrayList<Integer> trouverIdSeance(Groupe groupe) {
 
@@ -234,7 +234,7 @@ public class GroupeDAO extends DAO<Groupe> {
                 int id_type = rset.getInt("id_type");
                 TypeCours typeCours = typeCoursDAO.find(id_type);
 
-                les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin,etat, cours, typeCours));
+                les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, etat, cours, typeCours));
 
             }
 
@@ -245,4 +245,49 @@ public class GroupeDAO extends DAO<Groupe> {
 
         return les_seances;
     }
+
+    public int nombreEleve(int id_groupe) {
+        int nombreEleve = 0;
+
+        try {
+            //this.conn = Connexion.seConnecter();
+            this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT COUNT(id_utilisateur) FROM etudiant\n" +
+                            "WHERE id_groupe=" + id_groupe
+            );
+            while (rset.next()) {
+                nombreEleve = rset.getInt("COUNT(id_utilisateur)");
+            }
+        } catch (SQLException e) {
+            System.err.println("Probème SQL GroupeDAO");
+            e.printStackTrace();
+        }
+
+        return nombreEleve;
+    }
+
+    public boolean disponible(Seance seance, int id_groupe) {
+        try {
+            this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT heure_debut,heure_fin FROM seance\n" +
+                            "INNER JOIN seance_groupes\n" +
+                            "on seance_groupes.id_seance=seance.id\n" +
+                            "INNER JOIN groupe\n" +
+                            "ON seance_groupes.id_groupe=groupe.id\n" +
+                            "WHERE groupe.id=" + id_groupe
+            );
+            while (rset.next()) {
+                Timestamp heure_debut = rset.getTimestamp("heure_debut");
+                Timestamp heure_fin = rset.getTimestamp("heure_fin");
+                if (seance.getHeureDebut().getTime() < heure_fin.getTime() || seance.getHeureFin().getTime() > heure_debut.getTime()) {
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Probème SQL");
+            e.printStackTrace();
+        }
+        return true;
+    }
+
 }
