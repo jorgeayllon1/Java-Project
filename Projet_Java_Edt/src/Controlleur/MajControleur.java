@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class MajControleur extends Controleur {
@@ -121,6 +122,51 @@ public class MajControleur extends Controleur {
             seanceDao.enleverSalle(seance);
 
         } else System.out.println("Il n'y a pas de salle pour ce cours");
+    }
+
+    public void enleverGroupeSeance(Seance seance, String nom_groupe) {
+        SeanceDao seanceDao = new SeanceDao();
+        GroupeDAO groupeDAO = new GroupeDAO();
+
+        int id_groupe = groupeDAO.idCelonNom(nom_groupe);
+
+        // Blindage du nom du groupe
+        if (id_groupe == 0) {
+            System.out.println("Nom de groupe inconnu");
+            return;
+        }
+
+        ArrayList<Groupe> groupes = seanceDao.allGroupes(seance);
+
+        if (groupes.size() == 0) {
+            System.out.println("Pas de groupe pour cette séance");
+            return;
+        }
+
+        // Blindage : le groupe à bien cette seance
+        boolean groupe_dans_seance = false;
+        for (Groupe ungroupe : groupes) {
+            if (ungroupe.getNom().equals(nom_groupe))
+                groupe_dans_seance = true;
+        }
+        if (!groupe_dans_seance) {
+            System.out.println("Erreur ce groupe n'a pas cette séance");
+            return;
+        }
+        // Fin blindage
+
+        // Si le nombre de groupe est de 1 alors le prochain groupe qu'on enlève fera que la séance ne sera pas validable car pas de groupe
+        if (groupes.size() == 1) {
+            System.out.println("j'enleve le groupe " + nom_groupe + " pour la seance " + seance.getID());
+            seance.setEtat(0);
+            seanceDao.update(seance);
+            seanceDao.enleverGroupe(seance, id_groupe);
+
+        }//Sinon on enlève juste le groupe => la séance l'état de la séance ne change pas
+        else if (groupes.size() != 0) {
+            System.out.println("j'enleve le groupe " + nom_groupe + " pour la seance " + seance.getID());
+            seanceDao.enleverGroupe(seance, id_groupe);
+        } else System.out.println("Il n'y a pas CE groupe pour cette séance");
     }
 
     @Override

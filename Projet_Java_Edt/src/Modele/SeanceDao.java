@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 /**
  * @author Wang David
@@ -316,6 +317,53 @@ public class SeanceDao extends DAO<Seance> {
 
         } catch (SQLException e) {
             System.err.println("ERROR SQL EnleverSalle SeanceDAO");
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<Groupe> allGroupes(Seance seance) {
+        ArrayList<Groupe> mes_groupes = new ArrayList();
+        ArrayList<Integer> id_des_groupes = new ArrayList<>();
+        GroupeDAO groupeDAO = new GroupeDAO();
+
+        try {
+
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT id_groupe FROM seance_groupes\n" +
+                            "WHERE seance_groupes.id_seance=" + seance.getID()
+            );
+
+            while (rset.next()) {
+                id_des_groupes.add(rset.getInt("id_groupe"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Probleme SQL : probleme SQL SeanceDao");
+            e.printStackTrace();
+        }
+
+        for (Integer id : id_des_groupes) {
+            mes_groupes.add(groupeDAO.find(id));
+        }
+
+        return mes_groupes;
+    }
+
+    public void enleverGroupe(Seance seance, int id_groupe) {
+        try {
+            this.conn
+                    .createStatement(
+                            rset.TYPE_SCROLL_INSENSITIVE,
+                            rset.CONCUR_UPDATABLE
+                    ).executeUpdate(
+                    "DELETE FROM seance_groupes\n" +
+                            "WHERE id_seance=" + seance.getID() + "\n" +
+                            "AND id_groupe=" + id_groupe
+            );
+
+        } catch (SQLException e) {
+            System.err.println("ERROR SQL EnleverGroupe SeanceDAO");
             e.printStackTrace();
         }
     }

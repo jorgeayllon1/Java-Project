@@ -393,7 +393,9 @@ public class Edt_Admin extends Edt {
 
             //Test enlever prof/groupe
             Seance test = seanceDao.find(5);
-            this.majControleur.enleverSalledeSeance(test);
+            //this.majControleur.enleverGroupeSeance(test, "TD10");
+
+            //TEST AFFECTATION
         }
         /// Finf des test MAJ
 
