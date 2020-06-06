@@ -188,6 +188,26 @@ public class MajControleur extends Controleur {
         } else System.out.println("Cette seance à déjà une salle");
     }
 
+    public void affecterEnseignatSeance(Seance seance, String nom_enseignant) {
+        SeanceDao seanceDao = new SeanceDao();
+        EnseignantDAO enseignantDAO = new EnseignantDAO();
+
+        int id_enseignant = enseignantDAO.idCelonNom(nom_enseignant);
+
+        //Blindage du nom de l'enseignant
+        if (id_enseignant == 0 || enseignantDAO.find(id_enseignant).getDroit() != 3) {
+            System.out.println("Nom d'enseignant inconnu");
+            return;
+        }
+
+        if (seanceDao.trouverEnseignant(seance) == null) {
+            System.out.println("j'ajoute le prof " + nom_enseignant + " pour la seance " + seance.getID());
+            seanceDao.ajouterProf(seance, id_enseignant);
+            seanceDao.majEtat(seance);
+            seanceDao.update(seance);
+        } else System.out.println("Cette séance à déjà un prof");
+    }
+
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
 

@@ -392,11 +392,11 @@ public class Edt_Admin extends Edt {
             //this.majControleur.creationSeance(23, new Date(date), new Timestamp(temps_debut), new Timestamp(temps_fin), "Java POO", "TP");
 
             //Test enlever prof/groupe
-            Seance test = seanceDao.find(5);
             //this.majControleur.enleverGroupeSeance(test, "TD10");
-            this.majControleur.affecterSalleSeance(test, "445");
 
             //TEST AFFECTATION
+            Seance test = seanceDao.find(5);
+            //this.majControleur.affecterEnseignatSeance(test, "a");
         }
         /// Finf des test MAJ
 

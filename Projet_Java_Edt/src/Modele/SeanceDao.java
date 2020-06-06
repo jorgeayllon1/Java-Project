@@ -388,4 +388,20 @@ public class SeanceDao extends DAO<Seance> {
         }
     }
 
+    public void ajouterProf(Seance seance, int id_prof) {
+        try {
+            this.conn
+                    .createStatement(
+                            rset.TYPE_SCROLL_INSENSITIVE,
+                            rset.CONCUR_UPDATABLE
+                    ).executeUpdate(
+                    "INSERT INTO seance_enseignants\n" +
+                            "VALUES ( " + seance.getID() + "," + id_prof + ")"
+            );
+        } catch (SQLException e) {
+            System.err.println("ERROR SQL ajouterProf SeanceDAO");
+            e.printStackTrace();
+        }
+    }
+
 }

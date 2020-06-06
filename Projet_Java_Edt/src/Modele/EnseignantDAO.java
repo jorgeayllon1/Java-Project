@@ -202,7 +202,6 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return liste_prof;
     }
 
-
     public ArrayList<Seance> trouverAllSeancesSemaine(int id_prof, int numero_semaine) {
 
 
@@ -368,4 +367,24 @@ public class EnseignantDAO extends DAO<Enseignant> {
         }
         return existe;
     }
+
+    public int idCelonNom(String nom) {
+        int le_id = 0;
+        try {
+            //this.conn = Connexion.seConnecter();
+            this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT id FROM utilisateur\n" +
+                            "WHERE nom='" + nom + "'"
+            );
+            while (rset.next()) {
+                le_id = rset.getInt("id");
+            }
+        } catch (SQLException e) {
+            System.err.println("Probème SQL");
+            e.printStackTrace();
+        }
+
+        return le_id;
+    }
+
 }
