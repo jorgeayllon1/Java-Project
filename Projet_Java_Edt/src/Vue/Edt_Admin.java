@@ -82,7 +82,6 @@ public class Edt_Admin extends Edt {
     }
 
 
-
     //////////////////////////////////////////////////////////----------------RECHERCHE-----------------/////////////////////////////////////////////////////////////////
 
     /**
@@ -537,7 +536,6 @@ public class Edt_Admin extends Edt {
             ajoutPanel(panel, content);
             panel.setVisible(true);
 
-
         }
 
         if (e.getSource() == this.maj) {
@@ -555,8 +553,7 @@ public class Edt_Admin extends Edt {
         if (e.getSource() == this.logout) {
             this.dispose();
         }
-
-
+        
         /// ICI les test de mise à jours
         if (e.getSource() == this.summary || e.getSource() == this.maj) {
             //long heure_debut = 1591948800000L;
@@ -565,7 +562,7 @@ public class Edt_Admin extends Edt {
             //Seance test = seanceDao.find(10);
             //this.majControleur.deplacerSeance(test, new Timestamp(heure_debut), new Timestamp(heure_fin), "445");
         }
-        /// Finf des test
+
 
     }
 
@@ -1152,15 +1149,17 @@ public class Edt_Admin extends Edt {
 
                 } else if (radio_eleve.isSelected()) //Si etudiant
                 {
-                    rechercher_utilisateur(field_nom.getText(), semaine_str, 1); //On recherhce et controle s'il y a cet utilisateur         
-                    etudiant = etudiantDao.trouverEleveAvecNom(field_nom.getText()); //On instancie l'objet prof
-                    boolean existe = etudiantDao.siExiste(field_nom.getText()); //On vérifie s'il existe
-
-                    if (existe == true)//S'il existe dans la bdd
+                    rechercher_groupe(field_nom.getText(), semaine_str); //On recherhce et controle s'il y a cet utilisateur
+                    String groupe_str = field_nom.getText();
+                    int id_groupe = groupeDao.idCelonNom(groupe_str);
+                    groupe = groupeDao.find(id_groupe);
+                    boolean existe = groupeDao.siExiste(groupe_str);
+                    if(existe == true)
                     {
                         int int_semaine = Integer.valueOf(semaine_str); //Cast en int
                         afficherDateEdt(int_semaine);
-                        afficherEdtSemaineEleve(etudiant, int_semaine, centre); //On affiche l'edt du prof en question
+                        afficherEdtSemaineGroupe(groupe, int_semaine, centre); //On affiche l'edt du prof en question
+
                     }
                 }
                 //tableau.removeMouseListener(tableau.getMouseListeners()[0]);
@@ -1185,17 +1184,12 @@ public class Edt_Admin extends Edt {
                                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                                 majControleur.annulerSeance(stock_seances[row][col]);
                             }
-
-
                         }
 
                     }
                 });
-
-
             }
         });
-
 
         haut.add(text_enlever);
         haut.add(radio_prof);
@@ -1287,15 +1281,17 @@ public class Edt_Admin extends Edt {
 
                 } else if (radio_eleve.isSelected()) //Si etudiant
                 {
-                    rechercher_utilisateur(field_nom.getText(), semaine_str, 1); //On recherhce et controle s'il y a cet utilisateur         
-                    etudiant = etudiantDao.trouverEleveAvecNom(field_nom.getText()); //On instancie l'objet prof
-                    boolean existe = etudiantDao.siExiste(field_nom.getText()); //On vérifie s'il existe
-
-                    if (existe == true)//S'il existe dans la bdd
+                    rechercher_groupe(field_nom.getText(), semaine_str); //On recherhce et controle s'il y a cet utilisateur
+                    String groupe_str = field_nom.getText();
+                    int id_groupe = groupeDao.idCelonNom(groupe_str);
+                    groupe = groupeDao.find(id_groupe);
+                    boolean existe = groupeDao.siExiste(groupe_str);
+                    if(existe == true)
                     {
                         int int_semaine = Integer.valueOf(semaine_str); //Cast en int
                         afficherDateEdt(int_semaine);
-                        afficherEdtSemaineEleve(etudiant, int_semaine, centre); //On affiche l'edt du prof en question
+                        afficherEdtSemaineGroupe(groupe, int_semaine, centre); //On affiche l'edt du prof en question
+
                     }
                 }
 
@@ -1362,7 +1358,6 @@ public class Edt_Admin extends Edt {
                 tableau.getModel().setValueAt("", i, j);
             }
         }
-
         profDao = new EnseignantDAO();
         mes_id = new ArrayList();
         mes_id = profDao.trouverIdSeance(prof);
@@ -1411,7 +1406,6 @@ public class Edt_Admin extends Edt {
                             }
                         }
 
-
                         int colonne_semaine = jour_semaine - 1;
                         int ligne_semaine = 0;
                         if (str4.toString().equals(heure)) //Si ca commence à 10h
@@ -1454,7 +1448,7 @@ public class Edt_Admin extends Edt {
                                 stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
                             } else if (mes_seances.get(i).getEtat() == 2) {
                                 String myString =
-                                        "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + "<br>Groupe :" +
+                                        "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + " "+ mes_seances.get(i).getType().getNom() + "<br>Groupe :" +
                                                 groupe.getNom()
                                                 + "<br>Salle :" +
                                                 salle.getNom() + "<br>Site :" +
@@ -1465,7 +1459,7 @@ public class Edt_Admin extends Edt {
                                 stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
                             } else if (mes_seances.get(i).getEtat() == 3) {
                                 String myString =
-                                        "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + "<br>Groupe :" +
+                                        "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + " "+ mes_seances.get(i).getType().getNom()+ "<br>Groupe :" +
                                                 groupe.getNom()
                                                 + "<br>Salle :" +
                                                 salle.getNom() + "<br>Site :" +
@@ -1531,9 +1525,7 @@ public class Edt_Admin extends Edt {
             int dayOfWeek = c.get(Calendar.DAY_OF_WEEK); //On get le jour de la semaine 1 sunday 2 monday 3 tuesday...
             for (int jour_semaine = 2; jour_semaine < 7; jour_semaine++) {
                 if (dayOfWeek == jour_semaine) {
-                                    /*SimpleDateFormat sdf = new SimpleDateFormat("h");
-                                    sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-                                    String str = sdf.format(mes_seances.get(i).getHeureDebut()); //On stocke dans un string l'entier de l'heure de début*/
+
                     String str = mes_seances.get(i).getHeureDebut().toString();
                     char str2 = str.charAt(11);
                     char str3 = str.charAt(12);
@@ -1602,7 +1594,7 @@ public class Edt_Admin extends Edt {
                                 stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
                             } else if (mes_seances.get(i).getEtat() == 2) {
                                 String myString =
-                                        "<html><p>" + mes_seances.get(i).getCours().getNom() + "<br>Prof :" +
+                                        "<html><p>" + mes_seances.get(i).getCours().getNom()+ " "+ mes_seances.get(i).getType().getNom() + "<br>Prof :" +
                                                 prof.getNom() + "<br>Salle :" +
                                                 salle.getNom() + "<br>Site :" +
                                                 salle.getSite().getNom() + "Valide</p></html>";
@@ -1612,7 +1604,7 @@ public class Edt_Admin extends Edt {
                                 stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
                             } else if (mes_seances.get(i).getEtat() == 3) {
                                 String myString =
-                                        "<html><p>" + mes_seances.get(i).getCours().getNom() + "<br>Prof :" +
+                                        "<html><p>" + mes_seances.get(i).getCours().getNom()+ " "+ mes_seances.get(i).getType().getNom() + "<br>Prof :" +
                                                 prof.getNom() + "<br>Salle :" +
                                                 salle.getNom() + "<br>Site :" +
                                                 salle.getSite().getNom() + "Annulé</p></html>";
@@ -1777,7 +1769,6 @@ public class Edt_Admin extends Edt {
                 tableau.getModel().setValueAt("", i, j);
             }
         }
-
         mes_seances = new ArrayList();
         mes_seances = salleDao.lesSeances(salle.getID(), semaine); //On recup toutes les  séances relatives à cet etudiant dans cette semaine
 
@@ -1789,8 +1780,6 @@ public class Edt_Admin extends Edt {
         System.out.println(mes_seances.size());
         for (int i = 0; i < mes_seances.size(); i++) //On parcourt toutes séances relatives à cet etudiant
         {
-
-
             java.util.Date date = mes_seances.get(i).getDate();
             Calendar c = Calendar.getInstance();
             c.setTime(date);

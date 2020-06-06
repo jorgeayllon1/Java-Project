@@ -163,11 +163,11 @@ public class Edt_Enseignant extends Edt {
                             else if(mes_seances.get(i).getEtat()==2 )
                             {
                                 String myString =
-                                    "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + "<br>Groupe :" +
-                                            groupe.getNom()
+                                    "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom()+ " "+ mes_seances.get(i).getType().getNom() + "<br>Groupe :" +
+                                            groupe.getNom()+" "+groupe.getPromo().getAnnee()
                                             + "<br>Salle :" +
                                             salle.getNom() + "<br>Site :" +
-                                            salle.getSite().getNom() + "Valide</p></html>";
+                                            salle.getSite().getNom() + " Valide</p></html>";
 
 
                                 tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
@@ -176,9 +176,9 @@ public class Edt_Enseignant extends Edt {
                             else if(mes_seances.get(i).getEtat()==3)
                             {
                                 String myString =
-                                    "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + "<br>Groupe :" +
-                                            groupe.getNom()
-                                            + "<br>Salle :" +
+                                    "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom()+ " "+ mes_seances.get(i).getType().getNom() + "<br>Groupe :" +
+                                            groupe.getNom()+" "+groupe.getPromo().getAnnee()
+                                            + "<br>Salle :" + 
                                             salle.getNom() + "<br>Site :" +
                                             salle.getSite().getNom() + " Annulé</p></html>";
 
@@ -309,11 +309,11 @@ public class Edt_Enseignant extends Edt {
                             else if(mes_seances.get(i).getEtat()==2 )
                             {
                                 String myString =
-                                    "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + "<br>Groupe :" +
-                                            groupe.getNom()
+                                    "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + " "+ mes_seances.get(i).getType().getNom() + "<br>Groupe :" +
+                                            groupe.getNom()+" "+groupe.getPromo().getAnnee()
                                             + "<br>Salle :" +
                                             salle.getNom() + "<br>Site :" +
-                                            salle.getSite().getNom() + "Valide</p></html>";
+                                            salle.getSite().getNom() + " Valide</p></html>";
 
 
                                 tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
@@ -322,8 +322,8 @@ public class Edt_Enseignant extends Edt {
                             else if(mes_seances.get(i).getEtat()==3)
                             {
                                 String myString =
-                                    "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + "<br>Groupe :" +
-                                            groupe.getNom()
+                                    "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + " "+ mes_seances.get(i).getType().getNom() + "<br>Groupe :" +
+                                            groupe.getNom()+" "+groupe.getPromo().getAnnee()
                                             + "<br>Salle :" +
                                             salle.getNom() + "<br>Site :" +
                                             salle.getSite().getNom() + " Annulé</p></html>";
