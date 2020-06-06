@@ -415,4 +415,20 @@ public class SeanceDao extends DAO<Seance> {
         return nombredeleve;
     }
 
+    public void ajouterGroupe(Seance seance, int id_groupe) {
+        try {
+            this.conn
+                    .createStatement(
+                            rset.TYPE_SCROLL_INSENSITIVE,
+                            rset.CONCUR_UPDATABLE
+                    ).executeUpdate(
+                    "INSERT INTO seance_groupes\n" +
+                            "VALUES ( " + seance.getID() + "," + id_groupe + ")"
+            );
+        } catch (SQLException e) {
+            System.err.println("ERROR SQL SeanceDAO");
+            e.printStackTrace();
+        }
+    }
+
 }

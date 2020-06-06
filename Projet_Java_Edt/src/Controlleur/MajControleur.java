@@ -181,6 +181,12 @@ public class MajControleur extends Controleur {
             return;
         }
 
+        //Blindage existance
+        if (seanceDao.trouverSalle(seance) != null) {
+            System.out.println("Cette seance à déjà une salle");
+            return;
+        }
+
         //Blindage disponibilité salle
         if (!salleDAO.disponible(seance, id_salle)) {
             System.out.println("Salle non disponible pour cette seance");
@@ -193,12 +199,10 @@ public class MajControleur extends Controleur {
             return;
         }
 
-        if (seanceDao.trouverSalle(seance) == null) {
-            System.out.println("j'ajoute la salle " + nom_salle + " pour la seance " + seance.getID());
-            seanceDao.ajouterSalle(seance, id_salle);
-            seanceDao.majEtat(seance);// Si on ajoute une salle, on change potentielemnt l'état de la séance
-            seanceDao.update(seance);
-        } else System.out.println("Cette seance à déjà une salle");
+        System.out.println("j'ajoute la salle " + nom_salle + " pour la seance " + seance.getID());
+        seanceDao.ajouterSalle(seance, id_salle);
+        seanceDao.majEtat(seance);// Si on ajoute une salle, on change potentielemnt l'état de la séance
+        seanceDao.update(seance);
     }
 
     public void affecterEnseignatSeance(Seance seance, String nom_enseignant) {
@@ -213,18 +217,23 @@ public class MajControleur extends Controleur {
             return;
         }
 
+        //Blindage existence
+        if (seanceDao.trouverEnseignant(seance) != null) {
+            System.out.println("Cette séance à déjà un prof");
+            return;
+        }
+
+
         //Blindage disponibilité prof
         if (!enseignantDAO.disponible(seance, id_enseignant)) {
             System.out.println("Enseignant non disponible pour cette seance");
             return;
         }
 
-        if (seanceDao.trouverEnseignant(seance) == null) {
-            System.out.println("j'ajoute le prof " + nom_enseignant + " pour la seance " + seance.getID());
-            seanceDao.ajouterProf(seance, id_enseignant);
-            seanceDao.majEtat(seance);
-            seanceDao.update(seance);
-        } else System.out.println("Cette séance à déjà un prof");
+        System.out.println("j'ajoute le prof " + nom_enseignant + " pour la seance " + seance.getID());
+        seanceDao.ajouterProf(seance, id_enseignant);
+        seanceDao.majEtat(seance);
+        seanceDao.update(seance);
     }
 
     public void affecterGroupeSeance(Seance seance, String nom_groupe) {
@@ -239,7 +248,7 @@ public class MajControleur extends Controleur {
             return;
         }
 
-        //Blindage le groupe a déjà la séance
+        //Blindage le groupe a déjà la séance : existence
         for (Groupe ungroupe : seanceDao.allGroupes(seance)) {
             if (ungroupe.getId() == id_groupe) {
                 System.out.println("Le groupe a déjà le cours");
@@ -247,8 +256,7 @@ public class MajControleur extends Controleur {
             }
         }
 
-        //Blindage de la taille
-
+        //Blindage de la capacité
         int eleveTot = seanceDao.nombreEleve(seance) + groupeDAO.nombreEleve(id_groupe);
 
         // Si la séance a déjà une salle, on blind pour la capacite
@@ -271,11 +279,17 @@ public class MajControleur extends Controleur {
         //}
 
         //Blindage disponibilité du groupe
+        for (Groupe ungroupe : seanceDao.allGroupes(seance)) {
+            if (!groupeDAO.disponible(seance, ungroupe.getId())) {
+                System.out.println("Au moins un groupe n'est pas disponible pour la seance");
+                return;
+            }
+        }
 
         System.out.println("J'ajoute le groupe " + nom_groupe + " à la séance id :" + seance.getID());
-        //seanceDao.ajouterGroupe(seance, id_groupe);
+        seanceDao.ajouterGroupe(seance, id_groupe);
         seanceDao.majEtat(seance);
-        //seanceDao.update(seance);
+        seanceDao.update(seance);
 
     }
 

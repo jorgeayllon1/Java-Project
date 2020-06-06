@@ -396,8 +396,9 @@ public class Edt_Admin extends Edt {
 
             //TEST AFFECTATION
             Seance test = seanceDao.find(5);
+            //this.majControleur.affecterSalleSeance(test, "445");
             //this.majControleur.affecterEnseignatSeance(test, "a");
-            this.majControleur.affecterSalleSeance(test, "455");
+            //this.majControleur.affecterGroupeSeance(test, "TD1");
         }
         /// Finf des test MAJ
 
