@@ -404,4 +404,15 @@ public class SeanceDao extends DAO<Seance> {
         }
     }
 
+    public int nombreEleve(Seance seance) {
+        int nombredeleve = 0;
+        GroupeDAO groupeDAO = new GroupeDAO();
+
+        for (Groupe ungroupe : this.allGroupes(seance)) {
+            nombredeleve += groupeDAO.nombreEleve(ungroupe.getId());
+        }
+
+        return nombredeleve;
+    }
+
 }

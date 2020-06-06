@@ -162,7 +162,6 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return salle;
     }
 
-
     public ArrayList<Enseignant> listeEnseignant() {
         ArrayList<Enseignant> liste_prof = new ArrayList();
         ArrayList<Integer> deja_compte = new ArrayList();
@@ -385,6 +384,30 @@ public class EnseignantDAO extends DAO<Enseignant> {
         }
 
         return le_id;
+    }
+
+    public boolean disponible(Seance seance, int id_enseignant) {
+        try {
+            this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT DISTINCT heure_debut,heure_fin FROM seance\n" +
+                            "INNER JOIN seance_enseignants\n" +
+                            "ON seance_enseignants.id_seance=seance.id\n" +
+                            "INNER JOIN enseignant\n" +
+                            "ON enseignant.id_utilisateur=seance_enseignants.id_enseignant\n" +
+                            "WHERE enseignant.id_utilisateur=" + id_enseignant
+            );
+            while (rset.next()) {
+                Timestamp heure_debut = rset.getTimestamp("heure_debut");
+                Timestamp heure_fin = rset.getTimestamp("heure_fin");
+                if (seance.getHeureDebut().getTime() < heure_fin.getTime() || seance.getHeureFin().getTime() > heure_debut.getTime()) {
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Probème SQL");
+            e.printStackTrace();
+        }
+        return true;
     }
 
 }

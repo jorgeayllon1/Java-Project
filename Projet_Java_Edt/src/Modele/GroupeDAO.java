@@ -245,4 +245,25 @@ public class GroupeDAO extends DAO<Groupe> {
 
         return les_seances;
     }
+
+    public int nombreEleve(int id_groupe) {
+        int nombreEleve = 0;
+
+        try {
+            //this.conn = Connexion.seConnecter();
+            this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT COUNT(id_utilisateur) FROM etudiant\n" +
+                            "WHERE id_groupe=" + id_groupe
+            );
+            while (rset.next()) {
+                nombreEleve = rset.getInt("COUNT(id_utilisateur)");
+            }
+        } catch (SQLException e) {
+            System.err.println("Probème SQL GroupeDAO");
+            e.printStackTrace();
+        }
+
+        return nombreEleve;
+    }
+
 }
