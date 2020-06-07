@@ -50,6 +50,7 @@ public class Edt_Etudiant extends Edt {
         this.mes_cours.addActionListener(this);
         this.rechercher.addActionListener(this);
         this.summary.addActionListener(this);
+        this.report.addActionListener(this);
 
         ///Si on clique sur l'un des boutons de la grille de semaine
         for (int nb_week = 0; nb_week < this.week_button.size(); nb_week++) {
@@ -469,26 +470,18 @@ public class Edt_Etudiant extends Edt {
 
         ///Si on clique sur recap///
         if (e.getSource() == this.summary) {
-            
 
-            
-            JButton hello = new JButton("Hello");
-            content3.add(hello);
-
-            /// ATTENTION peut ne pas marcher si la date d'aujourd'hui n'est pas bonne
-            /// Pensez à ajuster l'heure par des +- jours
-
-            long temps_debut = new java.util.Date().getTime() - 259200000;
-            long temps_fin = new java.util.Date().getTime() + 959200000;
-
-            java.sql.Date debut = new java.sql.Date(temps_debut);
-            java.sql.Date fin = new java.sql.Date(temps_fin);
-            //voirrecap(debut, fin);
             Recap recap = new Recap(this.etudiant);
         }
 
         if (e.getSource() == this.logout) {
             this.dispose(); //Fermeture fenêtre
+        }
+        
+        if(e.getSource() == this.report)
+        {
+            Report report = new Report(this.etudiant);
+            
         }
 
     }

@@ -1,23 +1,33 @@
+
 package Vue;
 
+
 import Modele.*;
-import javax.swing.JFrame;
+import javax.swing.*;
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartFrame;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.util.TableOrder;
-import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.data.general.PieDataset;
 
-class NotesJframe extends JFrame{
+/**
+ *
+ * @author Wang David
+ */
+public class Report extends JFrame{
     
+    public Report(){}
     
-    public NotesJframe()
+    public Report(Etudiant etudiant)
     {
+        super("Votre reporting");
+
+        this.setSize(1000,800); //Taille
+        this.setLocationRelativeTo(null); //Centre
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Stop run quand la dernière fenetre est fermée
+        this.setResizable(false);
+        
         DefaultPieDataset dataset = new DefaultPieDataset();
         CoursDao coursDao = new CoursDao();
 
@@ -73,21 +83,10 @@ class NotesJframe extends JFrame{
 
         ChartPanel panel = new ChartPanel(chart);
         this.add(panel);
-        
-        /*ChartFrame frame = new ChartFrame("Premier", chart);
-        frame.pack();*/
-        /*
-        frame.setVisible(true);
-        ChartFrame frame1 = new ChartFrame("Deuxieme", chart1);
-        frame1.pack();
-        frame1.setVisible(true);
-        ChartFrame frame2 = new ChartFrame("Trois", chart2);
-        frame2.pack();
-        frame2.setVisible(true);*/
+        this.setVisible(true);
     }
     
- 
+    
+    
     
 }
-
-

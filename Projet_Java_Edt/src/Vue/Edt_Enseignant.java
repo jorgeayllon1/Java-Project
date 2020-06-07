@@ -46,6 +46,7 @@ public class Edt_Enseignant extends Edt {
         this.summary.addActionListener(this::actionPerformed);
         this.mes_cours.addActionListener(this);
         this.rechercher.addActionListener(this);
+        this.report.addActionListener(this);
         
         ///Si on clique sur l'un des boutons de la grille de semaine
         for (int nb_week = 0; nb_week < this.week_button.size(); nb_week++) {
@@ -424,15 +425,7 @@ public class Edt_Enseignant extends Edt {
 
         ///Si on clique sur recap
         if (e.getSource() == this.summary) {
-            /// ATTENTION peut ne pas marcher si la date d'aujourd'hui n'est pas bonne
-            /// Pensez à ajuster l'heure par des +- jours
-
-            long temps_debut = new java.util.Date().getTime() - 259200000;
-            long temps_fin = new java.util.Date().getTime() + 959200000;
-
-            java.sql.Date debut = new java.sql.Date(temps_debut);
-            java.sql.Date fin = new java.sql.Date(temps_fin);
-            //voirrecap("TD10", debut, fin);
+            Recap recap = new Recap(this.prof);
         }
 
 
@@ -453,6 +446,7 @@ public class Edt_Enseignant extends Edt {
         {
             this.dispose(); //Fermeture 
         }
+        
     }
 
     /**

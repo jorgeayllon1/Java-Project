@@ -8,7 +8,9 @@ import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +25,12 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 
 import org.jdatepicker.impl.UtilDateModel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
 
 /**
  *
@@ -59,68 +67,48 @@ public class Recap extends JFrame implements ActionListener{
 
         JLabel text_debut = new JLabel("Date début : ");
         JLabel text_fin = new JLabel("Date fin : ");
-        UtilDateModel model = new UtilDateModel();
-
- 
 
         
-        /*UtilDateModel mon_modele = new UtilDateModel();
-        Properties prop = new Properties();
-        prop.put("text.today", "Auj");
-        prop.put("text.month", "Mois");
-        prop.put("text.year", "Annee");
-        JDatePanelImpl debutPanel = new JDatePanelImpl(mon_modele,prop);
-        JDatePickerImpl debutPicker = new JDatePickerImpl(debutPanel, new DateFormat());
-        
-        
-        
-        JDatePanelImpl finPanel = new JDatePanelImpl(mon_modele,prop);
-        JDatePickerImpl finPicker = new JDatePickerImpl(finPanel, new DateFormat());
+        JSpinner debutSpinner = new JSpinner(new SpinnerDateModel()); 
+        JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(debutSpinner, "E dd/MM/yyyy"); 
+        debutSpinner.setEditor(dateEditor); 
+        JSpinner finSpinner = new JSpinner(new SpinnerDateModel()); 
+        JSpinner.DateEditor dateEditor2 = new JSpinner.DateEditor(finSpinner, "E dd/MM/yyyy"); 
+        finSpinner.setEditor(dateEditor2); 
 
-        voir_recap = new JButton("Chercher");
-        
-        
-        
-
-        java.sql.Date debut = (java.sql.Date) debutPicker.getModel().getValue();
-        java.sql.Date fin = (java.sql.Date) finPicker.getModel().getValue();
-        
-        
-        String str = debutPicker.getJFormattedTextField().getText();
-        System.out.println(str);*/
 
         JTextField field_debut = new JTextField();
         field_debut.setPreferredSize(new Dimension(100,30));
         JTextField field_fin = new JTextField();
         field_fin.setPreferredSize(new Dimension(100,30));
 
-
-
         haut.add(text_debut);
-        haut.add(field_debut);
+        haut.add(debutSpinner);
+        
         haut.add(text_fin);
-        haut.add(field_fin);
+        haut.add(finSpinner);
+
         haut.add(voir_recap);
         this.voir_recap.addActionListener((ActionEvent e) -> {
-            String str_debut = field_debut.getText();
-            System.out.println(str_debut);
-            Date debut = Date.valueOf(str_debut);
-            System.out.println(debut);
-            String str_fin = field_fin.getText();
-            Date fin = Date.valueOf(str_fin);
+            
+            java.util.Date date = (java.util.Date)debutSpinner.getValue();   
+            java.sql.Date begin = new java.sql.Date(date.getTime());
 
-            String donnees=edt_etudiant.voirrecap(debut, fin,etudiant);
+            
+            java.util.Date date2 = (java.util.Date)debutSpinner.getValue();   
+            java.sql.Date end = new java.sql.Date(date2.getTime());
+
+
+
+            String donnees=edt_etudiant.voirrecap(begin, end,etudiant);
             mon_recap.setText(donnees);
         });
-
-
 
         centre.add(scroll);
 
         content.add(haut,BorderLayout.NORTH);
         content.add(centre, BorderLayout.CENTER);
         this.add(content);
-
 
         this.setVisible(true);
     }
@@ -149,31 +137,38 @@ public class Recap extends JFrame implements ActionListener{
 
         JLabel text_debut = new JLabel("Date début : ");
         JLabel text_fin = new JLabel("Date fin : ");
-        UtilDateModel model = new UtilDateModel();
+        JSpinner debutSpinner = new JSpinner(new SpinnerDateModel()); 
+        JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(debutSpinner, "E dd/MM/yyyy"); 
+        debutSpinner.setEditor(dateEditor); 
+        JSpinner finSpinner = new JSpinner(new SpinnerDateModel()); 
+        JSpinner.DateEditor dateEditor2 = new JSpinner.DateEditor(finSpinner, "E dd/MM/yyyy"); 
+        finSpinner.setEditor(dateEditor2); 
 
-
-
-        JTextField field_debut = new JTextField();
-        field_debut.setPreferredSize(new Dimension(100,30));
-        JTextField field_fin = new JTextField();
-        field_fin.setPreferredSize(new Dimension(100,30));
-
-
+        
+        JLabel text_gp = new JLabel("Nom du groupe :");
+        JTextField field_groupe = new JTextField();
+        field_groupe.setPreferredSize(new Dimension(100,30));
 
         haut.add(text_debut);
-        haut.add(field_debut);
+        haut.add(debutSpinner);
+        
         haut.add(text_fin);
-        haut.add(field_fin);
+        haut.add(finSpinner);
+        
+        haut.add(text_gp);
+        haut.add(field_groupe);
+
         haut.add(voir_recap);
         this.voir_recap.addActionListener((ActionEvent e) -> {
-            String str_debut = field_debut.getText();
-            System.out.println(str_debut);
-            Date debut = Date.valueOf(str_debut);
-            System.out.println(debut);
-            String str_fin = field_fin.getText();
-            Date fin = Date.valueOf(str_fin);
+            String td = field_groupe.getText();
+            java.util.Date date = (java.util.Date)debutSpinner.getValue();   
+            java.sql.Date begin = new java.sql.Date(date.getTime());
 
-            String donnees=edt_enseignant.voirrecap("TD10",debut, fin,prof);
+            
+            java.util.Date date2 = (java.util.Date)debutSpinner.getValue();   
+            java.sql.Date end = new java.sql.Date(date2.getTime());
+
+            String donnees=edt_enseignant.voirrecap(td,begin,end,prof);
             mon_recap.setText(donnees);
         });
 
