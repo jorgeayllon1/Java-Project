@@ -3,6 +3,7 @@ package Vue;
 
 
 import Modele.*;
+import java.util.ArrayList;
 import javax.swing.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -30,12 +31,25 @@ public class Report extends JFrame{
         
         DefaultPieDataset dataset = new DefaultPieDataset();
         CoursDao coursDao = new CoursDao();
-
-        for (int i = 1; i < coursDao.getTaille("cours"); i++) {
-            String nom_cours = coursDao.find(i).getNom();
+        
+        EtudiantDao eDao = new EtudiantDao();
+        ArrayList<Cours> cours_e= new ArrayList();
+        cours_e = eDao.trouverAllCours(etudiant.getID());
+        
+        if(cours_e.isEmpty())
+        {
+            System.out.println("Pas de cours");
+        }
+        else
+        {
+            for (int i = 1; i < cours_e.size(); i++) {
+            String nom_cours = cours_e.get(i).getNom();
             int nombre_seance = coursDao.nombreDeSeance(i);
             dataset.setValue(nom_cours, nombre_seance);
         }
+        }
+
+        
 
         DefaultCategoryDataset dataset1 = new DefaultCategoryDataset();
         GroupeDAO groupeDAO = new GroupeDAO();
@@ -97,12 +111,25 @@ public class Report extends JFrame{
         
         DefaultPieDataset dataset = new DefaultPieDataset();
         CoursDao coursDao = new CoursDao();
-
-        for (int i = 1; i < coursDao.getTaille("cours"); i++) {
-            String nom_cours = coursDao.find(i).getNom();
+        EnseignantDAO eDao = new EnseignantDAO();
+        ArrayList<Cours> cours_e = new ArrayList();
+        
+        cours_e = eDao.trouverAllCours(prof.getID());
+        
+        if(cours_e.isEmpty())
+        {
+            System.out.println("Pas de cours");
+        }
+        else
+        {
+            for (int i = 1; i < cours_e.size(); i++) {
+            String nom_cours = cours_e.get(i).getNom();
             int nombre_seance = coursDao.nombreDeSeance(i);
             dataset.setValue(nom_cours, nombre_seance);
         }
+        }
+
+        
 
         DefaultCategoryDataset dataset1 = new DefaultCategoryDataset();
         GroupeDAO groupeDAO = new GroupeDAO();
