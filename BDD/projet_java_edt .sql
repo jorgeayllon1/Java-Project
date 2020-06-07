@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  sam. 06 juin 2020 à 16:30
+-- Généré le :  Dim 07 juin 2020 à 18:50
 -- Version du serveur :  5.7.26
 -- Version de PHP :  7.2.18
 
@@ -77,7 +77,8 @@ INSERT INTO `enseignant` (`id_utilisateur`, `id_cours`) VALUES
 (9, 3),
 (10, 6),
 (13, 10),
-(3, 11);
+(3, 11),
+(14, 12);
 
 -- --------------------------------------------------------
 
@@ -201,7 +202,7 @@ CREATE TABLE IF NOT EXISTS `seance` (
   PRIMARY KEY (`id`),
   KEY `id_cours` (`id_cours`),
   KEY `id_type` (`id_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `seance`
@@ -214,7 +215,7 @@ INSERT INTO `seance` (`id`, `semaine`, `date`, `heure_debut`, `heure_fin`, `etat
 (4, 22, '2020-05-27', '2020-05-27 08:00:00', '2020-05-27 10:00:00', 2, 6, 2),
 (5, 22, '2020-05-29', '2020-05-29 06:00:00', '2020-05-29 10:00:00', 2, 2, 4),
 (6, 22, '2020-05-25', '2020-05-25 08:00:00', '2020-05-25 10:00:00', 2, 3, 3),
-(7, 22, '2020-05-28', '2020-05-28 16:00:00', '2020-05-28 18:00:00', 2, 1, 4),
+(7, 22, '2020-05-28', '2020-05-28 16:00:00', '2020-05-28 18:00:00', 3, 1, 4),
 (8, 22, '2020-05-26', '2020-05-26 10:00:00', '2020-05-26 12:00:00', 2, 10, 2),
 (9, 23, '2020-06-03', '2020-06-03 12:00:00', '2020-06-03 14:00:00', 2, 1, 4),
 (10, 22, '2020-05-27', '2020-05-27 14:00:00', '2020-05-27 16:00:00', 2, 11, 2),
@@ -224,7 +225,11 @@ INSERT INTO `seance` (`id`, `semaine`, `date`, `heure_debut`, `heure_fin`, `etat
 (14, 23, '2020-06-04', '2020-06-04 16:00:00', '2020-06-04 18:00:00', 2, 4, 6),
 (15, 23, '2020-06-05', '2020-06-05 14:00:00', '2020-06-05 16:00:00', 2, 1, 2),
 (16, 23, '2020-06-01', '2020-06-01 10:00:00', '2020-06-01 12:00:00', 2, 10, 3),
-(17, 25, '2020-06-15', '2020-06-15 08:00:00', '2020-06-15 10:00:00', 3, 1, 3);
+(17, 25, '2020-06-15', '2020-06-15 08:00:00', '2020-06-15 10:00:00', 0, 3, 5),
+(18, 25, '2020-06-19', '2020-06-19 12:00:00', '2020-06-19 14:00:00', 2, 12, 1),
+(19, 25, '2020-06-16', '2020-06-16 08:00:00', '2020-06-16 10:00:00', 2, 1, 4),
+(20, 24, '2020-06-11', '2020-06-11 06:00:00', '2020-06-11 08:00:00', 3, 4, 2),
+(21, 24, '2020-06-10', '2020-06-10 16:00:00', '2020-06-10 18:00:00', 2, 6, 3);
 
 -- --------------------------------------------------------
 
@@ -261,7 +266,10 @@ INSERT INTO `seance_enseignants` (`id_seance`, `id_enseignant`) VALUES
 (14, 13),
 (15, 3),
 (16, 3),
-(17, 3);
+(18, 14),
+(19, 3),
+(20, 13),
+(21, 10);
 
 -- --------------------------------------------------------
 
@@ -298,7 +306,11 @@ INSERT INTO `seance_groupes` (`id_seance`, `id_groupe`) VALUES
 (14, 1),
 (15, 1),
 (16, 1),
-(17, 1);
+(17, 1),
+(18, 5),
+(19, 6),
+(20, 1),
+(21, 3);
 
 -- --------------------------------------------------------
 
@@ -334,7 +346,11 @@ INSERT INTO `seance_salles` (`id_seance`, `id_salle`) VALUES
 (14, 2),
 (16, 4),
 (15, 3),
-(17, 2);
+(17, 2),
+(18, 3),
+(19, 5),
+(20, 3),
+(21, 3);
 
 -- --------------------------------------------------------
 
@@ -377,8 +393,8 @@ CREATE TABLE IF NOT EXISTS `type_cours` (
 --
 
 INSERT INTO `type_cours` (`id`, `nom`) VALUES
-(1, 'Cours interactif'),
-(2, 'Cours magistral'),
+(1, 'C. interactif'),
+(2, 'C. magistral'),
 (3, 'TD'),
 (4, 'TP'),
 (5, 'Projet'),
@@ -399,7 +415,7 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
   `prenom` tinytext NOT NULL,
   `droit` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `utilisateur`
@@ -418,7 +434,8 @@ INSERT INTO `utilisateur` (`id`, `email`, `passwd`, `nom`, `prenom`, `droit`) VA
 (10, 'profelec@mail.com', 'profelec', 'profelec_nom', 'profelec_prenom', 3),
 (11, 'eleve3@mail.com', 'eleve3', 'eleve3_nom', 'eleve3_prenom', 4),
 (12, 'eleve4@mail.com', 'eleve4', 'eleve4_nom', 'eleve4_prenom', 4),
-(13, 'profphysique@mail.com', 'profphysique', 'profphysique_nom', 'profphysique_prenom', 3);
+(13, 'profphysique@mail.com', 'profphysique', 'profphysique_nom', 'profphysique_prenom', 3),
+(14, 'profanglais@mail.com', 'profanglais', 'anglais_nom', 'anglais_prenom', 3);
 
 --
 -- Contraintes pour les tables déchargées

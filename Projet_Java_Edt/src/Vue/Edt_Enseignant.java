@@ -398,14 +398,20 @@ public class Edt_Enseignant extends Edt {
             JButton chercher_utilisateur = new JButton(new AbstractAction("Chercher Utilisateur") {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    rechercher_utilisateur(nom.getText(), semaine.getText(), 3);
                     
-                    String string_semaine = semaine.getText();
+                    try
+                    {
+                        rechercher_utilisateur(nom.getText(), semaine.getText(), 3);
+                    
+                        String string_semaine = semaine.getText();
 
-                    int int_semaine = Integer.valueOf(string_semaine); //Cast en int
-                    afficherGrille();
-                    afficherDateEdt(int_semaine);
-                    afficherEdtSemaineProf(3, int_semaine); //On peut que rechercher ses propres cours
+                        int int_semaine = Integer.valueOf(string_semaine); //Cast en int
+                        afficherGrille();
+                        afficherDateEdt(int_semaine);
+                        afficherEdtSemaineProf(3, int_semaine); //On peut que rechercher ses propres cours
+                    }
+                    catch(NumberFormatException e){}
+                    
 
                 }
 
