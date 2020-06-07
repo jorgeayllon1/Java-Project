@@ -6,6 +6,7 @@
 package Vue;
 
 import Modele.*;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -43,7 +44,8 @@ public class Annule extends JFrame{
         SimpleAttributeSet au_milieu = new SimpleAttributeSet();
         StyleConstants.setAlignment(au_milieu, StyleConstants.ALIGN_CENTER);
         d.setParagraphAttributes(0, d.getLength(), au_milieu, false);
-        
+        Font font = new Font("Dialog", Font.BOLD, 20);
+        cours_annules.setFont(font);
         String donnees="Voici tous vos cours annulés dans l'année :\n";;
         
         EtudiantDao eDao = new EtudiantDao();
@@ -54,7 +56,10 @@ public class Annule extends JFrame{
         {
             if(liste_annule.get(i).getEtat()==3)
             {
-                donnees+="ID de la seance annulée : "+liste_annule.get(i).getID() + " Nom de la seance : " + liste_annule.get(i).getCours().getNom();
+                donnees+="ID de la seance annulée : "+liste_annule.get(i).getID() + " Nom de la seance : "
+                        + liste_annule.get(i).getCours().getNom()
+                        +" Date : "+ liste_annule.get(i).getDate()
+                        +"\n";
             }
         }
         cours_annules.setText(donnees);
@@ -87,7 +92,8 @@ public class Annule extends JFrame{
         SimpleAttributeSet au_milieu = new SimpleAttributeSet();
         StyleConstants.setAlignment(au_milieu, StyleConstants.ALIGN_CENTER);
         d.setParagraphAttributes(0, d.getLength(), au_milieu, false);
-        
+        Font font = new Font("Dialog", Font.BOLD, 20);
+        cours_annules.setFont(font);
         String donnees="Voici tous vos cours annulés dans l'année :\n";
         
         EnseignantDAO eDao = new EnseignantDAO();
@@ -98,7 +104,9 @@ public class Annule extends JFrame{
         {
             if(liste_annule.get(i).getEtat()==3)
             {
-                donnees+="ID de la seance annulée : "+liste_annule.get(i).getID() + " Nom de la seance : " + liste_annule.get(i).getCours().getNom();
+                donnees+="ID de la seance annulée : "+liste_annule.get(i).getID() + " Nom de la seance : " 
+                        +" Date : "+ liste_annule.get(i).getDate()
+                        +"\n";
             }
         }
         cours_annules.setText(donnees);
