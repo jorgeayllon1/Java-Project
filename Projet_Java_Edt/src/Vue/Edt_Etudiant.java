@@ -457,9 +457,8 @@ public class Edt_Etudiant extends Edt {
             suppPanel(this.content);
             //Si c'est cliqué
             if (e.getActionCommand().equals(this.week_button.get(s).getText())) {
-                System.out.println(this.week_button.get(s).getText()); //On affiche le texte du bouton cliqué
-                
-                
+                //System.out.println(this.week_button.get(s).getText()); //On affiche le texte du bouton cliqué
+                              
 
                 String string_semaine = this.week_button.get(s).getText(); //On get le string du numero de semaine
 

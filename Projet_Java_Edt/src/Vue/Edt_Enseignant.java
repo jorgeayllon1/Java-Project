@@ -445,6 +445,7 @@ public class Edt_Enseignant extends Edt {
                 this.afficherGrille();   //Affichage grille vide
                 String string_semaine = this.week_button.get(s).getText(); //On get le string du numero de semaine
                 int int_semaine = Integer.valueOf(string_semaine); //Cast en int
+                this.afficherDateEdt(int_semaine);
                 this.afficherEdtSemaineProf(3, int_semaine);
 
             }

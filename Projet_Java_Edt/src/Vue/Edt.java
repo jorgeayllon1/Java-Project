@@ -136,6 +136,7 @@ public class Edt extends JFrame implements ActionListener {
                 week_button.get(i - 1).setBackground(Color.red);
                 week_button.get(i - 1).setOpaque(true);
             }
+
         }
         JPanel toolbars = new JPanel(new GridLayout(0, 1));
         toolbars.add(menu);
