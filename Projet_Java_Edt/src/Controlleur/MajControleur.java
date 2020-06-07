@@ -49,10 +49,10 @@ public class MajControleur extends Controleur {
         ArrayList<Cours> les_cours_du_prof = enseignantDAO.trouverAllCours(prof.getID());
 
         boolean ok = false;
-        for (Cours uncours :
-                les_cours_du_prof) {
-            if (uncours.getID() == id_cours) {
+        for (Cours uncours : les_cours_du_prof) {
+            if (uncours.getNom().equals(nouv_cours_nom)) {
                 ok = true;
+                break;
             }
         }
 
