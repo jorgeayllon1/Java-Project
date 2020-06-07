@@ -77,9 +77,7 @@ public class Edt_Enseignant extends Edt {
      * @param droit 
      */
     public void afficherEdtProf(int droit) {
-        panel_edt.removeAll();
-        panel_edt.validate();
-        panel_edt.repaint();
+        suppPanel(panel_edt);
         ArrayList<JLabel> mes_labels = new ArrayList();
         ///Affichage des séances relatives à cet enseignant
         EnseignantDAO profDao = new EnseignantDAO();
@@ -224,9 +222,7 @@ public class Edt_Enseignant extends Edt {
      * @param semaine 
      */
     public void afficherEdtSemaineProf(int droit, int semaine) {
-        panel_edt.removeAll();
-        panel_edt.validate();
-        panel_edt.repaint();
+        suppPanel(panel_edt);
         ArrayList<JLabel> mes_labels = new ArrayList();
         content = new JPanel(new BorderLayout());
         if (droit == 3) {
