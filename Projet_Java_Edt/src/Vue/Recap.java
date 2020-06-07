@@ -19,6 +19,9 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javax.swing.*;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import org.jdatepicker.JDatePanel;
 import org.jdatepicker.JDatePicker;
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -62,8 +65,13 @@ public class Recap extends JFrame implements ActionListener{
         JPanel content = new JPanel(new BorderLayout());
         JPanel haut = new JPanel(new FlowLayout());
         JPanel centre = new JPanel(new GridLayout(0,1));
-        JTextArea mon_recap = new JTextArea();
+        JTextPane mon_recap = new JTextPane();
         JScrollPane scroll = new JScrollPane(mon_recap);
+        
+        StyledDocument d = mon_recap.getStyledDocument();
+        SimpleAttributeSet au_milieu = new SimpleAttributeSet();
+        StyleConstants.setAlignment(au_milieu, StyleConstants.ALIGN_CENTER);
+        d.setParagraphAttributes(0, d.getLength(), au_milieu, false);
 
         JLabel text_debut = new JLabel("Date début : ");
         JLabel text_fin = new JLabel("Date fin : ");
@@ -132,8 +140,13 @@ public class Recap extends JFrame implements ActionListener{
         JPanel content = new JPanel(new BorderLayout());
         JPanel haut = new JPanel(new FlowLayout());
         JPanel centre = new JPanel(new GridLayout(0,1));
-        JTextArea mon_recap = new JTextArea();
+        JTextPane mon_recap = new JTextPane();
         JScrollPane scroll = new JScrollPane(mon_recap);
+        
+        StyledDocument d = mon_recap.getStyledDocument();
+        SimpleAttributeSet au_milieu = new SimpleAttributeSet();
+        StyleConstants.setAlignment(au_milieu, StyleConstants.ALIGN_CENTER);
+        d.setParagraphAttributes(0, d.getLength(), au_milieu, false);
 
         JLabel text_debut = new JLabel("Date début : ");
         JLabel text_fin = new JLabel("Date fin : ");

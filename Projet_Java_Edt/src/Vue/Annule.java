@@ -9,6 +9,9 @@ import Modele.*;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 /**
  *
@@ -34,9 +37,14 @@ public class Annule extends JFrame{
         
         
         JPanel panel = new JPanel(new GridLayout(0,1));
-        JTextArea cours_annules = new JTextArea();
+        JTextPane cours_annules = new JTextPane();
         
-        String donnees="";
+        StyledDocument d = cours_annules.getStyledDocument();
+        SimpleAttributeSet au_milieu = new SimpleAttributeSet();
+        StyleConstants.setAlignment(au_milieu, StyleConstants.ALIGN_CENTER);
+        d.setParagraphAttributes(0, d.getLength(), au_milieu, false);
+        
+        String donnees="Voici tous vos cours annulés dans l'année :\n";;
         
         EtudiantDao eDao = new EtudiantDao();
         ArrayList<Seance> liste_annule = new ArrayList();
@@ -73,9 +81,14 @@ public class Annule extends JFrame{
         
         
         JPanel panel = new JPanel(new GridLayout(0,1));
-        JTextArea cours_annules = new JTextArea();
+        JTextPane cours_annules = new JTextPane();
         
-        String donnees="";
+        StyledDocument d = cours_annules.getStyledDocument();
+        SimpleAttributeSet au_milieu = new SimpleAttributeSet();
+        StyleConstants.setAlignment(au_milieu, StyleConstants.ALIGN_CENTER);
+        d.setParagraphAttributes(0, d.getLength(), au_milieu, false);
+        
+        String donnees="Voici tous vos cours annulés dans l'année :\n";
         
         EnseignantDAO eDao = new EnseignantDAO();
         ArrayList<Seance> liste_annule = new ArrayList();
