@@ -87,6 +87,7 @@ public class Accueil extends JFrame implements Observer, ActionListener {
            
     }
     
+    @Override
     public void update(Observable o, Object obj)
     {  }
     

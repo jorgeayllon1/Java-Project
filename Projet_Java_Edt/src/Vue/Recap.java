@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Vue;
 
 import Modele.*;
@@ -99,20 +95,16 @@ public class Recap extends JFrame implements ActionListener{
         haut.add(text_fin);
         haut.add(field_fin);
         haut.add(voir_recap);
-        this.voir_recap.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                String str_debut = field_debut.getText();
-                System.out.println(str_debut);
-                Date debut = Date.valueOf(str_debut);
-                System.out.println(debut);
-                String str_fin = field_fin.getText();
-                Date fin = Date.valueOf(str_fin);
-                
-                String donnees=edt_etudiant.voirrecap(debut, fin,etudiant);
-                mon_recap.setText(donnees);
-            }
+        this.voir_recap.addActionListener((ActionEvent e) -> {
+            String str_debut = field_debut.getText();
+            System.out.println(str_debut);
+            Date debut = Date.valueOf(str_debut);
+            System.out.println(debut);
+            String str_fin = field_fin.getText();
+            Date fin = Date.valueOf(str_fin);
+            
+            String donnees=edt_etudiant.voirrecap(debut, fin,etudiant);
+            mon_recap.setText(donnees);
         });
         
         
@@ -162,20 +154,16 @@ public class Recap extends JFrame implements ActionListener{
         haut.add(text_fin);
         haut.add(field_fin);
         haut.add(voir_recap);
-        this.voir_recap.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                String str_debut = field_debut.getText();
-                System.out.println(str_debut);
-                Date debut = Date.valueOf(str_debut);
-                System.out.println(debut);
-                String str_fin = field_fin.getText();
-                Date fin = Date.valueOf(str_fin);
-                
-                String donnees=edt_enseignant.voirrecap("TD10",debut, fin,prof);
-                mon_recap.setText(donnees);
-            }
+        this.voir_recap.addActionListener((ActionEvent e) -> {
+            String str_debut = field_debut.getText();
+            System.out.println(str_debut);
+            Date debut = Date.valueOf(str_debut);
+            System.out.println(debut);
+            String str_fin = field_fin.getText();
+            Date fin = Date.valueOf(str_fin);
+            
+            String donnees=edt_enseignant.voirrecap("TD10",debut, fin,prof);
+            mon_recap.setText(donnees);
         });
         
         

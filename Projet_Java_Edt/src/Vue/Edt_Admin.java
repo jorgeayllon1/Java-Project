@@ -26,9 +26,9 @@ import javax.swing.table.DefaultTableModel;
 public class Edt_Admin extends Edt {
 
     //////////////Attrobuts/////////////////
-    private JPanel panel_recherche = new JPanel();
-    private JPanel boutons_search = new JPanel();
-    private JPanel infos = new JPanel();
+    private final JPanel panel_recherche = new JPanel();
+    private final JPanel boutons_search = new JPanel();
+    private final JPanel infos = new JPanel();
 
     private JButton chercher_utilisateur = null;
     private JButton chercher_salle = null;
@@ -265,25 +265,19 @@ public class Edt_Admin extends Edt {
         bg.add(radio_eleve);
         JLabel text_user = new JLabel("");
 
-        radio_prof.addActionListener(new ActionListener() { //Si clique sur prof
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (radio_prof.isSelected()) {
-                    text_user.setText("Nom prof : ");
-                }
-
+        radio_prof.addActionListener((ActionEvent e) -> {
+            if (radio_prof.isSelected()) {
+                text_user.setText("Nom prof : ");
             }
-        });
+        } //Si clique sur prof
+        );
 
-        radio_eleve.addActionListener(new ActionListener() { //Si clique sur etudiant
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (radio_eleve.isSelected()) {
-                    text_user.setText("Nom etudiant : ");
-                }
-
+        radio_eleve.addActionListener((ActionEvent e) -> {
+            if (radio_eleve.isSelected()) {
+                text_user.setText("Nom etudiant : ");
             }
-        });
+        } //Si clique sur etudiant
+        );
         JTextField field_nom = new JTextField();
         field_nom.setPreferredSize(new Dimension(80, 30));
 
@@ -300,41 +294,38 @@ public class Edt_Admin extends Edt {
 
         JButton chercher = new JButton("Chercher");
 
-        chercher.addActionListener(new ActionListener() { //Si clique sur bouton chercher
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String semaine_str = (String) list_semaine.getSelectedItem();
-
-                if (radio_prof.isSelected()) //Si prof
+        chercher.addActionListener((ActionEvent e) -> {
+            String semaine_str = (String) list_semaine.getSelectedItem();
+            
+            if (radio_prof.isSelected()) //Si prof
+            {
+                rechercher_utilisateur(field_nom.getText(), semaine_str, 1); //On recherhce et controle s'il y a cet utilisateur
+                prof = profDao.trouverProfAvecNom(field_nom.getText()); //On instancie l'objet prof
+                boolean existe = profDao.siExiste(field_nom.getText()); //On vérifie s'il existe
+                
+                if (existe == true)//S'il existe dans la bdd
                 {
-                    rechercher_utilisateur(field_nom.getText(), semaine_str, 1); //On recherhce et controle s'il y a cet utilisateur         
-                    prof = profDao.trouverProfAvecNom(field_nom.getText()); //On instancie l'objet prof
-                    boolean existe = profDao.siExiste(field_nom.getText()); //On vérifie s'il existe
-
-                    if (existe == true)//S'il existe dans la bdd
-                    {
-
-                        int int_semaine = Integer.valueOf(semaine_str); //Cast en int
-                        afficherDateEdt(int_semaine);
-                        afficherEdtSemaineProf(prof, int_semaine, centre); //On affiche l'edt du prof en question
-                    }
-
-                } else if (radio_eleve.isSelected()) //Si etudiant
-                {
-                    rechercher_utilisateur(field_nom.getText(), semaine_str, 1); //On recherhce et controle s'il y a cet utilisateur         
-                    etudiant = etudiantDao.trouverEleveAvecNom(field_nom.getText()); //On instancie l'objet prof
-                    boolean existe = etudiantDao.siExiste(field_nom.getText()); //On vérifie s'il existe
-
-                    if (existe == true)//S'il existe dans la bdd
-                    {
-                        int int_semaine = Integer.valueOf(semaine_str); //Cast en int
-                        afficherDateEdt(int_semaine);
-                        afficherEdtSemaineEleve(etudiant, int_semaine, centre); //On affiche l'edt du prof en question
-                    }
+                    
+                    int int_semaine = Integer.valueOf(semaine_str); //Cast en int
+                    afficherDateEdt(int_semaine);
+                    afficherEdtSemaineProf(prof, int_semaine, centre); //On affiche l'edt du prof en question
                 }
-
+                
+            } else if (radio_eleve.isSelected()) //Si etudiant
+            {
+                rechercher_utilisateur(field_nom.getText(), semaine_str, 1); //On recherhce et controle s'il y a cet utilisateur
+                etudiant = etudiantDao.trouverEleveAvecNom(field_nom.getText()); //On instancie l'objet prof
+                boolean existe = etudiantDao.siExiste(field_nom.getText()); //On vérifie s'il existe
+                
+                if (existe == true)//S'il existe dans la bdd
+                {
+                    int int_semaine = Integer.valueOf(semaine_str); //Cast en int
+                    afficherDateEdt(int_semaine);
+                    afficherEdtSemaineEleve(etudiant, int_semaine, centre); //On affiche l'edt du prof en question
+                }
             }
-        });
+        } //Si clique sur bouton chercher
+        );
 
 
         haut.add(text_enlever);
@@ -391,46 +382,35 @@ public class Edt_Admin extends Edt {
 
         ////FAIRE UN BOUTON APPLIQUER LE FILTRE///
 
-        jcombo_promo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Promotion p = new Promotion();
-                int annee_promo = (Integer) jcombo_promo.getSelectedItem();
-
-                ArrayList<Groupe> mes_groupes = new ArrayList();
-                p = pDao.trouverPromoAvecAnnee(annee_promo);
-                mes_groupes = pDao.allGroupes(p);
-                String[] liste_groupe = new String[mes_groupes.size()]; //Liste de groupe de taille nombre de groupe dans cette promo
-
-                for (int j = 0; j < mes_groupes.size(); j++) {
-                    liste_groupe[j] = mes_groupes.get(j).getNom();
-
-                }
-                DefaultComboBoxModel model = new DefaultComboBoxModel(liste_groupe);
-                jcombo_groupe.setModel(model);
-
-
+        jcombo_promo.addActionListener((ActionEvent e) -> {
+            Promotion p1 = new Promotion();
+            int annee_promo = (Integer) jcombo_promo.getSelectedItem();
+            ArrayList<Groupe> mes_groupes = new ArrayList();
+            p1 = pDao.trouverPromoAvecAnnee(annee_promo);
+            mes_groupes = pDao.allGroupes(p1);
+            String[] liste_groupe = new String[mes_groupes.size()]; //Liste de groupe de taille nombre de groupe dans cette promo
+            for (int j = 0; j < mes_groupes.size(); j++) {
+                liste_groupe[j] = mes_groupes.get(j).getNom();
+                
             }
+            DefaultComboBoxModel model = new DefaultComboBoxModel(liste_groupe);
+            jcombo_groupe.setModel(model);
         });
 
         JButton chercher = new JButton("Chercher");
 
-        chercher.addActionListener(new ActionListener() { //Si clique sur bouton chercher
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String semaine_str = (String) list_semaine.getSelectedItem();
-                String groupe_str = (String) jcombo_groupe.getSelectedItem();
-                Groupe groupe = new Groupe();
-                rechercher_groupe(groupe_str, semaine_str); //On recherhce et controle s'il y a cet utilisateur         
-
-                int id_groupe = groupeDao.idCelonNom(groupe_str);
-                groupe = groupeDao.find(id_groupe);
-                int int_semaine = Integer.valueOf(semaine_str); //Cast en int
-                afficherDateEdt(int_semaine);
-                afficherEdtSemaineGroupe(groupe, int_semaine, centre); //On affiche l'edt du prof en question
-
-            }
-        });
+        chercher.addActionListener((ActionEvent e) -> {
+            String semaine_str = (String) list_semaine.getSelectedItem();
+            String groupe_str = (String) jcombo_groupe.getSelectedItem();
+            Groupe groupe1 = new Groupe();
+            rechercher_groupe(groupe_str, semaine_str); //On recherhce et controle s'il y a cet utilisateur         
+            int id_groupe = groupeDao.idCelonNom(groupe_str);
+            groupe1 = groupeDao.find(id_groupe);
+            int int_semaine = Integer.valueOf(semaine_str); //Cast en int
+            afficherDateEdt(int_semaine);
+            afficherEdtSemaineGroupe(groupe1, int_semaine, centre); //On affiche l'edt du prof en question
+        } //Si clique sur bouton chercher
+        );
 
 
         haut.add(text_promo);
@@ -481,22 +461,18 @@ public class Edt_Admin extends Edt {
 
         JButton chercher = new JButton("Chercher");
 
-        chercher.addActionListener(new ActionListener() { //Si clique sur bouton chercher
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String semaine_str = (String) list_semaine.getSelectedItem();
-                String nom_salle = field_salle.getText();
-                rechercher_salle(nom_salle, semaine_str);
-
-                int id_salle = salleDao.idCelonNom(nom_salle);
-                salle = salleDao.find(id_salle);
-                int int_semaine = Integer.valueOf(semaine_str); //Cast en int
-                afficherDateEdt(int_semaine);
-                afficherEdtSemaineSalle(salle, int_semaine, centre); //On affiche l'edt du prof en question
-
-
-            }
-        });
+        chercher.addActionListener((ActionEvent e) -> {
+            String semaine_str = (String) list_semaine.getSelectedItem();
+            String nom_salle = field_salle.getText();
+            rechercher_salle(nom_salle, semaine_str);
+            
+            int id_salle = salleDao.idCelonNom(nom_salle);
+            salle = salleDao.find(id_salle);
+            int int_semaine = Integer.valueOf(semaine_str); //Cast en int
+            afficherDateEdt(int_semaine);
+            afficherEdtSemaineSalle(salle, int_semaine, centre); //On affiche l'edt du prof en question
+        } //Si clique sur bouton chercher
+        );
 
         haut.add(text_salle);
         haut.add(field_salle);
@@ -646,25 +622,19 @@ public class Edt_Admin extends Edt {
         bg.add(radio_groupe);
         JLabel text_user = new JLabel("");
 
-        radio_prof.addActionListener(new ActionListener() { //Si clique sur prof
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (radio_prof.isSelected()) {
-                    text_user.setText("Nom prof : ");
-                }
-
+        radio_prof.addActionListener((ActionEvent e) -> {
+            if (radio_prof.isSelected()) {
+                text_user.setText("Nom prof : ");
             }
-        });
+        } //Si clique sur prof
+        );
 
-        radio_groupe.addActionListener(new ActionListener() { //Si clique sur etudiant
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (radio_groupe.isSelected()) {
-                    text_user.setText("Nom groupe : ");
-                }
-
+        radio_groupe.addActionListener((ActionEvent e) -> {
+            if (radio_groupe.isSelected()) {
+                text_user.setText("Nom groupe : ");
             }
-        });
+        } //Si clique sur etudiant
+        );
         JTextField field_nom = new JTextField();
         field_nom.setPreferredSize(new Dimension(80, 30));
 
@@ -682,88 +652,80 @@ public class Edt_Admin extends Edt {
         JButton chercher = new JButton("Chercher");
 
 
-        chercher.addActionListener(new ActionListener() { //Si clique sur bouton chercher
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String semaine_str = (String) list_semaine.getSelectedItem();
-
-                if (radio_prof.isSelected()) //Si prof
+        chercher.addActionListener((ActionEvent e) -> {
+            String semaine_str = (String) list_semaine.getSelectedItem();
+            
+            if (radio_prof.isSelected()) //Si prof
+            {
+                rechercher_utilisateur(field_nom.getText(), semaine_str, 1); //On recherhce et controle s'il y a cet utilisateur
+                prof = profDao.trouverProfAvecNom(field_nom.getText()); //On instancie l'objet prof
+                boolean existe = profDao.siExiste(field_nom.getText()); //On vérifie s'il existe
+                
+                if (existe == true)//S'il existe dans la bdd
                 {
-                    rechercher_utilisateur(field_nom.getText(), semaine_str, 1); //On recherhce et controle s'il y a cet utilisateur
-                    prof = profDao.trouverProfAvecNom(field_nom.getText()); //On instancie l'objet prof
-                    boolean existe = profDao.siExiste(field_nom.getText()); //On vérifie s'il existe
-
-                    if (existe == true)//S'il existe dans la bdd
+                    
+                    int int_semaine = Integer.valueOf(semaine_str); //Cast en int
+                    afficherDateEdt(int_semaine);
+                    afficherEdtSemaineProf(prof, int_semaine, centre); //On affiche l'edt du prof en question
+                }
+                
+            } else if (radio_groupe.isSelected()) //Si etudiant
+            {
+                rechercher_groupe(field_nom.getText(), semaine_str); //On recherhce et controle s'il y a cet utilisateur
+                String groupe_str = field_nom.getText();
+                int id_groupe = groupeDao.idCelonNom(groupe_str);
+                groupe = groupeDao.find(id_groupe);
+                boolean existe = groupeDao.siExiste(groupe_str);
+                if(existe == true)
+                {
+                    int int_semaine = Integer.valueOf(semaine_str); //Cast en int
+                    afficherDateEdt(int_semaine);
+                    afficherEdtSemaineGroupe(groupe, int_semaine, centre); //On affiche l'edt du prof en question
+                    
+                }
+                
+                
+            }
+            
+            for (MouseListener element : tableau.getMouseListeners()) tableau.removeMouseListener(element);
+            
+            tableau.addMouseListener(new java.awt.event.MouseAdapter() { //Si clique sur une cellule du tableau
+                @Override
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    int row = tableau.rowAtPoint(evt.getPoint()); //Get les coord du click
+                    int col = tableau.columnAtPoint(evt.getPoint());
+                    
+                    if (stock_seances[row][col] != null && (stock_seances[row][col].getEtat() == 2 || stock_seances[row][col].getEtat() == 3)) //Si il y a une séance dans la cellule
                     {
-
-                        int int_semaine = Integer.valueOf(semaine_str); //Cast en int
-                        afficherDateEdt(int_semaine);
-                        afficherEdtSemaineProf(prof, int_semaine, centre); //On affiche l'edt du prof en question
+                        System.out.println(stock_seances[row][col].getID());
+                        JFrame frame = new JFrame();
+                        
+                        int reponse = JOptionPane.showConfirmDialog(frame, "Voulez-vous enlever cette séance : \n"
+                                + "Nom séance : " + stock_seances[row][col].getCours().getNom()
+                                + " Date séance : " + stock_seances[row][col].getDate());
+                        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                        
+                        
+                        if (reponse == 0 && radio_prof.isSelected()) { //Enlever prof
+                            majControleur.enleverEnseignantdeSeance(stock_seances[row][col]);
+                        } else if (reponse == 0 && radio_groupe.isSelected()) { //Enlever élève
+                            String nom_groupe = field_nom.getText();
+                            majControleur.enleverGroupeSeance(stock_seances[row][col],nom_groupe);
+                        }
+                        
                     }
-
-                } else if (radio_groupe.isSelected()) //Si etudiant
-                {
-                    rechercher_groupe(field_nom.getText(), semaine_str); //On recherhce et controle s'il y a cet utilisateur
-                    String groupe_str = field_nom.getText();
-                    int id_groupe = groupeDao.idCelonNom(groupe_str);
-                    groupe = groupeDao.find(id_groupe);
-                    boolean existe = groupeDao.siExiste(groupe_str);
-                    if(existe == true)
+                    else
                     {
-                        int int_semaine = Integer.valueOf(semaine_str); //Cast en int
-                        afficherDateEdt(int_semaine);
-                        afficherEdtSemaineGroupe(groupe, int_semaine, centre); //On affiche l'edt du prof en question
-
+                        JOptionPane stop = new JOptionPane();
+                        stop.showMessageDialog(null, "Aucune séance à enlever", "ERREUR", JOptionPane.ERROR_MESSAGE);
                     }
                     
 
                 }
-
-                for (MouseListener element : tableau.getMouseListeners()) tableau.removeMouseListener(element);
-
-                tableau.addMouseListener(new java.awt.event.MouseAdapter() { //Si clique sur une cellule du tableau
-                    @Override
-                    public void mouseClicked(java.awt.event.MouseEvent evt) {
-                        int row = tableau.rowAtPoint(evt.getPoint()); //Get les coord du click
-                        int col = tableau.columnAtPoint(evt.getPoint());
-
-                        if (stock_seances[row][col] != null && (stock_seances[row][col].getEtat() == 2 || stock_seances[row][col].getEtat() == 3)) //Si il y a une séance dans la cellule
-                        {
-                            System.out.println(stock_seances[row][col].getID());
-                            JFrame frame = new JFrame();
-
-                            int reponse = JOptionPane.showConfirmDialog(frame, "Voulez-vous enlever cette séance : \n"
-                                    + "Nom séance : " + stock_seances[row][col].getCours().getNom()
-                                    + " Date séance : " + stock_seances[row][col].getDate());
-                            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-                            SeanceDao seanceDao = new SeanceDao();
-
-                            Salle salle = new Salle();
-                            salle = seanceDao.trouverSalle(stock_seances[row][col]);
-
-                            if (reponse == 0 && radio_prof.isSelected()) { //Enlever prof
-                                majControleur.enleverEnseignantdeSeance(stock_seances[row][col]);
-                            } else if (reponse == 0 && radio_groupe.isSelected()) { //Enlever élève
-                                String nom_groupe = field_nom.getText();
-                                majControleur.enleverGroupeSeance(stock_seances[row][col],nom_groupe);
-                            }
-
-                        }
-                        else
-                        {
-                            JOptionPane stop = new JOptionPane();
-                            stop.showMessageDialog(null, "Aucune séance à enlever", "ERREUR", JOptionPane.ERROR_MESSAGE);
-                        }
-
-
-                    }
-
-                });
-
-
-            }
-        });
+                
+            });
+        } //Si clique sur bouton chercher
+        );
 
 
         haut.add(text_enlever);
@@ -1051,38 +1013,33 @@ public class Edt_Admin extends Edt {
         });
 
 
-        nom_cours.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String cours_str = field_cours.getText(); //On get la saisie dans le field
-                String choisi = (String) liste_type.getSelectedItem();
-                if (cours_str.equals("")) //Si vide
-                {
+        nom_cours.addActionListener((ActionEvent e) -> {
+            String cours_str = field_cours.getText(); //On get la saisie dans le field
+            String choisi = (String) liste_type.getSelectedItem();
+            if (cours_str.equals("")) //Si vide
+            {
+                JOptionPane stop = new JOptionPane();
+                stop.showMessageDialog(null, "Champ vide ", "ERREUR", JOptionPane.ERROR_MESSAGE);
+            } else {
+                int cours_id = Integer.parseInt(cours_str);
+                CoursDao cDao = new CoursDao();
+                Cours c = new Cours();
+                boolean existe = cDao.siExiste(cours_id);
+                c = cDao.find(cours_id); //On trouve le cours
+                
+                if (existe == true) {
+                    String seance_str = field_seance.getText(); //On get l'id de la seance
+                    int id_seance = Integer.parseInt(seance_str); //Cast en int
+                    SeanceDao sDao = new SeanceDao();
+                    Seance s = sDao.find(id_seance); //On crée l'objet, c'est avec cet objet qu'on va modifier ses données
+                    majControleur.modifierSeance(s, c.getNom(), choisi);
                     JOptionPane stop = new JOptionPane();
-                    stop.showMessageDialog(null, "Champ vide ", "ERREUR", JOptionPane.ERROR_MESSAGE);
+                    stop.showMessageDialog(null, "Cours modifié en : " + c.getNom() + " et type modifié en : " + choisi, "ERREUR", JOptionPane.ERROR_MESSAGE);
+                    
                 } else {
-                    int cours_id = Integer.parseInt(cours_str);
-                    CoursDao cDao = new CoursDao();
-                    Cours c = new Cours();
-                    boolean existe = cDao.siExiste(cours_id);
-                    c = cDao.find(cours_id); //On trouve le cours
-
-                    if (existe == true) {
-                        String seance_str = field_seance.getText(); //On get l'id de la seance
-                        int id_seance = Integer.parseInt(seance_str); //Cast en int
-                        SeanceDao sDao = new SeanceDao();
-                        Seance s = sDao.find(id_seance); //On crée l'objet, c'est avec cet objet qu'on va modifier ses données
-                        majControleur.modifierSeance(s, c.getNom(), choisi);
-                        JOptionPane stop = new JOptionPane();
-                        stop.showMessageDialog(null, "Cours modifié en : " + c.getNom() + " et type modifié en : " + choisi, "ERREUR", JOptionPane.ERROR_MESSAGE);
-
-                    } else {
-                        JOptionPane stop = new JOptionPane();
-                        stop.showMessageDialog(null, "Cours id inconnu ", "ERREUR", JOptionPane.ERROR_MESSAGE);
-                    }
+                    JOptionPane stop = new JOptionPane();
+                    stop.showMessageDialog(null, "Cours id inconnu ", "ERREUR", JOptionPane.ERROR_MESSAGE);
                 }
-
-
             }
         });
 
@@ -1121,25 +1078,19 @@ public class Edt_Admin extends Edt {
         bg.add(radio_eleve);
         JLabel text_user = new JLabel("");
 
-        radio_prof.addActionListener(new ActionListener() { //Si clique sur prof
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (radio_prof.isSelected()) {
-                    text_user.setText("Nom prof : ");
-                }
-
+        radio_prof.addActionListener((ActionEvent e) -> {
+            if (radio_prof.isSelected()) {
+                text_user.setText("Nom prof : ");
             }
-        });
+        } //Si clique sur prof
+        );
 
-        radio_eleve.addActionListener(new ActionListener() { //Si clique sur etudiant
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (radio_eleve.isSelected()) {
-                    text_user.setText("Nom groupe : ");
-                }
-
+        radio_eleve.addActionListener((ActionEvent e) -> {
+            if (radio_eleve.isSelected()) {
+                text_user.setText("Nom groupe : ");
             }
-        });
+        } //Si clique sur etudiant
+        );
         JTextField field_nom = new JTextField();
         field_nom.setPreferredSize(new Dimension(80, 30));
 
@@ -1156,89 +1107,87 @@ public class Edt_Admin extends Edt {
 
         JButton chercher = new JButton("Chercher");
 
-        chercher.addActionListener(new ActionListener() { //Si clique sur bouton chercher
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String semaine_str = (String) list_semaine.getSelectedItem();
-
-                if (radio_prof.isSelected()) //Si prof
+        chercher.addActionListener((ActionEvent e) -> {
+            String semaine_str = (String) list_semaine.getSelectedItem();
+            
+            if (radio_prof.isSelected()) //Si prof
+            {
+                rechercher_utilisateur(field_nom.getText(), semaine_str, 1); //On recherhce et controle s'il y a cet utilisateur
+                prof = profDao.trouverProfAvecNom(field_nom.getText()); //On instancie l'objet prof
+                boolean existe = profDao.siExiste(field_nom.getText()); //On vérifie s'il existe
+                
+                if (existe == true)//S'il existe dans la bdd
                 {
-                    rechercher_utilisateur(field_nom.getText(), semaine_str, 1); //On recherhce et controle s'il y a cet utilisateur         
-                    prof = profDao.trouverProfAvecNom(field_nom.getText()); //On instancie l'objet prof
-                    boolean existe = profDao.siExiste(field_nom.getText()); //On vérifie s'il existe
-
-                    if (existe == true)//S'il existe dans la bdd
-                    {
-
-                        int int_semaine = Integer.valueOf(semaine_str); //Cast en int
-                        afficherDateEdt(int_semaine);
-                        afficherEdtSemaineProf(prof, int_semaine, centre); //On affiche l'edt du prof en question
-                    }
-
-                } else if (radio_eleve.isSelected()) //Si etudiant
-                {
-                    rechercher_groupe(field_nom.getText(), semaine_str); //On recherhce et controle s'il y a cet utilisateur
-                    String groupe_str = field_nom.getText();
-                    int id_groupe = groupeDao.idCelonNom(groupe_str);
-                    groupe = groupeDao.find(id_groupe);
-                    boolean existe = groupeDao.siExiste(groupe_str);
-                    if(existe == true)
-                    {
-                        int int_semaine = Integer.valueOf(semaine_str); //Cast en int
-                        afficherDateEdt(int_semaine);
-                        afficherEdtSemaineGroupe(groupe, int_semaine, centre); //On affiche l'edt du prof en question
-
-                    }
+                    
+                    int int_semaine = Integer.valueOf(semaine_str); //Cast en int
+                    afficherDateEdt(int_semaine);
+                    afficherEdtSemaineProf(prof, int_semaine, centre); //On affiche l'edt du prof en question
                 }
-                //tableau.removeMouseListener(tableau.getMouseListeners()[0]);
-                for (MouseListener element : tableau.getMouseListeners()) tableau.removeMouseListener(element);
+                
+            } else if (radio_eleve.isSelected()) //Si etudiant
+            {
+                rechercher_groupe(field_nom.getText(), semaine_str); //On recherhce et controle s'il y a cet utilisateur
+                String groupe_str = field_nom.getText();
+                int id_groupe = groupeDao.idCelonNom(groupe_str);
+                groupe = groupeDao.find(id_groupe);
+                boolean existe = groupeDao.siExiste(groupe_str);
+                if(existe == true)
+                {
+                    int int_semaine = Integer.valueOf(semaine_str); //Cast en int
+                    afficherDateEdt(int_semaine);
+                    afficherEdtSemaineGroupe(groupe, int_semaine, centre); //On affiche l'edt du prof en question
 
-                tableau.addMouseListener(new java.awt.event.MouseAdapter() { //Si clique sur une cellule du tableau
-                    @Override
-                    public void mouseClicked(java.awt.event.MouseEvent evt) {
-                        int row = tableau.rowAtPoint(evt.getPoint()); //Get les coord du click
-                        int col = tableau.columnAtPoint(evt.getPoint());
+                }
+            }
+            //tableau.removeMouseListener(tableau.getMouseListeners()[0]);
+            for (MouseListener element : tableau.getMouseListeners()) tableau.removeMouseListener(element);
+            
+            tableau.addMouseListener(new java.awt.event.MouseAdapter() { //Si clique sur une cellule du tableau
+                @Override
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    int row = tableau.rowAtPoint(evt.getPoint()); //Get les coord du click
+                    int col = tableau.columnAtPoint(evt.getPoint());
+                    
+                    try
+                    {
                         
-                        try
+                        if (stock_seances[row][col] != null) //Si il y a une séance dans la cellule
                         {
-                            
-                            if (stock_seances[row][col] != null) //Si il y a une séance dans la cellule
+                            Date today = new Date(System.currentTimeMillis());
+                            if (stock_seances[row][col].getDate().compareTo(today) > 0) //Si la séance selectionnée vennat après la date actuelle
                             {
-                                Date today = new Date(System.currentTimeMillis());
-                                if (stock_seances[row][col].getDate().compareTo(today) > 0) //Si la séance selectionnée vennat après la date actuelle
-                                {
-                                    System.out.println(stock_seances[row][col].getID());
-                                    JFrame frame = new JFrame();
-                                    JOptionPane.showConfirmDialog(frame, "Voulez-vous annuler cette séance : \n"
-                                            + "Nom séance : " + stock_seances[row][col].getCours().getNom()
-                                            + " Date séance : " + stock_seances[row][col].getDate());
-                                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                                    majControleur.annulerSeance(stock_seances[row][col]);
-                                }
-                                else
-                                {
-                                    JOptionPane stop = new JOptionPane();
-                                    stop.showMessageDialog(null, "Vous ne pouvez qu'annuler une séance après la date d'aujourd'hui", "ERREUR", JOptionPane.ERROR_MESSAGE);
-                                }
+                                System.out.println(stock_seances[row][col].getID());
+                                JFrame frame = new JFrame();
+                                JOptionPane.showConfirmDialog(frame, "Voulez-vous annuler cette séance : \n"
+                                        + "Nom séance : " + stock_seances[row][col].getCours().getNom()
+                                        + " Date séance : " + stock_seances[row][col].getDate());
+                                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                                majControleur.annulerSeance(stock_seances[row][col]);
                             }
                             else
                             {
                                 JOptionPane stop = new JOptionPane();
-                                stop.showMessageDialog(null, "Aucune séance à annuler", "ERREUR", JOptionPane.ERROR_MESSAGE);
+                                stop.showMessageDialog(null, "Vous ne pouvez qu'annuler une séance après la date d'aujourd'hui", "ERREUR", JOptionPane.ERROR_MESSAGE);
                             }
-                            
                         }
-                        catch(NullPointerException e)
+                        else
                         {
-                            System.out.println("Erreur senace");
+                            JOptionPane stop = new JOptionPane();
+                            stop.showMessageDialog(null, "Aucune séance à annuler", "ERREUR", JOptionPane.ERROR_MESSAGE);
                         }
-
                         
-
                     }
-                });
-            }
-        });
+                    catch(NullPointerException e)
+                    {
+                        System.out.println("Erreur senace");
+                    }
+                    
+                    
+                    
+                }
+            });
+        } //Si clique sur bouton chercher
+        );
 
         haut.add(text_enlever);
         haut.add(radio_prof);
@@ -1274,25 +1223,19 @@ public class Edt_Admin extends Edt {
         bg.add(radio_eleve);
         JLabel text_user = new JLabel("");
 
-        radio_prof.addActionListener(new ActionListener() { //Si clique sur prof
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (radio_prof.isSelected()) {
-                    text_user.setText("Nom prof : ");
-                }
-
+        radio_prof.addActionListener((ActionEvent e) -> {
+            if (radio_prof.isSelected()) {
+                text_user.setText("Nom prof : ");
             }
-        });
+        } //Si clique sur prof
+        );
 
-        radio_eleve.addActionListener(new ActionListener() { //Si clique sur etudiant
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (radio_eleve.isSelected()) {
-                    text_user.setText("Nom groupe : ");
-                }
-
+        radio_eleve.addActionListener((ActionEvent e) -> {
+            if (radio_eleve.isSelected()) {
+                text_user.setText("Nom groupe : ");
             }
-        });
+        } //Si clique sur etudiant
+        );
         JTextField field_nom = new JTextField();
         field_nom.setPreferredSize(new Dimension(80, 30));
 
@@ -1309,90 +1252,87 @@ public class Edt_Admin extends Edt {
 
         JButton chercher = new JButton("Chercher");
 
-        chercher.addActionListener(new ActionListener() { //Si clique sur bouton chercher
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String semaine_str = (String) list_semaine.getSelectedItem();
-
-                if (radio_prof.isSelected()) //Si prof
+        chercher.addActionListener((ActionEvent e) -> {
+            String semaine_str = (String) list_semaine.getSelectedItem();
+            
+            if (radio_prof.isSelected()) //Si prof
+            {
+                rechercher_utilisateur(field_nom.getText(), semaine_str, 1); //On recherhce et controle s'il y a cet utilisateur
+                prof = profDao.trouverProfAvecNom(field_nom.getText()); //On instancie l'objet prof
+                boolean existe = profDao.siExiste(field_nom.getText()); //On vérifie s'il existe
+                
+                if (existe == true)//S'il existe dans la bdd
                 {
-                    rechercher_utilisateur(field_nom.getText(), semaine_str, 1); //On recherhce et controle s'il y a cet utilisateur         
-                    prof = profDao.trouverProfAvecNom(field_nom.getText()); //On instancie l'objet prof
-                    boolean existe = profDao.siExiste(field_nom.getText()); //On vérifie s'il existe
-
-                    if (existe == true)//S'il existe dans la bdd
-                    {
-
-                        int int_semaine = Integer.valueOf(semaine_str); //Cast en int
-                        afficherDateEdt(int_semaine);
-                        afficherEdtSemaineProf(prof, int_semaine, centre); //On affiche l'edt du prof en question
-                    }
-
-                } else if (radio_eleve.isSelected()) //Si etudiant
-                {
-                    rechercher_groupe(field_nom.getText(), semaine_str); //On recherhce et controle s'il y a cet utilisateur
-                    String groupe_str = field_nom.getText();
-                    int id_groupe = groupeDao.idCelonNom(groupe_str);
-                    groupe = groupeDao.find(id_groupe);
-                    boolean existe = groupeDao.siExiste(groupe_str);
-                    if(existe == true)
-                    {
-                        int int_semaine = Integer.valueOf(semaine_str); //Cast en int
-                        afficherDateEdt(int_semaine);
-                        afficherEdtSemaineGroupe(groupe, int_semaine, centre); //On affiche l'edt du prof en question
-
-                    }
+                    
+                    int int_semaine = Integer.valueOf(semaine_str); //Cast en int
+                    afficherDateEdt(int_semaine);
+                    afficherEdtSemaineProf(prof, int_semaine, centre); //On affiche l'edt du prof en question
                 }
+                
+            } else if (radio_eleve.isSelected()) //Si etudiant
+            {
+                rechercher_groupe(field_nom.getText(), semaine_str); //On recherhce et controle s'il y a cet utilisateur
+                String groupe_str = field_nom.getText();
+                int id_groupe = groupeDao.idCelonNom(groupe_str);
+                groupe = groupeDao.find(id_groupe);
+                boolean existe = groupeDao.siExiste(groupe_str);
+                if(existe == true)
+                {
+                    int int_semaine = Integer.valueOf(semaine_str); //Cast en int
+                    afficherDateEdt(int_semaine);
+                    afficherEdtSemaineGroupe(groupe, int_semaine, centre); //On affiche l'edt du prof en question
 
-                for (MouseListener element : tableau.getMouseListeners()) tableau.removeMouseListener(element);
-
-                tableau.addMouseListener(new java.awt.event.MouseAdapter() { //Si clique sur une cellule du tableau
-                    @Override
-                    public void mouseClicked(java.awt.event.MouseEvent evt) {
-                        int row = tableau.rowAtPoint(evt.getPoint()); //Get les coord du click
-                        int col = tableau.columnAtPoint(evt.getPoint());
-                        
-                        try
+                }
+            }
+            
+            for (MouseListener element : tableau.getMouseListeners()) tableau.removeMouseListener(element);
+            
+            tableau.addMouseListener(new java.awt.event.MouseAdapter() { //Si clique sur une cellule du tableau
+                @Override
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    int row = tableau.rowAtPoint(evt.getPoint()); //Get les coord du click
+                    int col = tableau.columnAtPoint(evt.getPoint());
+                    
+                    try
+                    {
+                        if (stock_seances[row][col] != null) //Si il y a une séance dans la cellule
                         {
-                            if (stock_seances[row][col] != null) //Si il y a une séance dans la cellule
+                            Date today = new Date(System.currentTimeMillis());
+                            if (stock_seances[row][col].getDate().compareTo(today) < 0) //Si la séance selectionnée venaat après la date actuelle
                             {
-                                Date today = new Date(System.currentTimeMillis());
-                                if (stock_seances[row][col].getDate().compareTo(today) < 0) //Si la séance selectionnée venaat après la date actuelle
-                                {
-                                    System.out.println(stock_seances[row][col].getID());
-                                    JFrame frame = new JFrame();
-                                    JOptionPane.showConfirmDialog(frame, "Voulez-vous valider cette séance : \n"
-                                            + "Nom séance : " + stock_seances[row][col].getCours().getNom()
-                                            + " Date séance : " + stock_seances[row][col].getDate());
-                                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                                    majControleur.validerSeance(stock_seances[row][col]);
-                                }
-                                else
-                                {
-                                    JOptionPane stop = new JOptionPane();
-                                    stop.showMessageDialog(null, "Vous ne pouvez valider qu'une seance une fois celle-ci terminée", "ERREUR", JOptionPane.ERROR_MESSAGE);
-                                }
-
-
+                                System.out.println(stock_seances[row][col].getID());
+                                JFrame frame = new JFrame();
+                                JOptionPane.showConfirmDialog(frame, "Voulez-vous valider cette séance : \n"
+                                        + "Nom séance : " + stock_seances[row][col].getCours().getNom()
+                                        + " Date séance : " + stock_seances[row][col].getDate());
+                                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                                majControleur.validerSeance(stock_seances[row][col]);
                             }
                             else
                             {
                                 JOptionPane stop = new JOptionPane();
-                                stop.showMessageDialog(null, "Aucune séance", "ERREUR", JOptionPane.ERROR_MESSAGE);
+                                stop.showMessageDialog(null, "Vous ne pouvez valider qu'une seance une fois celle-ci terminée", "ERREUR", JOptionPane.ERROR_MESSAGE);
                             }
+                            
+                            
                         }
-                        catch(NullPointerException e)
+                        else
                         {
-                            System.out.println("Erreur seance ");
+                            JOptionPane stop = new JOptionPane();
+                            stop.showMessageDialog(null, "Aucune séance", "ERREUR", JOptionPane.ERROR_MESSAGE);
                         }
-
-                        
-
                     }
-                });
-
-            }
-        });
+                    catch(NullPointerException e)
+                    {
+                        System.out.println("Erreur seance ");
+                    }
+                    
+                    
+                    
+                }
+            });
+        } //Si clique sur bouton chercher
+        );
 
 
         haut.add(text_enlever);
@@ -1503,47 +1443,55 @@ public class Edt_Admin extends Edt {
 
                             groupe = seanceDao.trouverGroupe(mes_seances.get(i));
 
-                            if (mes_seances.get(i).getEtat() == 0 || mes_seances.get(i).getEtat() == 1) {
-                                String myString =
-                                        "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + "<br>Groupe :" +
+                            switch (mes_seances.get(i).getEtat()) {
+                                case 0:
+                                case 1:
+                                    {
+                                        String myString =
+                                                "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + "<br>Groupe :" +
                                                 groupe.getNom();
-                                if(seanceDao.siProf(mes_seances.get(i))==false)
-                                {
-                                    myString+="<br>Manque PROF</p></html>";
-                                }
-                                else if(seanceDao.siGroupe(mes_seances.get(i))==false)
-                                {
-                                    myString+="<br>Manque GROUPE</p></html>";
-                                }
-                                else if(seanceDao.siSalle(mes_seances.get(i))==false)
-                                {
-                                    myString+="<br>Manque SALLE</p></html>";
-                                }
-
-                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
-                                stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
-                            } else if (mes_seances.get(i).getEtat() == 2) {
-                                String myString =
-                                        "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + " "+ mes_seances.get(i).getType().getNom() + "<br>Groupe :" +
+                                        if(seanceDao.siProf(mes_seances.get(i))==false)
+                                        {
+                                            myString+="<br>Manque PROF</p></html>";
+                                        }
+                                        else if(seanceDao.siGroupe(mes_seances.get(i))==false)
+                                        {
+                                            myString+="<br>Manque GROUPE</p></html>";
+                                        }
+                                        else if(seanceDao.siSalle(mes_seances.get(i))==false)
+                                        {
+                                            myString+="<br>Manque SALLE</p></html>";
+                                        }       tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                        stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
+                                        break;
+                                    }
+                                case 2:
+                                    {
+                                        String myString =
+                                                "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + " "
+                                                + mes_seances.get(i).getType().getNom() + "<br>Groupe :" +
                                                 groupe.getNom()
                                                 + "<br>Salle :" +
-                                                salle.getNom() + "<br>Site :" +
+                                                salle.getNom() + " Site :" +
                                                 salle.getSite().getNom() + "Valide</p></html>";
-
-
-                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
-                                stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
-                            } else if (mes_seances.get(i).getEtat() == 3) {
-                                String myString =
-                                        "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + " "+ mes_seances.get(i).getType().getNom()+ "<br>Groupe :" +
+                                        tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                        stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
+                                        break;
+                                    }
+                                case 3:
+                                    {
+                                        String myString =
+                                                "<html><p>" + mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom() + " "+ mes_seances.get(i).getType().getNom()+ "<br>Groupe :" +
                                                 groupe.getNom()
                                                 + "<br>Salle :" +
-                                                salle.getNom() + "<br>Site :" +
+                                                salle.getNom() + " Site :" +
                                                 salle.getSite().getNom() + " Annulé</p></html>";
-
-
-                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
-                                stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
+                                        tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                        stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
+                                        break;
+                                    }
+                                default:
+                                    break;
                             }
 
 
@@ -1647,47 +1595,51 @@ public class Edt_Admin extends Edt {
                                 ligne_semaine = 7;
 
                             prof = seanceDao.trouverEnseignant(mes_seances.get(i));
-                            if (mes_seances.get(i).getEtat() == 0 || mes_seances.get(i).getEtat() == 1) {
-                                String myString =
-                                        "<html><p>" + mes_seances.get(i).getCours().getNom();
-                                
-                                if(seanceDao.siProf(mes_seances.get(i))==false)
-                                {
-                                    myString+="<br>Manque PROF</p></html>";
-                                }
-                                else if(seanceDao.siGroupe(mes_seances.get(i))==false)
-                                {
-                                    myString+="<br>Manque GROUPE</p></html>";
-                                }
-                                else if(seanceDao.siSalle(mes_seances.get(i))==false)
-                                {
-                                    myString+="<br>Manque SALLE</p></html>";
-                                }
-                                
-
-
-                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
-                                stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
-                            } else if (mes_seances.get(i).getEtat() == 2) {
-                                String myString =
-                                        "<html><p>" + mes_seances.get(i).getCours().getNom()+ " "+ mes_seances.get(i).getType().getNom() + "<br>Prof :" +
+                            switch (mes_seances.get(i).getEtat()) {
+                                case 0:
+                                case 1:
+                                    {
+                                        String myString =
+                                                "<html><p>" + mes_seances.get(i).getCours().getNom();
+                                        if(seanceDao.siProf(mes_seances.get(i))==false)
+                                        {
+                                            myString+="<br>Manque PROF</p></html>";
+                                        }
+                                        else if(seanceDao.siGroupe(mes_seances.get(i))==false)
+                                        {
+                                            myString+="<br>Manque GROUPE</p></html>";
+                                        }
+                                        else if(seanceDao.siSalle(mes_seances.get(i))==false)
+                                        {
+                                            myString+="<br>Manque SALLE</p></html>";
+                                        }       tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                        stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
+                                        break;
+                                    }
+                                case 2:
+                                    {
+                                        String myString =
+                                                "<html><p>" + mes_seances.get(i).getCours().getNom()+ " "+ mes_seances.get(i).getType().getNom() + "<br>Prof :" +
                                                 prof.getNom() + "<br>Salle :" +
                                                 salle.getNom() + "<br>Site :" +
                                                 salle.getSite().getNom() + "Valide</p></html>";
-
-
-                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
-                                stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
-                            } else if (mes_seances.get(i).getEtat() == 3) {
-                                String myString =
-                                        "<html><p>" + mes_seances.get(i).getCours().getNom()+ " "+ mes_seances.get(i).getType().getNom() + "<br>Prof :" +
+                                        tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                        stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
+                                        break;
+                                    }
+                                case 3:
+                                    {
+                                        String myString =
+                                                "<html><p>" + mes_seances.get(i).getCours().getNom()+ " "+ mes_seances.get(i).getType().getNom() + "<br>Prof :" +
                                                 prof.getNom() + "<br>Salle :" +
                                                 salle.getNom() + "<br>Site :" +
                                                 salle.getSite().getNom() + "Annulé</p></html>";
-
-
-                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
-                                stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
+                                        tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                        stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
+                                        break;
+                                    }
+                                default:
+                                    break;
                             }
 
                         }
@@ -1786,46 +1738,51 @@ public class Edt_Admin extends Edt {
                             prof = seanceDao.trouverEnseignant(mes_seances.get(i));
                             groupe = seanceDao.trouverGroupe(mes_seances.get(i));
 
-                            if (mes_seances.get(i).getEtat() == 0 || mes_seances.get(i).getEtat() == 1) {
-                                String myString =
-                                        "<html><p>" + mes_seances.get(i).getCours().getNom();
-                                if(seanceDao.siProf(mes_seances.get(i))==false)
-                                {
-                                    myString+="<br>Manque PROF</p></html>";
-                                }
-                                else if(seanceDao.siGroupe(mes_seances.get(i))==false)
-                                {
-                                    myString+="<br>Manque GROUPE</p></html>";
-                                }
-                                else if(seanceDao.siSalle(mes_seances.get(i))==false)
-                                {
-                                    myString+="<br>Manque SALLE</p></html>";
-                                }
-                                
-
-
-                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
-                                stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
-                            } else if (mes_seances.get(i).getEtat() == 2) {
-                                String myString =
-                                        "<html><p>" + mes_seances.get(i).getCours().getNom() + "<br>Prof :" +
+                            switch (mes_seances.get(i).getEtat()) {
+                                case 0:
+                                case 1:
+                                    {
+                                        String myString =
+                                                "<html><p>" + mes_seances.get(i).getCours().getNom();
+                                        if(seanceDao.siProf(mes_seances.get(i))==false)
+                                        {
+                                            myString+="<br>Manque PROF</p></html>";
+                                        }
+                                        else if(seanceDao.siGroupe(mes_seances.get(i))==false)
+                                        {
+                                            myString+="<br>Manque GROUPE</p></html>";
+                                        }
+                                        else if(seanceDao.siSalle(mes_seances.get(i))==false)
+                                        {
+                                            myString+="<br>Manque SALLE</p></html>";
+                                        }       tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                        stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
+                                        break;
+                                    }
+                                case 2:
+                                    {
+                                        String myString =
+                                                "<html><p>" + mes_seances.get(i).getCours().getNom() + "<br>Prof :" +
                                                 prof.getNom() + "<br>Salle :" +
                                                 salle.getNom() + "<br>Site :" +
                                                 salle.getSite().getNom() + "Valide</p></html>";
-
-
-                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
-                                stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
-                            } else if (mes_seances.get(i).getEtat() == 3) {
-                                String myString =
-                                        "<html><p>" + mes_seances.get(i).getCours().getNom() + "<br>Prof :" +
+                                        tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                        stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
+                                        break;
+                                    }
+                                case 3:
+                                    {
+                                        String myString =
+                                                "<html><p>" + mes_seances.get(i).getCours().getNom() + "<br>Prof :" +
                                                 prof.getNom() + "<br>Salle :" +
                                                 salle.getNom() + "<br>Site :" +
                                                 salle.getSite().getNom() + "Annulé</p></html>";
-
-
-                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
-                                stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
+                                        tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                        stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
+                                        break;
+                                    }
+                                default:
+                                    break;
                             }
                         }
                     }
@@ -1908,41 +1865,49 @@ public class Edt_Admin extends Edt {
                             prof = seanceDao.trouverEnseignant(mes_seances.get(i));
                             groupe = seanceDao.trouverGroupe(mes_seances.get(i));
 
-                            if (mes_seances.get(i).getEtat() == 0 || mes_seances.get(i).getEtat() == 1) {
-                                String myString =
-                                        "<html><p>" + mes_seances.get(i).getCours().getNom();
-                                               
-                                if(seanceDao.siProf(mes_seances.get(i))==false)
-                                {
-                                    myString+="<br>Manque PROF</p></html>";
-                                }
-                                else if(seanceDao.siGroupe(mes_seances.get(i))==false)
-                                {
-                                    myString+="<br>Manque GROUPE</p></html>";
-                                }
-                                else if(seanceDao.siSalle(mes_seances.get(i))==false)
-                                {
-                                    myString+="<br>Manque SALLE</p></html>";
-                                }
-                                
-                                
-                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
-                                stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
-                            } else if (mes_seances.get(i).getEtat() == 2) {
-                                String myString =
-                                        "<html><p>" + mes_seances.get(i).getCours().getNom()
+                            switch (mes_seances.get(i).getEtat()) {
+                                case 0:
+                                case 1:
+                                    {
+                                        String myString =
+                                                "<html><p>" + mes_seances.get(i).getCours().getNom();
+                                        if(seanceDao.siProf(mes_seances.get(i))==false)
+                                        {
+                                            myString+="<br>Manque PROF</p></html>";
+                                        }
+                                        else if(seanceDao.siGroupe(mes_seances.get(i))==false)
+                                        {
+                                            myString+="<br>Manque GROUPE</p></html>";
+                                        }
+                                        else if(seanceDao.siSalle(mes_seances.get(i))==false)
+                                        {
+                                            myString+="<br>Manque SALLE</p></html>";
+                                        }       tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                        stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
+                                        break;
+                                    }
+                                case 2:
+                                    {
+                                        String myString =
+                                                "<html><p>" + mes_seances.get(i).getCours().getNom()
                                                 + "<br>Prof :" +
                                                 prof.getNom() + "<br>Groupe : " + groupe.getNom() + " Valide</p></html>";
-                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
-                                stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
-
-                            } else if (mes_seances.get(i).getEtat() == 3) {
-                                String myString =
-                                        "<html><p>" + mes_seances.get(i).getCours().getNom()
+                                        tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                        stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
+                                        break;
+                                    }
+                                case 3:
+                                    {
+                                        String myString =
+                                                "<html><p>" + mes_seances.get(i).getCours().getNom()
                                                 + "<br>Prof :" +
                                                 prof.getNom() + "<br>Groupe : " + groupe.getNom() + "Annulé</p></html>";
-                                tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
-                                stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
+                                        tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
+                                        stock_seances[ligne_semaine][colonne_semaine] = mes_seances.get(i); //Ajout dan sles tableaux
+                                        break;
+                                    }
+                                default:
+                                    break;
                             }
 
                         }

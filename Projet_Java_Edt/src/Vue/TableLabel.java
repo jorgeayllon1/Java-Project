@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Vue;
 
 import javax.swing.*;
@@ -16,7 +12,7 @@ public class TableLabel extends DefaultTableModel{
     
     
     
-    Object[][] row = {{new JLabel("8h-10h"), "", "","","","",""},
+    Object[][] ligne = {{new JLabel("8h-10h"), "", "","","","",""},
                       {new JLabel("10h-12h"), "", "","","","",""},
                       {new JLabel("12h-14h"), "", "","","","",""},
                       {new JLabel("14h-16h"), "", "","","","",""},
@@ -25,17 +21,17 @@ public class TableLabel extends DefaultTableModel{
             
     };
  
-    Object[] col = {"Horaires", "Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"};
+    Object[] colonne = {"Horaires", "Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"};
  
     public TableLabel (){
  
 
-        for(Object c: col)
+        for(Object c: colonne)
             this.addColumn(c);
  
 
-        for(Object[] r: row)
-            addRow(r);
+        for(Object[] l: ligne)
+            addRow(l);
  
     }
  

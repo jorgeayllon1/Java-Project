@@ -174,11 +174,9 @@ public class Edt extends JFrame implements ActionListener {
 
         tableau = new JTable(donnees,titre);
         tableau.setEnabled(false); //Non éditable
-        //tableau = new JTable();
-        //tableau.setModel(new TableLabel());
+
         tableau.setRowHeight(90);
         tableau.setDefaultRenderer(Object.class, new CaseLabel());
-        //tableau.setDefaultRenderer(JLabel.class, new CaseLabel());
         tableau.setShowGrid(true); //Affichage quadrillage
         
     }
@@ -201,16 +199,11 @@ public class Edt extends JFrame implements ActionListener {
 
         tableau = new JTable(donnees,titre);
         tableau.setEnabled(false); //Non éditable
-        //tableau.setTableHeader(null);
-        //tableau = new JTable();
-        //tableau.setModel(new TableLabel());
-        tableau.setRowHeight(panel.getHeight()/9);
+        tableau.setRowHeight(panel.getHeight()/9); //On divise les lignes
 
         tableau.setDefaultRenderer(Object.class, new CaseLabel());
-        //tableau.setDefaultRenderer(JLabel.class, new CaseLabel());
         tableau.setShowGrid(true); //Affichage quadrillage*/
-        /*pane.setViewportView(tableau);
-        panelTab.add(pane);*/
+
         
         panelTab.add(tableau);
         

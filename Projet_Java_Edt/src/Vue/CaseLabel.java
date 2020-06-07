@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Vue;
 
 import java.awt.Color;
@@ -21,18 +17,18 @@ public class CaseLabel extends DefaultTableCellRenderer{
     
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         
         
-        Font  f3  = new Font(Font.DIALOG,  Font.BOLD, 15);
+        Font  mon_font  = new Font(Font.DIALOG,  Font.BOLD, 16);
         if (row == 0) {
             Color clr = new Color(255, 255, 240);
-            component.setBackground(clr);
-            component.setFont(f3);
+            comp.setBackground(clr);
+            comp.setFont(mon_font);
             
         } else {
             Color clr = new Color(255, 255, 255);
-            component.setBackground(clr);
+            comp.setBackground(clr);
         }
         for(int i=0; i < table.getRowCount(); i++) {
          for(int j=0; j < table.getColumnCount(); j++) {
@@ -43,7 +39,7 @@ public class CaseLabel extends DefaultTableCellRenderer{
          }
       }
 
-        return component;
+        return comp;
     }
     
 
