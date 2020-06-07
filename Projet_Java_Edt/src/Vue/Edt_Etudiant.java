@@ -83,9 +83,7 @@ public class Edt_Etudiant extends Edt {
      */
     public void afficherEdtEtudiant(int droit) {
         
-        panel_edt.removeAll();
-        panel_edt.validate();
-        panel_edt.repaint();
+        suppPanel(panel_edt);
         ArrayList<JLabel> mes_labels = new ArrayList();
         if (droit == 4) {
             //On cree un nouveau etudiant avec l'id de l'utilisateur car id_utilisateur clé etrangere dans etudiant
@@ -241,9 +239,7 @@ public class Edt_Etudiant extends Edt {
      */
     public void afficherEdtSemaineEtudiant(int droit, int semaine) {
         
-        panel_edt.removeAll();
-        panel_edt.validate();
-        panel_edt.repaint();
+        suppPanel(panel_edt);
         content = new JPanel(new BorderLayout());
         if (droit == 4) {
             etudiantDao = new EtudiantDao(); //********************
@@ -427,14 +423,22 @@ public class Edt_Etudiant extends Edt {
             JButton lancerrecherche = new JButton(new AbstractAction("Rechercher") {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    rechercher_utilisateur(nom.getText(), semaine.getText(), 4);
+                    try
+                    {
+                        rechercher_utilisateur(nom.getText(), semaine.getText(), 4);
                     
-                    String string_semaine = semaine.getText();
+                        String string_semaine = semaine.getText();
 
-                    int int_semaine = Integer.valueOf(string_semaine); //Cast en int
-                    afficherGrille();
-                    afficherDateEdt(int_semaine);
-                    afficherEdtSemaineEtudiant(4, int_semaine);//On peut que rechercher ses propres cours
+                        int int_semaine = Integer.valueOf(string_semaine); //Cast en int
+                        afficherGrille();
+                        afficherDateEdt(int_semaine);
+                        afficherEdtSemaineEtudiant(4, int_semaine);//On peut que rechercher ses propres cours
+                    }
+                    catch(NumberFormatException e)
+                    {
+                        
+                    }
+                    
 
                 }
             });

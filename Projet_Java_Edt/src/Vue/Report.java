@@ -22,6 +22,10 @@ public class Report extends JFrame {
     public Report() {
     }
 
+    /**Affiche le report d'un etudiant
+     * 
+     * @param etudiant 
+     */
     public Report(Etudiant etudiant) {
         super("Votre reporting");
 
@@ -100,6 +104,10 @@ public class Report extends JFrame {
         this.setVisible(true);
     }
 
+    /**Affiche le report d'un prof
+     * 
+     * @param prof 
+     */
     public Report(Enseignant prof) {
         super("Votre reporting");
 
@@ -177,6 +185,10 @@ public class Report extends JFrame {
         this.setVisible(true);
     }
 
+    /**Affiche le report d'un admin ou d'un référent
+     * 
+     * @param admin 
+     */
     public Report(Utilisateur admin) {
         super("Votre reporting");
 

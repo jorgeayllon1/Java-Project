@@ -77,9 +77,7 @@ public class Edt_Enseignant extends Edt {
      * @param droit 
      */
     public void afficherEdtProf(int droit) {
-        panel_edt.removeAll();
-        panel_edt.validate();
-        panel_edt.repaint();
+        suppPanel(panel_edt);
         ArrayList<JLabel> mes_labels = new ArrayList();
         ///Affichage des séances relatives à cet enseignant
         EnseignantDAO profDao = new EnseignantDAO();
@@ -224,9 +222,7 @@ public class Edt_Enseignant extends Edt {
      * @param semaine 
      */
     public void afficherEdtSemaineProf(int droit, int semaine) {
-        panel_edt.removeAll();
-        panel_edt.validate();
-        panel_edt.repaint();
+        suppPanel(panel_edt);
         ArrayList<JLabel> mes_labels = new ArrayList();
         content = new JPanel(new BorderLayout());
         if (droit == 3) {
@@ -398,14 +394,20 @@ public class Edt_Enseignant extends Edt {
             JButton chercher_utilisateur = new JButton(new AbstractAction("Chercher Utilisateur") {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    rechercher_utilisateur(nom.getText(), semaine.getText(), 3);
                     
-                    String string_semaine = semaine.getText();
+                    try
+                    {
+                        rechercher_utilisateur(nom.getText(), semaine.getText(), 3);
+                    
+                        String string_semaine = semaine.getText();
 
-                    int int_semaine = Integer.valueOf(string_semaine); //Cast en int
-                    afficherGrille();
-                    afficherDateEdt(int_semaine);
-                    afficherEdtSemaineProf(3, int_semaine); //On peut que rechercher ses propres cours
+                        int int_semaine = Integer.valueOf(string_semaine); //Cast en int
+                        afficherGrille();
+                        afficherDateEdt(int_semaine);
+                        afficherEdtSemaineProf(3, int_semaine); //On peut que rechercher ses propres cours
+                    }
+                    catch(NumberFormatException e){}
+                    
 
                 }
 

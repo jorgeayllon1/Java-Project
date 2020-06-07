@@ -17,7 +17,7 @@ import java.util.*;
  */
 
 /** Page connexion*/
-public class Accueil extends JFrame implements Observer, ActionListener {
+public class Accueil extends JFrame implements ActionListener {
       
     private final JButton connexion;
     private final JTextField id;
@@ -81,9 +81,6 @@ public class Accueil extends JFrame implements Observer, ActionListener {
            
     }
     
-    @Override
-    public void update(Observable o, Object obj)
-    {  }
-    
+
 
 }

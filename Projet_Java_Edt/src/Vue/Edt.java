@@ -54,6 +54,23 @@ public class Edt extends JFrame implements ActionListener {
      */
     public Edt(Utilisateur user) {
         super("Votre emploi du temps - " + user.getNom().toUpperCase() + " " + user.getPrenom().toUpperCase());
+        String droit=" ";
+        switch(user.getDroit())
+        {
+            case 1:
+                droit+="ADMIN";
+                break;
+            case 2:
+                droit+="REFERENT";
+                break;
+            case 3:
+                droit+="ENSEIGNANT";
+                break;
+            case 4:
+                droit+="ETUDIANT";
+                break;
+        }
+        this.setTitle("Votre emploi du temps - " + user.getNom().toUpperCase() + " " + user.getPrenom().toUpperCase()+droit);
 
         this.setSize(1415, 805); //Taille
         this.setLocationRelativeTo(null); //Centre

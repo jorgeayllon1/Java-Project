@@ -72,6 +72,8 @@ public class Recap extends JFrame implements ActionListener{
         SimpleAttributeSet au_milieu = new SimpleAttributeSet();
         StyleConstants.setAlignment(au_milieu, StyleConstants.ALIGN_CENTER);
         d.setParagraphAttributes(0, d.getLength(), au_milieu, false);
+        Font font = new Font("Dialog", Font.BOLD, 20);
+        mon_recap.setFont(font);
 
         JLabel text_debut = new JLabel("Date début : ");
         JLabel text_fin = new JLabel("Date fin : ");
@@ -147,6 +149,8 @@ public class Recap extends JFrame implements ActionListener{
         SimpleAttributeSet au_milieu = new SimpleAttributeSet();
         StyleConstants.setAlignment(au_milieu, StyleConstants.ALIGN_CENTER);
         d.setParagraphAttributes(0, d.getLength(), au_milieu, false);
+        Font font = new Font("Dialog", Font.BOLD, 20);
+        mon_recap.setFont(font);
 
         JLabel text_debut = new JLabel("Date début : ");
         JLabel text_fin = new JLabel("Date fin : ");
