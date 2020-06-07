@@ -545,5 +545,7 @@ public class SeanceDao extends DAO<Seance> {
         }
         return existe;
     }
+    
+    
 
 }
