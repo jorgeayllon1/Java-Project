@@ -40,7 +40,7 @@ public class Recap extends JFrame implements ActionListener{
 
         this.setSize(800,600); //Taille
         this.setLocationRelativeTo(null); //Centre
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Stop run quand la dernière fenetre est fermée
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Stop run quand la dernière fenetre est fermée
         this.setResizable(false);
 
         Edt_Etudiant edt_etudiant = new Edt_Etudiant();
@@ -125,7 +125,7 @@ public class Recap extends JFrame implements ActionListener{
 
         this.setSize(800,600); //Taille
         this.setLocationRelativeTo(null); //Centre
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Stop run quand la dernière fenetre est fermée
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Stop run quand la dernière fenetre est fermée
         this.setResizable(false);
 
         Edt_Enseignant edt_enseignant = new Edt_Enseignant();
