@@ -4,7 +4,10 @@ import java.sql.*;
 import java.util.ArrayList;
 
 /**
+ * Partie DAO de la salle de classe
+ *
  * @author jorge
+ * @see Modele.DAO
  */
 
 public class SalleDAO extends DAO<Salle> {
@@ -129,6 +132,13 @@ public class SalleDAO extends DAO<Salle> {
         return lesseances;
     }
 
+    /**
+     * Verifie si une seance est disponible pour telle salle
+     *
+     * @param seance
+     * @param id_salle
+     * @return
+     */
     public boolean disponible(Seance seance, int id_salle) {
         try {
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
@@ -158,7 +168,7 @@ public class SalleDAO extends DAO<Salle> {
         }
         return true;
     }
-    
+
     /**
      * Méthode qui renvoie vrai si le nom existe dans la bdd false sinon
      *
@@ -195,6 +205,14 @@ public class SalleDAO extends DAO<Salle> {
         return existe;
     }
 
+    /**
+     * Verifie si la salle est disponible à telle periode
+     *
+     * @param heure_debut
+     * @param heure_fin
+     * @param id_salle
+     * @return
+     */
     public boolean disponible(Timestamp heure_debut, Timestamp heure_fin, int id_salle) {
         try {
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(

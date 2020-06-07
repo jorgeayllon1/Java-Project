@@ -1,6 +1,8 @@
 package Modele;
 
 /**
+ * Un site de l'école
+ *
  * @author jorge
  */
 

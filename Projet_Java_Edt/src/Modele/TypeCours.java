@@ -1,9 +1,11 @@
 package Modele;
 
 /**
+ * Type de cours d'un cours
+ * Un cours peut être un td, un cours majistral, de soutien...
+ *
  * @author jorge
  */
-
 public class TypeCours {
     private int id = 0;
     private String nom = "";

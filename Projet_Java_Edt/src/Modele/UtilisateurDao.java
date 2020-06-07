@@ -1,17 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modele;
 
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
 
-
 /**
+ * Partie DAO d'un utilisateur
+ *
  * @author Wang David
+ * @see Modele.DAO
  */
 public class UtilisateurDao extends DAO<Utilisateur> {
 
@@ -25,7 +22,6 @@ public class UtilisateurDao extends DAO<Utilisateur> {
     public UtilisateurDao(Connection conn) {
         super(conn);
     }
-
 
     public Utilisateur find(int id) {
         Utilisateur user = new Utilisateur();
@@ -82,7 +78,6 @@ public class UtilisateurDao extends DAO<Utilisateur> {
         return true;
     }
 
-    //Changer mail
     public boolean update(Utilisateur user) {
         try {
 

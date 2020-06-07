@@ -23,7 +23,6 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
  *
  * @author Wang David
  */
-
 public abstract class Controleur implements ActionListener {
 
     /**

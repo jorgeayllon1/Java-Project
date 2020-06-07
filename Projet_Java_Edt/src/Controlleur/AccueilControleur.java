@@ -14,7 +14,6 @@ import javax.swing.JOptionPane;
  *
  * @author Wang David
  */
-
 public class AccueilControleur extends Controleur {
 
     /**

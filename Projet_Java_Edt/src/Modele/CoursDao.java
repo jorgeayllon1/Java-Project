@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modele;
 
 import java.sql.Connection;
@@ -10,18 +5,34 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
+ * Version DAO du cours
+ *
  * @author Wang David
  */
 public class CoursDao extends DAO<Cours> {
 
+    /**
+     * Constructeur principale
+     */
     public CoursDao() {
         super();
     }
 
+    /**
+     * Contructeur normal
+     *
+     * @param conn La connection qu'on va utiliser pour se connecter à la bdd
+     */
     public CoursDao(Connection conn) {
         super();
     }
 
+    /**
+     * Trouve le cours celon l'id
+     *
+     * @param id l'id du cours a chercher
+     * @return le cours trouvé
+     */
     public Cours find(int id) {
         Cours cours = new Cours();
         try {
@@ -43,18 +54,42 @@ public class CoursDao extends DAO<Cours> {
         return cours;
     }
 
+    /**
+     * Cree un nouveau cours dans la bdd
+     *
+     * @param cours le cours a crée
+     * @return
+     */
     public boolean create(Cours cours) {
         return false;
     }
 
+    /**
+     * Efface le cours dans la bdd
+     *
+     * @param cours le cours a effacer
+     * @return vraie si tout c'est bien passer
+     */
     public boolean delete(Cours cours) {
         return false;
     }
 
+    /**
+     * maj d'un cours
+     *
+     * @param cours cours a maj
+     * @return vraie si tout c'est bien passer
+     */
     public boolean update(Cours cours) {
         return false;
     }
 
+    /**
+     * Verifie si un cours existe pour l'id correspondant
+     *
+     * @param id id du cours a chercher
+     * @return vraie si tout c'est bien passer
+     */
     public boolean siExiste(int id) {
         Cours cours = new Cours();
         CoursDao coursDao = new CoursDao();
@@ -81,6 +116,12 @@ public class CoursDao extends DAO<Cours> {
         return existe;
     }
 
+    /**
+     * Verifie si le nom fournie est un nom de cours
+     *
+     * @param nom nom a verifier
+     * @return vraie si tout c'est bien passer
+     */
     public boolean nomCoherent(String nom) {
 
         for (int i = 1; i < this.taille; i++) {
@@ -92,6 +133,12 @@ public class CoursDao extends DAO<Cours> {
         return false;
     }
 
+    /**
+     * Retourne l'id du cours celon le nom fourni
+     *
+     * @param nom le nom a chercher
+     * @return le id
+     */
     public int id_celon_nom(String nom) {
 
         int id = -1;
@@ -119,6 +166,12 @@ public class CoursDao extends DAO<Cours> {
         return id;
     }
 
+    /**
+     * Retourne le nombre de seance d'un cours
+     *
+     * @param id_cours le id du cours a chercher
+     * @return le nom de seance
+     */
     public int nombreDeSeance(int id_cours) {
         try {
             this.rset = this.conn.createStatement(

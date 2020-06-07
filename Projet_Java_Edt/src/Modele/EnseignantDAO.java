@@ -4,19 +4,33 @@ import java.sql.*;
 import java.util.ArrayList;
 
 /**
+ * Partie DAO d'un enseignant
+ *
  * @author jorge
  */
-
 public class EnseignantDAO extends DAO<Enseignant> {
 
+    /**
+     * Default construtor
+     */
     public EnseignantDAO() {
         super();
     }
 
+    /**
+     * Constructeur avec connexion bdd
+     *
+     * @param conn la connexion à la bdd
+     */
     public EnseignantDAO(Connection conn) {
         super(conn);
     }
 
+    /**
+     * @param id_utilisateur
+     * @return
+     * @see DAO#find(int)
+     */
     @Override
     public Enseignant find(int id_utilisateur) {
         Enseignant leprof = new Enseignant();
@@ -47,23 +61,44 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return leprof;
     }
 
+    /**
+     * @param obj objet a crée dans la bdd
+     * @return
+     * @see DAO#create(Object)
+     */
     @Override
     public boolean create(Enseignant obj) {
         return false;
     }
 
+    /**
+     * @param obj objet a effacer
+     * @return
+     * @see DAO#delete(Object)
+     */
     @Override
     public boolean delete(Enseignant obj) {
 
         return false;
     }
 
+    /**
+     * @param obj objet a mettre a jours
+     * @return
+     * @see DAO
+     */
     @Override
     public boolean update(Enseignant obj) {
         return false;
 
     }
 
+    /**
+     * trouve les id des séances
+     *
+     * @param prof prof que l'on veut
+     * @return
+     */
     public ArrayList<Integer> trouverIdSeance(Enseignant prof) {
 
         ArrayList<Integer> mes_id_seances = new ArrayList();
@@ -85,6 +120,13 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return mes_id_seances;
     }
 
+    /**
+     * Retourne la liste des seances
+     *
+     * @param array
+     * @return
+     * @deprecated utiliser une autre méthode
+     */
     public ArrayList<Seance> trouverAllSeances(ArrayList<Integer> array) {
         ArrayList<Seance> seance_prof = new ArrayList();
         Cours cours = new Cours();
@@ -162,6 +204,11 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return salle;
     }
 
+    /**
+     * Retourne tout les enseignant
+     *
+     * @return
+     */
     public ArrayList<Enseignant> listeEnseignant() {
         ArrayList<Enseignant> liste_prof = new ArrayList();
         ArrayList<Integer> deja_compte = new ArrayList();
@@ -201,6 +248,13 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return liste_prof;
     }
 
+    /**
+     * Retourne toutes les salles d'un prof sur une semaine
+     *
+     * @param id_prof
+     * @param numero_semaine
+     * @return
+     */
     public ArrayList<Seance> trouverAllSeancesSemaine(int id_prof, int numero_semaine) {
         ArrayList<Seance> les_seances = new ArrayList<>();
         DAO<Cours> coursDAO = DAOFactory.getCours();
@@ -244,6 +298,15 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return les_seances;
     }
 
+    /**
+     * Retourne toutes les seance sur une periode celon un groupe
+     *
+     * @param id_prof
+     * @param id_groupe
+     * @param debut
+     * @param fin
+     * @return
+     */
     public ArrayList<Seance> trouverSeancesParGroupeSurPeriode(int id_prof, int id_groupe, Date debut, Date fin) {
         ArrayList<Seance> les_seances = new ArrayList<>();
         DAO<Cours> coursDAO = DAOFactory.getCours();
@@ -362,6 +425,12 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return existe;
     }
 
+    /**
+     * Retourne l'id du prof dans la bdd celon le nom
+     *
+     * @param nom
+     * @return
+     */
     public int idCelonNom(String nom) {
         int le_id = 0;
         try {
@@ -381,6 +450,13 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return le_id;
     }
 
+    /**
+     * Verifie si un enseignant est disponible pour une seance
+     *
+     * @param seance
+     * @param id_enseignant
+     * @return
+     */
     public boolean disponible(Seance seance, int id_enseignant) {
         try {
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
@@ -411,6 +487,14 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return true;
     }
 
+    /**
+     * Verifie si un enseignant est disponible pour une periode
+     *
+     * @param heure_debut
+     * @param heure_fin
+     * @param id_enseignant
+     * @return
+     */
     public boolean disponible(Timestamp heure_debut, Timestamp heure_fin, int id_enseignant) {
         try {
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
@@ -439,6 +523,12 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return true;
     }
 
+    /**
+     * Retoune tout les cours d'un prof
+     *
+     * @param id_prof
+     * @return
+     */
     public ArrayList<Cours> trouverAllCours(int id_prof) {
         ArrayList<Cours> les_cours = new ArrayList<>();
         try {
@@ -461,6 +551,12 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return les_cours;
     }
 
+    /**
+     * Retourne toutes les séance d'un prof
+     *
+     * @param id_prof
+     * @return
+     */
     public ArrayList<Seance> allSeance(int id_prof) {
         ArrayList<Seance> les_seances = new ArrayList<>();
         DAO<Cours> coursDAO = DAOFactory.getCours();

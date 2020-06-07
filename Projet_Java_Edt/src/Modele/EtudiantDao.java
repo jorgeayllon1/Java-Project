@@ -10,7 +10,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
+ * Partie DAO d'un etudiant
+ *
  * @author Wang David
+ * @see DAO pour plus d'info
  */
 public class EtudiantDao extends DAO<Etudiant> {
 
@@ -113,6 +116,14 @@ public class EtudiantDao extends DAO<Etudiant> {
         return salle;
     }
 
+    /**
+     * Retourne toutes les séance d'un élève sur une periode
+     *
+     * @param id_eleve
+     * @param debut
+     * @param fin
+     * @return
+     */
     public ArrayList<Seance> trouverSeancesSurPeriode(int id_eleve, Date debut, Date fin) {
 
         ArrayList<Seance> les_seances = new ArrayList<>();
@@ -227,6 +238,12 @@ public class EtudiantDao extends DAO<Etudiant> {
         return existe;
     }
 
+    /**
+     * Renvoie toutes les seances de l'élève
+     *
+     * @param id_eleve
+     * @return
+     */
     public ArrayList<Seance> allSeance(int id_eleve) {
         ArrayList<Seance> les_seances = new ArrayList<>();
         DAO<Cours> coursDAO = DAOFactory.getCours();
@@ -269,6 +286,12 @@ public class EtudiantDao extends DAO<Etudiant> {
         return les_seances;
     }
 
+    /**
+     * Retourne tout les cours d'un élève
+     *
+     * @param id_eleve
+     * @return
+     */
     public ArrayList<Cours> trouverAllCours(int id_eleve) {
         ArrayList<Cours> les_cours = new ArrayList<>();
         try {

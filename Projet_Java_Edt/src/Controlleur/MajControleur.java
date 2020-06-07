@@ -21,7 +21,6 @@ import java.util.Calendar;
  *
  * @author jorge
  */
-
 public class MajControleur extends Controleur {
 
     /**

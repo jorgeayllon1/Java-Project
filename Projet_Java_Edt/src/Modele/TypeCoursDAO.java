@@ -3,9 +3,11 @@ package Modele;
 import java.sql.*;
 
 /**
+ * Partie DAO d'unt type de cours
+ *
  * @author jorge
+ * @see Modele.DAO
  */
-
 public class TypeCoursDAO extends DAO<TypeCours> {
 
     public TypeCoursDAO() {
@@ -61,6 +63,12 @@ public class TypeCoursDAO extends DAO<TypeCours> {
         return true;
     }
 
+    /**
+     * Verifie que le nom du type de cours existe dans la bdd
+     *
+     * @param nom
+     * @return
+     */
     public boolean nomCoherent(String nom) {
         for (int i = 1; i < this.taille; i++) {
             if (nom.equals(this.find(i).getNom())) {
@@ -71,6 +79,12 @@ public class TypeCoursDAO extends DAO<TypeCours> {
         return false;
     }
 
+    /**
+     * Retourne l'id du type de cours celon son nom
+     *
+     * @param nom
+     * @return
+     */
     public int id_celon_nom(String nom) {
 
         int id = -1;

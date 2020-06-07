@@ -1,9 +1,10 @@
 package Modele;
 
 /**
+ * Promotion de l'école
+ *
  * @author jorge
  */
-
 public class Promotion {
     private int id = 0;
     private int annee = 0;

@@ -9,10 +9,6 @@ public class PromotionDAO extends DAO<Promotion> {
         super();
     }
 
-    /*public PromotionDAO(Connection conn) {
-        super(conn);
-    }*/
-
     @Override
     public Promotion find(int id) {
         Promotion lapromo = new Promotion();

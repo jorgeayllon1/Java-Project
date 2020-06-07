@@ -246,6 +246,12 @@ public class GroupeDAO extends DAO<Groupe> {
         return les_seances;
     }
 
+    /**
+     * Retourne le nombre d'éleve du groupe
+     *
+     * @param id_groupe
+     * @return
+     */
     public int nombreEleve(int id_groupe) {
         int nombreEleve = 0;
 
@@ -266,6 +272,13 @@ public class GroupeDAO extends DAO<Groupe> {
         return nombreEleve;
     }
 
+    /**
+     * Verifie si une sseance est disponible pour un groupe
+     *
+     * @param seance
+     * @param id_groupe
+     * @return
+     */
     public boolean disponible(Seance seance, int id_groupe) {
         try {
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
@@ -296,6 +309,14 @@ public class GroupeDAO extends DAO<Groupe> {
         return true;
     }
 
+    /**
+     * Verifie si le groupe est disponible a une periode souhaiter
+     *
+     * @param heure_debut
+     * @param heure_fin
+     * @param id_groupe
+     * @return
+     */
     public boolean disponible(Timestamp heure_debut, Timestamp heure_fin, int id_groupe) {
         try {
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
@@ -360,6 +381,12 @@ public class GroupeDAO extends DAO<Groupe> {
         return existe;
     }
 
+    /**
+     * Retourne le nombre total de séance d'un groupe
+     *
+     * @param id_groupe
+     * @return
+     */
     public int nombreDeSeance(int id_groupe) {
         try {
             this.rset = this.conn.createStatement(

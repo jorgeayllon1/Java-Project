@@ -3,9 +3,11 @@ package Modele;
 import java.sql.*;
 
 /**
+ * Partie DAO d'un Site
+ *
  * @author jorge
+ * @see Modele.DAO
  */
-
 public class SiteDAO extends DAO<Site> {
 
     public SiteDAO() {
@@ -49,6 +51,12 @@ public class SiteDAO extends DAO<Site> {
         return false;
     }
 
+    /**
+     * Retourne la capacité total d'un site
+     *
+     * @param id_site
+     * @return
+     */
     public int capaciteTot(int id_site) {
         try {
             this.rset = this.conn.createStatement(

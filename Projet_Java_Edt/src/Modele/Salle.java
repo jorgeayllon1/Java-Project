@@ -1,15 +1,16 @@
 package Modele;
 
 /**
+ * Salle de classe de l'école
+ *
  * @author jorge
  */
-
 public class Salle {
 
     private int id = 0;
     private String nom = "";
     private int capacite = 0;
-    private Site site=null;
+    private Site site = null;
 
     public Salle(int id, String nom, int capacite, Site site) {
         this.id = id;
@@ -33,8 +34,7 @@ public class Salle {
         return this.capacite;
     }
 
-    public Site getSite()
-    {
+    public Site getSite() {
         return this.site;
     }
 }
