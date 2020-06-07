@@ -46,7 +46,7 @@ public class AccueilControleur extends Controleur {
 
         for (int i = 0; i < mesUsers.size(); i++) //On parcourt toute la liste des utilisateurs dans la bdd
         {
-            if ((identifiant.equals(mesUsers.get(i).getNom())) && (mdp.equals(mesUsers.get(i).getMdp()))) //Si id et mdp juste
+            if ((identifiant.equals(mesUsers.get(i).getMail())) && (mdp.equals(mesUsers.get(i).getMdp()))) //Si id et mdp juste
             {
 
                 auth = 0;
@@ -87,7 +87,7 @@ public class AccueilControleur extends Controleur {
         }
         if (auth == 1) {
             JOptionPane faux = new JOptionPane();
-            faux.showMessageDialog(null, "Identidiant ou mot de passe incorrect", "ERREUR", JOptionPane.ERROR_MESSAGE);
+            faux.showMessageDialog(null, "Mailou mot de passe incorrect", "ERREUR", JOptionPane.ERROR_MESSAGE);
         } else if (auth == 2) {
             JOptionPane vide = new JOptionPane();
             vide.showMessageDialog(null, "Au moins un des champ est vide", "CHAMP VIDE", JOptionPane.WARNING_MESSAGE);

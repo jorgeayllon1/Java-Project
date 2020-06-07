@@ -1,15 +1,14 @@
 
 package Vue;
 
-
 import Modele.*;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 
 import java.util.ArrayList;
 import javax.swing.*;
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
+import org.jfree.chart.*;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
@@ -27,7 +26,8 @@ public class Report extends JFrame {
      * @param etudiant 
      */
     public Report(Etudiant etudiant) {
-        super("Votre reporting");
+        
+        super("Votre reporting : " + etudiant.getNom()+ " " + etudiant.getPrenom());
 
         this.setSize(1000, 800); //Taille
         this.setLocationRelativeTo(null); //Centre
@@ -75,7 +75,7 @@ public class Report extends JFrame {
 
 // create a chart...
         JFreeChart chart = ChartFactory.createPieChart3D(
-                "Taux de cours",
+                "Taux de cours sur une année",
                 dataset,
                 true, // legend?
                 true, // tooltips?
@@ -109,7 +109,7 @@ public class Report extends JFrame {
      * @param prof 
      */
     public Report(Enseignant prof) {
-        super("Votre reporting");
+        super("Votre reporting : " + prof.getNom() + " " + prof.getPrenom());
 
         this.setSize(1000, 800); //Taille
         this.setLocationRelativeTo(null); //Centre
@@ -154,7 +154,7 @@ public class Report extends JFrame {
 
 // create a chart...
         JFreeChart chart = ChartFactory.createPieChart3D(
-                "Taux de cours",
+                "Taux de cours sur toute l'année",
                 dataset,
                 true, // legend?
                 true, // tooltips?
@@ -192,7 +192,7 @@ public class Report extends JFrame {
     public Report(Utilisateur admin) {
         super("Votre reporting");
 
-        this.setSize(1000, 800); //Taille
+        this.setSize(1000, 500); //Taille
         this.setLocationRelativeTo(null); //Centre
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Stop run quand la dernière fenetre est fermée
         this.setResizable(false);
@@ -208,6 +208,9 @@ public class Report extends JFrame {
 
         for (int i = 1; i < groupeDAO.getTaille("groupe"); i++) {
             String nom_groupe = groupeDAO.find(i).getNom();
+            int promo=groupeDAO.find(i).getPromo().getAnnee();
+            String str_promo = Integer.toString(promo);
+            nom_groupe+=" "+str_promo;
             int nombre_seance = groupeDAO.nombreDeSeance(i);
             dataset1.setValue(nombre_seance, nom_groupe, "");
         }
@@ -222,7 +225,7 @@ public class Report extends JFrame {
         }
 
 
-        JFreeChart chart1 = ChartFactory.createBarChart("Nombre de cours par Seance", // chart title
+        JFreeChart chart1 = ChartFactory.createBarChart("Nombre de cours par TD", // chart title
                 "Nom TD", // domain axis label
                 "Nombre cours", // range axis label
                 dataset1, // data
@@ -240,9 +243,14 @@ public class Report extends JFrame {
         );
 
 
+        JPanel content = new JPanel(new GridLayout(1,2));
+        
         ChartPanel panel2 = new ChartPanel(chart1);
+        ChartPanel panel3 = new ChartPanel(chart2);
 
-        this.add(panel2);
+        content.add(panel3);
+        content.add(panel2);
+        this.add(content);
         this.setVisible(true);
     }
 

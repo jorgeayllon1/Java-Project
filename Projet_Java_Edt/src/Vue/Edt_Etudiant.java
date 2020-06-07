@@ -567,7 +567,7 @@ public class Edt_Etudiant extends Edt {
             /// Parcours Final pour le recap
 
             System.out.println("----RECAP----");
-            donnees+="----RECAP----\n";
+            donnees+="------RECAP------\n";
             for (ArrayList<Seance> unelistedecours : cours_celon_matiere) {
 
                 Seance premiere_seance = unelistedecours.get(0);

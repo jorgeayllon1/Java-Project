@@ -42,14 +42,14 @@ public class Accueil extends JFrame implements ActionListener {
         panel.setLayout(new GridLayout(3,1,20,20));
         
         this.id = new JTextField();
-        id.setPreferredSize(new Dimension(100,30));
+        id.setPreferredSize(new Dimension(150,30));
         this.mdp = new JPasswordField();
-        mdp.setPreferredSize(new Dimension(100,30));
+        mdp.setPreferredSize(new Dimension(120,30));
         ImageIcon login_icon = new ImageIcon(new ImageIcon("src/Icones/login.png").getImage().getScaledInstance(15, 15, Image.SCALE_DEFAULT));
         this.connexion = new JButton("Se connecter",login_icon);
         this.connexion.setPreferredSize(new Dimension(150,50));
-        this.label_id = new JLabel("Identidiant");
-        this.label_mdp = new JLabel("Mot de Passe");
+        this.label_id = new JLabel("Mail :");
+        this.label_mdp = new JLabel("Mot de Passe :");
         
         
         JPanel panel1 = new JPanel(new FlowLayout(FlowLayout.CENTER,20,20));
