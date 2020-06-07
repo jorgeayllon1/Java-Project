@@ -268,4 +268,33 @@ public class EtudiantDao extends DAO<Etudiant> {
 
         return les_seances;
     }
+
+    public ArrayList<Cours> trouverAllCours(int id_eleve) {
+        ArrayList<Cours> les_cours = new ArrayList<>();
+        try {
+            this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT DISTINCT cours.id,cours.nom FROM cours\n" +
+                            "INNER JOIN seance\n" +
+                            "ON seance.id_cours=cours.id\n" +
+                            "INNER JOIN seance_groupes\n" +
+                            "ON seance_groupes.id_seance=seance.id\n" +
+                            "INNER JOIN groupe\n" +
+                            "ON groupe.id=seance_groupes.id_groupe\n" +
+                            "INNER JOIN etudiant\n" +
+                            "ON etudiant.id_groupe=groupe.id\n" +
+                            "WHERE etudiant.id_utilisateur=" + id_eleve
+            );
+            while (rset.next()) {
+                Cours cours = new Cours();
+                cours.setId(rset.getInt("id"));
+                cours.setNom(rset.getString("nom"));
+                les_cours.add(cours);
+            }
+        } catch (SQLException e) {
+            System.err.println("Erreur SQL GroupeDAO");
+            e.printStackTrace();
+        }
+        return les_cours;
+    }
+
 }
