@@ -110,6 +110,7 @@ public class Edt extends JFrame implements ActionListener {
         week.setFont(f.deriveFont(f.getStyle() | Font.BOLD));
         semaine.add(week);
         this.week_button = new ArrayList();
+        
         //On ajoute les 52 boutons pour chaque numéro de semaine
         for (int i = 0; i < 52; i++) {
             week_button.add(new JButton(Integer.toString(i + 1))); //Dans la arrayList
