@@ -10,20 +10,31 @@ import java.util.*;
 import javax.swing.JOptionPane;
 
 /**
+ * Controleur de l'acceuil
+ *
  * @author Wang David
  */
 
 public class AccueilControleur extends Controleur {
+
+    /**
+     * Variable pour l'autentification
+     */
     private int auth = 0;
 
+    /**
+     * Constructeur du controleur de l'acceuil
+     */
     public AccueilControleur() {
         super();
     }
 
-    /**Méthode qui va controler l'id et le mdp de l'user pour le diriger vers son interface
-     * selon son droit 
-     * @param identifiant
-     * @param mdp 
+    /**
+     * Méthode qui va controler l'id et le mdp de l'user pour le diriger vers son interface
+     * selon son droit
+     *
+     * @param identifiant nom de la personne qui se connecte
+     * @param mdp         mot de passe de la personne qui se connecte
      */
     public void control_accueil(String identifiant, String mdp) {
         ArrayList<Utilisateur> mesUsers = new ArrayList<>();

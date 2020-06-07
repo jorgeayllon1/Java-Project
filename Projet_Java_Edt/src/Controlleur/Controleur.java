@@ -19,16 +19,29 @@ import javax.swing.plaf.*;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 /**
+ * Classe abstraite pour tout les controleur
+ *
  * @author Wang David
  */
 
 public abstract class Controleur implements ActionListener {
 
+    /**
+     * Lien avec le DAO
+     */
     protected DAO dao;
 
+    /**
+     * Constructeur par default du controleur
+     */
     public Controleur() {
     }
 
+    /**
+     * Contructeur avec le lien du modèle
+     *
+     * @param dao modèle du projet
+     */
     public Controleur(DAO dao) {
         this.dao = dao;
     }

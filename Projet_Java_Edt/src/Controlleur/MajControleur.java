@@ -9,18 +9,36 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+/**
+ * Controleur principale du projet
+ * Il est utilisé à chaque fois que l'on cherche a mettre à jours la BDD
+ * Etat 0 : non validable, il manque un prof ou une salle ou un groupe
+ * Etat 1 : en cours de validation, il y a tout mais c'est pas validé
+ * Etat 2 : validé, il y a tout et c'est validé
+ * Etat 3 : annulée, il y a tout mais c'est pas validé
+ * On caractèrise une séance par son heure debut, heure fin et par sa salle
+ * Deux séance differentes ne peuvent avoir lieu en même temps dans une même salle
+ *
+ * @author jorge
+ */
+
 public class MajControleur extends Controleur {
 
+    /**
+     * Constructeur par default du controleur des mise à jours
+     */
     public MajControleur() {
         super();
     }
 
+    /**
+     * Contructeur du controleur avec le lien avec le modèle
+     *
+     * @param dao Le Modèle du projet
+     */
     public MajControleur(DAO dao) {
         super(dao);
     }
-
-    //On caractèrise une séance par son heure debut, heure fin et par sa salle
-    // Deux séance differentes ne peuvent avoir lieu en même temps dans une même salle
 
     /**
      * Modifie le nom du cours et le nom du type d'une seance
@@ -69,11 +87,6 @@ public class MajControleur extends Controleur {
 
     }
 
-    // Etat 0 : non validable, il manque un prof ou une salle ou un groupe
-    // Etat 1 : en cours de validation, il y a tout mais c'est pas validé
-    // Etat 2 : validé, il y a tout et c'est validé
-    // Etat 3 : annulée, il y a tout mais c'est pas validé
-
     /**
      * Crée une séance à l'état 0
      *
@@ -113,6 +126,11 @@ public class MajControleur extends Controleur {
         seanceDao.create(seance);
     }
 
+    /**
+     * Enlève l'enseignant associé à une séance
+     *
+     * @param seance la seance a modifier
+     */
     public void enleverEnseignantdeSeance(Seance seance) {
 
         SeanceDao seanceDao = new SeanceDao();
@@ -129,6 +147,11 @@ public class MajControleur extends Controleur {
 
     }
 
+    /**
+     * Enlève la salle associé à une séance
+     *
+     * @param seance la seance a modifier
+     */
     public void enleverSalledeSeance(Seance seance) {
         SeanceDao seanceDao = new SeanceDao();
 
@@ -142,6 +165,12 @@ public class MajControleur extends Controleur {
         } else System.out.println("Il n'y a pas de salle pour ce cours");
     }
 
+    /**
+     * Enlève le groupe associé à une séance
+     *
+     * @param seance     la seance a modifier
+     * @param nom_groupe le nom du groupe a modifier
+     */
     public void enleverGroupeSeance(Seance seance, String nom_groupe) {
         SeanceDao seanceDao = new SeanceDao();
         GroupeDAO groupeDAO = new GroupeDAO();
@@ -189,6 +218,12 @@ public class MajControleur extends Controleur {
             System.out.println("Il n'y a pas CE groupe pour cette séance");//Si ce code s'active, il y a peut être un problème dans le code
     }
 
+    /**
+     * Affecte la salle associé à une séance
+     *
+     * @param seance    la seance a modifier
+     * @param nom_salle le nom de la salle a modifier
+     */
     public void affecterSalleSeance(Seance seance, String nom_salle) {
         SeanceDao seanceDao = new SeanceDao();
         SalleDAO salleDAO = new SalleDAO();
@@ -225,6 +260,12 @@ public class MajControleur extends Controleur {
         seanceDao.update(seance);
     }
 
+    /**
+     * Affecte l'enseignant associé à une séance
+     *
+     * @param seance         la seance a modifier
+     * @param nom_enseignant le nom de l'enseignant a modifier
+     */
     public void affecterEnseignatSeance(Seance seance, String nom_enseignant) {
         SeanceDao seanceDao = new SeanceDao();
         EnseignantDAO enseignantDAO = new EnseignantDAO();
@@ -256,6 +297,12 @@ public class MajControleur extends Controleur {
         seanceDao.update(seance);
     }
 
+    /**
+     * Affecte le groupe associé à une séance
+     *
+     * @param seance     la seance a modifier
+     * @param nom_groupe le nom du groupe a modifier
+     */
     public void affecterGroupeSeance(Seance seance, String nom_groupe) {
         SeanceDao seanceDao = new SeanceDao();
         GroupeDAO groupeDAO = new GroupeDAO();
@@ -313,6 +360,11 @@ public class MajControleur extends Controleur {
 
     }
 
+    /**
+     * Valide une Seance
+     *
+     * @param seance la seance a modifier
+     */
     public void validerSeance(Seance seance) {
         SeanceDao seanceDao = new SeanceDao();
 
@@ -326,6 +378,11 @@ public class MajControleur extends Controleur {
         } else System.out.println("Cette seance ne peut pas être validée");
     }
 
+    /**
+     * Annule une seance
+     *
+     * @param seance la seance a modifier
+     */
     public void annulerSeance(Seance seance) {
         SeanceDao seanceDao = new SeanceDao();
 
@@ -339,6 +396,14 @@ public class MajControleur extends Controleur {
         } else System.out.println("Cette séance ne peut pas être annulée");
     }
 
+    /**
+     * Deplace une séance vers une nouvelle salle a une nouvelle date
+     *
+     * @param seance           la seance a modifier
+     * @param nouv_heure_debut nouvelle heure de debut de seance
+     * @param nouv_heure_fin   nouvelle heure de fin de seance
+     * @param nouv_salle       nom de la nouvelle salle
+     */
     public void deplacerSeance(Seance seance, Timestamp nouv_heure_debut, Timestamp nouv_heure_fin, String
             nouv_salle) {
 
