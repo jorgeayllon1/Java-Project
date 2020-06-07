@@ -30,6 +30,7 @@ public class Projet_Java_Edt {
         UIManager.setLookAndFeel(new NimbusLookAndFeel());
         Accueil accueil = new Accueil();
 
+
     }
 
 }

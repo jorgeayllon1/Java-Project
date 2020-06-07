@@ -34,7 +34,7 @@ public class Accueil extends JFrame implements Observer, ActionListener {
 
         this.setSize(400,400); //Taille
         this.setLocationRelativeTo(null); //Centre
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Stop run quand la dernière fenetre est fermée
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Stop run quand la dernière fenetre est fermée
         this.setResizable(false);
         
         JPanel panel = (JPanel)this.getContentPane();
