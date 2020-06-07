@@ -570,8 +570,7 @@ public class Edt_Admin extends Edt {
 
 
         if (e.getSource() == this.report) {
-            JOptionPane stop = new JOptionPane();
-            stop.showMessageDialog(null, "Non dispo", "ERREUR", JOptionPane.ERROR_MESSAGE);
+            Report report = new Report(this.user);
         }
 
         if (e.getSource() == this.logout) {
