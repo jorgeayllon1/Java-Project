@@ -427,6 +427,11 @@ public class Edt_Enseignant extends Edt {
         if (e.getSource() == this.summary) {
             Recap recap = new Recap(this.prof);
         }
+        
+        if(e.getSource() == this.report)
+        {
+            Report report = new Report(this.prof);
+        }
 
 
         ///Si onclique sur un des boutons de la grille de semaine

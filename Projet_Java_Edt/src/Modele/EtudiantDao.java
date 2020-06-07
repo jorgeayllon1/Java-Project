@@ -268,5 +268,4 @@ public class EtudiantDao extends DAO<Etudiant> {
 
         return les_seances;
     }
-
 }
