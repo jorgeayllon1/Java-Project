@@ -32,6 +32,11 @@ public class Edt_Etudiant extends Edt {
     public Edt_Etudiant() {
     }
 
+    /**Constructeur pour affichage de l'interface edt d'un etudiant
+     * 
+     * @param user
+     * @param etudiant 
+     */
     public Edt_Etudiant(Utilisateur user, Etudiant etudiant) {
 
         super(user);
@@ -74,7 +79,6 @@ public class Edt_Etudiant extends Edt {
      *
      * @param droit
      */
-
     public void afficherEdtEtudiant(int droit) {
         
         panel_edt.removeAll();
@@ -492,6 +496,11 @@ public class Edt_Etudiant extends Edt {
 
     /**
      * Renvoie un recap de toutes les informations d'un enseignant
+     * 
+     * @param date_debut
+     * @param date_fin
+     * @param etudiant
+     * @return donnees(String)
      */
     public String voirrecap(java.sql.Date date_debut, java.sql.Date date_fin, Etudiant etudiant) {
 

@@ -34,6 +34,10 @@ public class Recap extends JFrame implements ActionListener{
     
     public Recap(){}
     
+    /**Constructeur pour le recap d'un etudiant 
+     * 
+     * @param etudiant 
+     */
     public Recap(Etudiant etudiant)
     {
         super("Votre récapitulatif de cours");
@@ -118,7 +122,10 @@ public class Recap extends JFrame implements ActionListener{
 
         this.setVisible(true);
     }
-    
+    /**Constructeur pour le recap d'un prof
+     * 
+     * @param prof 
+     */
     public Recap(Enseignant prof)
     {
         super("Votre récapitulatif de cours");
