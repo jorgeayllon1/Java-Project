@@ -51,6 +51,7 @@ public class Edt_Etudiant extends Edt {
         this.rechercher.addActionListener(this);
         this.summary.addActionListener(this);
         this.report.addActionListener(this);
+        this.annule.addActionListener(this);
 
         ///Si on clique sur l'un des boutons de la grille de semaine
         for (int nb_week = 0; nb_week < this.week_button.size(); nb_week++) {
@@ -482,6 +483,11 @@ public class Edt_Etudiant extends Edt {
         {
             Report report = new Report(this.etudiant);
             
+        }
+        
+        if(e.getSource() == this.annule)
+        {
+            Annule annule = new Annule(this.etudiant);
         }
 
     }

@@ -47,6 +47,7 @@ public class Edt_Enseignant extends Edt {
         this.mes_cours.addActionListener(this);
         this.rechercher.addActionListener(this);
         this.report.addActionListener(this);
+        this.annule.addActionListener(this);
         
         ///Si on clique sur l'un des boutons de la grille de semaine
         for (int nb_week = 0; nb_week < this.week_button.size(); nb_week++) {
@@ -450,6 +451,11 @@ public class Edt_Enseignant extends Edt {
         if(e.getSource()==this.logout)
         {
             this.dispose(); //Fermeture 
+        }
+        
+        if(e.getSource() == this.annule)
+        {
+            Annule annule = new Annule(this.prof);
         }
         
     }
