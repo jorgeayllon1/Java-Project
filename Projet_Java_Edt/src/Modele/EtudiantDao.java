@@ -146,7 +146,7 @@ public class EtudiantDao extends DAO<Etudiant> {
                 int id_type = rset.getInt("id_type");
                 TypeCours typeCours = typeCoursDAO.find(id_type);
 
-                les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, etat,cours, typeCours));
+                les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, etat, cours, typeCours));
 
             }
 
@@ -157,71 +157,116 @@ public class EtudiantDao extends DAO<Etudiant> {
 
         return les_seances;
     }
-    
-    /**Méthode pour trouver un eleve en fonction de son nom
-     * @param nom*/
-    public Etudiant trouverEleveAvecNom(String nom)
-    {
+
+    /**
+     * Méthode pour trouver un eleve en fonction de son nom
+     *
+     * @param nom
+     */
+    public Etudiant trouverEleveAvecNom(String nom) {
         Etudiant e = new Etudiant();
         EtudiantDao eDao = new EtudiantDao();
-        int id_user=0;
-        
+        int id_user = 0;
+
         try {
             this.rset = this.conn.createStatement(
                     this.rset.TYPE_SCROLL_INSENSITIVE,
-                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id FROM utilisateur WHERE nom ='" + nom+"'"); 
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id FROM utilisateur WHERE nom ='" + nom + "'");
 
 
-            while (rset.next())
-            {
+            while (rset.next()) {
 
                 id_user = rset.getInt("id");
-                e= eDao.find(id_user);
+                e = eDao.find(id_user);
 
 
             }
 
 
         } catch (SQLException ex) {
-            
+
             System.out.println("Connexion echouee : probleme SQL SeanceDAO");
             ex.printStackTrace();
         }
         return e;
     }
-    
-    /**Méthode qui renvoie vrai si le nom existe dans la bdd false sinon
-     * @param nom*/
-    public boolean siExiste(String nom)
-    {
+
+    /**
+     * Méthode qui renvoie vrai si le nom existe dans la bdd false sinon
+     *
+     * @param nom
+     */
+    public boolean siExiste(String nom) {
         Etudiant e = new Etudiant();
         EtudiantDao eDao = new EtudiantDao();
-        int id_user=0;
+        int id_user = 0;
         boolean existe = false;
-        
-        
+
+
         try {
             this.rset = this.conn.createStatement(
                     this.rset.TYPE_SCROLL_INSENSITIVE,
-                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id FROM utilisateur WHERE nom ='" + nom+"'"); 
+                    this.rset.CONCUR_READ_ONLY).executeQuery("SELECT id FROM utilisateur WHERE nom ='" + nom + "'");
 
 
-            while (rset.next())
-            {
+            while (rset.next()) {
 
                 id_user = rset.getInt("id");
-                e= eDao.find(id_user);
-                existe=true;
+                e = eDao.find(id_user);
+                existe = true;
 
 
             }
 
 
         } catch (SQLException ex) {
-            
+
             System.out.println("Connexion echouee : probleme SQL SeanceDAO");
             ex.printStackTrace();
         }
         return existe;
     }
+
+    public ArrayList<Seance> allSeance(int id_eleve) {
+        ArrayList<Seance> les_seances = new ArrayList<>();
+        DAO<Cours> coursDAO = DAOFactory.getCours();
+        DAO<TypeCours> typeCoursDAO = DAOFactory.getTypeCours();
+
+        try {
+            this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT seance.id,semaine,date,heure_debut,heure_fin,etat,id_cours,id_type FROM seance\n" +
+                            "INNER JOIN seance_groupes\n" +
+                            "ON seance_groupes.id_seance=seance.id\n" +
+                            "INNER JOIN groupe\n" +
+                            "ON seance_groupes.id_groupe=groupe.id\n" +
+                            "INNER JOIN etudiant\n" +
+                            "ON etudiant.id_groupe=groupe.id\n" +
+                            "WHERE etudiant.id_utilisateur=" + id_eleve
+            );
+
+            while (rset.next()) {
+
+                int id = rset.getInt("id");
+                int semaine = rset.getInt("semaine");
+                Date date = rset.getDate("date");
+                Timestamp heure_debut = rset.getTimestamp("heure_debut");
+                Timestamp heure_fin = rset.getTimestamp("heure_fin");
+                int etat = rset.getInt("etat");
+                int id_cours = rset.getInt("id_cours");
+                Cours cours = coursDAO.find(id_cours);
+                int id_type = rset.getInt("id_type");
+                TypeCours typeCours = typeCoursDAO.find(id_type);
+
+                les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, etat, cours, typeCours));
+
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erreur SQL EtudiantDAO");
+            e.printStackTrace();
+        }
+
+        return les_seances;
+    }
+
 }

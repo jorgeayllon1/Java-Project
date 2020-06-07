@@ -26,7 +26,6 @@ public abstract class Controleur implements ActionListener {
 
     protected DAO dao;
 
-
     public Controleur() {
     }
 

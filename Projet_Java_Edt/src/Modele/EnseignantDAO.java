@@ -460,4 +460,42 @@ public class EnseignantDAO extends DAO<Enseignant> {
         }
         return les_cours;
     }
+
+    public ArrayList<Seance> allSeance(int id_prof) {
+        ArrayList<Seance> les_seances = new ArrayList<>();
+        DAO<Cours> coursDAO = DAOFactory.getCours();
+        DAO<TypeCours> typeCoursDAO = DAOFactory.getTypeCours();
+
+        try {
+            this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT seance.id,semaine,date,heure_debut,heure_fin,etat,id_cours,id_type FROM seance\n" +
+                            "INNER JOIN seance_enseignants\n" +
+                            "ON seance.id=seance_enseignants.id_seance\n" +
+                            "WHERE seance_enseignants.id_enseignant=" + id_prof
+            );
+
+            while (rset.next()) {
+
+                int id = rset.getInt("id");
+                int semaine = rset.getInt("semaine");
+                Date date = rset.getDate("date");
+                Timestamp heure_debut = rset.getTimestamp("heure_debut");
+                Timestamp heure_fin = rset.getTimestamp("heure_fin");
+                int etat = rset.getInt("etat");
+                int id_cours = rset.getInt("id_cours");
+                Cours cours = coursDAO.find(id_cours);
+                int id_type = rset.getInt("id_type");
+                TypeCours typeCours = typeCoursDAO.find(id_type);
+
+                les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, etat, cours, typeCours));
+
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erreur SQL EnseignantDAO");
+            e.printStackTrace();
+        }
+
+        return les_seances;
+    }
 }
