@@ -22,13 +22,13 @@ public class CaseLabel extends DefaultTableCellRenderer{
         
         Font  mon_font  = new Font(Font.DIALOG,  Font.BOLD, 16);
         if (row == 0) {
-            Color clr = new Color(255, 255, 240);
-            comp.setBackground(clr);
+            Color ma_couleur = new Color(204, 255, 153);
+            comp.setBackground(ma_couleur);
             comp.setFont(mon_font);
             
         } else {
-            Color clr = new Color(255, 255, 255);
-            comp.setBackground(clr);
+            Color ma_couleur = new Color(242, 242, 242);
+            comp.setBackground(ma_couleur);
         }
         for(int i=0; i < table.getRowCount(); i++) {
          for(int j=0; j < table.getColumnCount(); j++) {
