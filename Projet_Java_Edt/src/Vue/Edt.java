@@ -48,6 +48,10 @@ public class Edt extends JFrame implements ActionListener {
     public Edt() {
     }
 
+    /**Constructeur qui va afficher l'interface d'un edt
+     * 
+     * @param user
+     */
     public Edt(Utilisateur user) {
         super("Votre emploi du temps - " + user.getNom().toUpperCase() + " " + user.getPrenom().toUpperCase());
 
@@ -60,7 +64,8 @@ public class Edt extends JFrame implements ActionListener {
 
     }
     
-    ///Affichage menu de base (cours, recherche, reporting...)
+    /**Affichage menu de base
+     * */
     public void infoBase()
     {
         this.menu.setBackground(new java.awt.Color(179, 204, 204));
@@ -148,7 +153,9 @@ public class Edt extends JFrame implements ActionListener {
 
     }
     
-    //Méthode de personnalisation font
+    /**Méthode personnalisation font
+     *
+     * @param j **/
     public void iconFont(JButton j)
     {
         j.setPreferredSize(new Dimension(200,50));
@@ -157,6 +164,7 @@ public class Edt extends JFrame implements ActionListener {
         menu.add(j);
     }
     
+    /**Méthode afficher grille*/
     public void afficherGrille()
     {
         Object[][] donnees =
@@ -180,7 +188,9 @@ public class Edt extends JFrame implements ActionListener {
         tableau.setShowGrid(true); //Affichage quadrillage
         
     }
-    
+    /**Méthode afficher grille dans un panel
+     *
+     * @param panelTab */
     public void afficherGrille(JPanel panelTab)
     {
         Object[][] donnees =
@@ -236,7 +246,12 @@ public class Edt extends JFrame implements ActionListener {
         tableau.setValueAt("Vendredi "+vendredi, 0, 5);
      }
     
-    //Méthode de recherche selon nom user
+    /**Méthode recherche user
+     * 
+     * @param nom
+     * @param semaine
+     * @param droit 
+     */
     public void rechercher_utilisateur(String nom, String semaine, int droit) {
 
         int numero_semaine = 0;
@@ -318,6 +333,10 @@ public class Edt extends JFrame implements ActionListener {
         /////////////////////////////------------------------Méthodes de redirection de panel------------------------/////////////////////////////
     
 
+    /**Méthode suppression panel
+     * 
+     * @param parent 
+     */
     public void suppPanel(JComponent parent) {
 
         parent.removeAll();
@@ -325,6 +344,11 @@ public class Edt extends JFrame implements ActionListener {
         parent.repaint();
     }
 
+    /**Méthode ajout panel
+     * 
+     * @param parent
+     * @param child 
+     */
     public void ajoutPanel(JComponent parent, JComponent child) {
         parent.add(child);
         parent.revalidate();

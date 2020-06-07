@@ -1,4 +1,3 @@
-
 package Vue;
 
 import Controlleur.MajControleur;
@@ -63,6 +62,10 @@ public class Edt_Admin extends Edt {
     }
 
 
+    /**Constructeur qui va afficher l'interface de l'utilisateur
+     * 
+     * @param user 
+     */
     public Edt_Admin(Utilisateur user) {
         super(user);
 
@@ -91,6 +94,9 @@ public class Edt_Admin extends Edt {
 
     /**
      * Recherche de l'emploi du temps d'un groupe
+     *
+     * @param nom_groupe
+     * @param semaine
      */
     public void rechercher_groupe(String nom_groupe, String semaine) {
 
@@ -140,6 +146,8 @@ public class Edt_Admin extends Edt {
 
     /**
      * Recherche l'emplois du temps d'une promo pour une semaine choisie
+     * @param anne_promotion
+     * @param semaine
      */
     public void rechercher_promotion(String anne_promotion, String semaine) {
 
@@ -191,6 +199,8 @@ public class Edt_Admin extends Edt {
 
     /**
      * Recherche l'emplois du temps du salle pour une semaine choisi
+     * @param nom_salle
+     * @param semaine
      */
     public void rechercher_salle(String nom_salle, String semaine) {
 
@@ -243,7 +253,10 @@ public class Edt_Admin extends Edt {
 
     }
 
-
+    /**Affiche le panel de recherche pour un user
+     * 
+     * @param panel 
+     */
     public void afficherPanelUser(JPanel panel) {
 
         ///Panel centre on ajoute la grille dans le panel centre
@@ -341,7 +354,11 @@ public class Edt_Admin extends Edt {
         panel.add(haut, BorderLayout.NORTH);
 
     }
-
+    
+    /**Affiche le panel de recherche pour un groupe
+     * 
+     * @param panel 
+     */
     public void afficherPanelGroupe(JPanel panel) {
         ///Panel centre on ajoute la grille dans le panel centre
         JPanel centre = new JPanel(new GridLayout(0, 1));
@@ -427,10 +444,18 @@ public class Edt_Admin extends Edt {
         panel.add(haut, BorderLayout.NORTH);
     }
 
+    /**Affiche le panel de recherche pour une promo
+     * 
+     * @param panel 
+     */
     public void afficherPanelPromo(JPanel panel) {
 
     }
 
+    /**Affiche le panel de recherche pour une salle
+     * 
+     * @param panel 
+     */
     public void afficherPanelSalle(JPanel panel) {
         ///Panel centre on ajoute la grille dans le panel centre
         JPanel centre = new JPanel(new GridLayout(0, 1));
@@ -559,7 +584,10 @@ public class Edt_Admin extends Edt {
 
     //////////////////////////////////////////////----------------------------MISE A JOUR DES DONNEES----------------------------------//////////////////////////////////////
 
-
+    
+    /**Affiche l'interface mise à jour
+     * 
+     */
     public void afficherInterfaceMaj() {
         suppPanel(this.panel);
         suppPanel(this.content2);
@@ -600,6 +628,10 @@ public class Edt_Admin extends Edt {
 
     }
 
+    /**Affiche le panel de recherche pour enlever
+     * 
+     * @param panel 
+     */
     public void afficherPanelEnlever(JPanel panel) {
 
 
@@ -770,6 +802,10 @@ public class Edt_Admin extends Edt {
 
     }
 
+    /**Affiche le panel de recherche pour affecter
+     * 
+     * @param panel 
+     */
     public void afficherPanelAffecter(JPanel panel) {
 
         ///Panel centre on ajoute la grille dans le panel centre
@@ -1031,6 +1067,10 @@ public class Edt_Admin extends Edt {
 
     }
 
+    /**Affiche le panel de recherche pour modifier
+     * 
+     * @param panel 
+     */
     public void afficherPanelModifier(JPanel panel) {
         ///Panel centre on  dans le panel centre
         JPanel centre = new JPanel(new FlowLayout());
@@ -1139,11 +1179,19 @@ public class Edt_Admin extends Edt {
         panel.add(haut, BorderLayout.NORTH);
     }
 
+    /**Affiche le panel de recherche pour ajouter
+     * 
+     * @param panel 
+     */
     public void afficherPanelAjouter(JPanel panel) {
         JButton test = new JButton("ajouter");
         panel.add(test);
     }
 
+    /**Affiche le panel de recherche pour annuler
+     * 
+     * @param panel 
+     */
     public void afficherPanelAnnuler(JPanel panel) {
 
 
@@ -1290,6 +1338,10 @@ public class Edt_Admin extends Edt {
         panel.add(haut, BorderLayout.NORTH);
     }
 
+    /**Affiche le panel de recherche pour valider
+     * 
+     * @param panel 
+     */
     public void afficherPanelValider(JPanel panel) {
 
         ///Panel centre on ajoute la grille dans le panel centre
@@ -1436,6 +1488,10 @@ public class Edt_Admin extends Edt {
         panel.add(haut, BorderLayout.NORTH);
     }
 
+    /**Affiche le panel de recherche pour deplacer
+     * 
+     * @param panel 
+     */
     public void afficherPanelDeplacer(JPanel panel) {
         JButton test = new JButton("deplacer");
         panel.add(test);
@@ -1446,7 +1502,8 @@ public class Edt_Admin extends Edt {
 
     /**Méthode qui va afficher l'edt d'une semaine avec la seance qui manque
      * soit un prof soit un gp soit soit une salle
-     * 
+     * @param seance_manquante
+     * @param pan
      */
     public void afficherEdtManque(Seance seance_manquante, JPanel pan)
     {
@@ -1576,6 +1633,12 @@ public class Edt_Admin extends Edt {
         pan.add(tableau);
     }
     
+    /**Affiche edt selon prof
+     * 
+     * @param prof
+     * @param semaine
+     * @param pan 
+     */
     public void afficherEdtSemaineProf(Enseignant prof, int semaine, JPanel pan) {
 
         suppPanel(pan);
@@ -1718,6 +1781,12 @@ public class Edt_Admin extends Edt {
         pan.add(tableau);
     }
 
+    /**Affiche edt selon etudiant
+     * 
+     * @param etudiant
+     * @param semaine
+     * @param pan 
+     */
     public void afficherEdtSemaineEleve(Etudiant etudiant, int semaine, JPanel pan) {
         suppPanel(pan);
         ///Clear le tableau
@@ -1864,6 +1933,12 @@ public class Edt_Admin extends Edt {
 
     }
 
+    /**Affiche edt selon groupe
+     * 
+     * @param groupe
+     * @param semaine
+     * @param pan 
+     */
     public void afficherEdtSemaineGroupe(Groupe groupe, int semaine, JPanel pan) {
         suppPanel(pan);
         ///Clear le tableau
@@ -2005,6 +2080,12 @@ public class Edt_Admin extends Edt {
         pan.add(tableau);
     }
 
+    /**Affiche edt selon salle
+     * 
+     * @param salle
+     * @param semaine
+     * @param pan 
+     */
     public void afficherEdtSemaineSalle(Salle salle, int semaine, JPanel pan) {
         suppPanel(pan);
         ///Clear le tableau

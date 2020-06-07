@@ -20,6 +20,11 @@ public class AccueilControleur extends Controleur {
         super();
     }
 
+    /**Méthode qui va controler l'id et le mdp de l'user pour le diriger vers son interface
+     * selon son droit 
+     * @param identifiant
+     * @param mdp 
+     */
     public void control_accueil(String identifiant, String mdp) {
         ArrayList<Utilisateur> mesUsers = new ArrayList<>();
         DAO<Utilisateur> userDao = new UtilisateurDao();

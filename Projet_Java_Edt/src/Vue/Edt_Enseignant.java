@@ -27,10 +27,17 @@ public class Edt_Enseignant extends Edt {
     private  JPanel panel_recherche = new JPanel();
 
 
-    ///Constructeurs
+    /**Constructeur qui affiche l'interface edt d'un prof
+     * 
+     */
     public Edt_Enseignant() {
     }
 
+    /**Constructeur qui va afficher l'interface edt d'un prof
+     * 
+     * @param user
+     * @param prof 
+     */
     public Edt_Enseignant(Utilisateur user, Enseignant prof) {
         super(user);
         this.prof = prof;
@@ -51,7 +58,9 @@ public class Edt_Enseignant extends Edt {
 
     }
 
-    ///Affichage de l'onglet cours qui sert de page d'accueil lors de la connexion
+    /**Affichage de l'onglet cours qui sert de page d'accueil lors de la connexion
+     * 
+     */
     public void afficherEdtProfAccueil() {
 
         
@@ -206,12 +215,12 @@ public class Edt_Enseignant extends Edt {
         this.panel_edt.setVisible(true);
         this.setVisible(true);
     }
+    
     /**Méthode qui va afficher l'edt en fonction de la 
      * semaine
      * @param droit
      * @param semaine 
      */
-
     public void afficherEdtSemaineProf(int droit, int semaine) {
         panel_edt.removeAll();
         panel_edt.validate();
@@ -451,6 +460,8 @@ public class Edt_Enseignant extends Edt {
      * @param nomGroupe
      * @param date_debut
      * @param date_fin
+     * @param prof
+     * @return donnees(String)
      */
     public String voirrecap(String nomGroupe, Date date_debut, Date date_fin,Enseignant prof) {
 
