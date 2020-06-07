@@ -34,19 +34,37 @@ public class MajControleur extends Controleur {
         CoursDao coursDao = new CoursDao();
         TypeCoursDAO typeCoursDAO = new TypeCoursDAO();
         SeanceDao seanceDao = new SeanceDao();
+        EnseignantDAO enseignantDAO = new EnseignantDAO();
 
         int id_cours = coursDao.id_celon_nom(nouv_cours_nom);
         int id_typecours = typeCoursDAO.id_celon_nom(nouv_typeCours_nom);
 
         // Blinder pour avoir un nom de cours et type de cours cohérent
-        if (id_cours != -1 && id_typecours != -1) {
-            seance.getCours().setNom(nouv_cours_nom);
-            seance.getCours().setId(id_cours);
-            seance.getType().setNom(nouv_typeCours_nom);
-            seance.getType().setId(id_typecours);
+        if (id_cours == -1 || id_typecours == -1) {
+            System.out.println("Nom de cours ou nom de type de cours inconnu");
+            return;
+        }
 
-        } else System.out.println("Nom de cours ou nom de type de cours inconnu");
+        Enseignant prof = seanceDao.trouverEnseignant(seance);
+        ArrayList<Cours> les_cours_du_prof = enseignantDAO.trouverAllCours(prof.getID());
 
+        boolean ok = false;
+        for (Cours uncours :
+                les_cours_du_prof) {
+            if (uncours.getID() == id_cours) {
+                ok = true;
+            }
+        }
+
+        if (!ok) {
+            System.out.println("Le prof ne peut pas enseigner cette matière");
+            return;
+        }
+
+        seance.getCours().setNom(nouv_cours_nom);
+        seance.getCours().setId(id_cours);
+        seance.getType().setNom(nouv_typeCours_nom);
+        seance.getType().setId(id_typecours);
         seanceDao.update(seance);
 
     }
@@ -66,7 +84,8 @@ public class MajControleur extends Controleur {
      * @param nom_cours
      * @param nom_typecours
      */
-    public void creationSeance(int semaine, Date date, Timestamp heure_debut, Timestamp heure_fin, String nom_cours, String nom_typecours) {
+    public void creationSeance(int semaine, Date date, Timestamp heure_debut, Timestamp heure_fin, String
+            nom_cours, String nom_typecours) {
         CoursDao coursDao = new CoursDao();
         TypeCoursDAO typeCoursDAO = new TypeCoursDAO();
         SeanceDao seanceDao = new SeanceDao();
@@ -320,7 +339,8 @@ public class MajControleur extends Controleur {
         } else System.out.println("Cette séance ne peut pas être annulée");
     }
 
-    public void deplacerSeance(Seance seance, Timestamp nouv_heure_debut, Timestamp nouv_heure_fin, String nouv_salle) {
+    public void deplacerSeance(Seance seance, Timestamp nouv_heure_debut, Timestamp nouv_heure_fin, String
+            nouv_salle) {
 
         SalleDAO salleDAO = new SalleDAO();
         GroupeDAO groupeDAO = new GroupeDAO();

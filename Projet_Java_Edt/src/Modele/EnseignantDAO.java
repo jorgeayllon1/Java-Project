@@ -202,8 +202,6 @@ public class EnseignantDAO extends DAO<Enseignant> {
     }
 
     public ArrayList<Seance> trouverAllSeancesSemaine(int id_prof, int numero_semaine) {
-
-
         ArrayList<Seance> les_seances = new ArrayList<>();
         DAO<Cours> coursDAO = DAOFactory.getCours();
         DAO<TypeCours> typeCoursDAO = DAOFactory.getTypeCours();
@@ -237,10 +235,7 @@ public class EnseignantDAO extends DAO<Enseignant> {
                     deja_compte.add(rset.getInt("id"));
                     les_seances.add(new Seance(id, semaine, date, heure_debut, heure_fin, etat, cours, typeCours));
                 }
-
-
             }
-
         } catch (SQLException e) {
             System.err.println("Erreur SQL GroupeDAO");
             e.printStackTrace();
@@ -444,4 +439,25 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return true;
     }
 
+    public ArrayList<Cours> trouverAllCours(int id_prof) {
+        ArrayList<Cours> les_cours = new ArrayList<>();
+        try {
+            this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT DISTINCT * FROM cours\n" +
+                            "INNER JOIN enseignant\n" +
+                            "ON enseignant.id_cours=cours.id\n" +
+                            "WHERE enseignant.id_utilisateur=" + id_prof
+            );
+            while (rset.next()) {
+                Cours cours = new Cours();
+                cours.setId(rset.getInt("id"));
+                cours.setNom(rset.getString("nom"));
+                les_cours.add(cours);
+            }
+        } catch (SQLException e) {
+            System.err.println("Erreur SQL GroupeDAO");
+            e.printStackTrace();
+        }
+        return les_cours;
+    }
 }
