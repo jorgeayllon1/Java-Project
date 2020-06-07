@@ -48,4 +48,23 @@ public class SiteDAO extends DAO<Site> {
     public boolean update(Site obj) {
         return false;
     }
+
+    public int capaciteTot(int id_site) {
+        try {
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT SUM(capacite) FROM salle\n" +
+                            "WHERE salle.id_site=" + id_site
+            );
+            while (rset.next()) {
+                return rset.getInt("SUM(capacite)");
+            }
+        } catch (SQLException e) {
+            System.err.println("Connexion echouee : probleme SQL CoursDAO");
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 }

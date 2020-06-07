@@ -323,7 +323,7 @@ public class GroupeDAO extends DAO<Groupe> {
         }
         return true;
     }
-    
+
     /**
      * Méthode qui renvoie vrai si le nom existe dans la bdd false sinon
      *
@@ -358,6 +358,26 @@ public class GroupeDAO extends DAO<Groupe> {
             e.printStackTrace();
         }
         return existe;
+    }
+
+    public int nombreDeSeance(int id_groupe) {
+        try {
+            this.rset = this.conn.createStatement(
+                    this.rset.TYPE_SCROLL_INSENSITIVE,
+                    this.rset.CONCUR_READ_ONLY).executeQuery(
+                    "SELECT COUNT(id) FROM seance\n" +
+                            "INNER JOIN seance_groupes\n" +
+                            "ON seance_groupes.id_seance=seance.id\n" +
+                            "WHERE seance_groupes.id_groupe=" + id_groupe
+            );
+            while (rset.next()) {
+                return rset.getInt("COUNT(id)");
+            }
+        } catch (SQLException e) {
+            System.err.println("Connexion echouee : probleme SQL CoursDAO");
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 }
