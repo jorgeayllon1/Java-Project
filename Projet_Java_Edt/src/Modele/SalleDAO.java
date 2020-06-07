@@ -66,7 +66,7 @@ public class SalleDAO extends DAO<Salle> {
             //this.conn = Connexion.seConnecter();
             this.rset = this.conn.createStatement(this.rset.TYPE_SCROLL_INSENSITIVE, this.rset.CONCUR_READ_ONLY).executeQuery(
                     "SELECT id FROM salle\n" +
-                            "WHERE nom=" + nom
+                            "WHERE nom='" + nom+"'"
             );
             while (rset.next()) {
                 le_id = rset.getInt("id");

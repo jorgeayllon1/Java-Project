@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -216,8 +217,12 @@ public class Edt_Admin extends Edt {
         }
 
         SalleDAO salleDAO = new SalleDAO();
+        
+        
+            id_salle = salleDAO.idCelonNom(nom_salle);
+            
 
-        id_salle = salleDAO.idCelonNom(nom_salle);
+        
         try
         {
             if (id_salle != 0) {/// Si le id_groupe = 0 alors le groupe n'existe pas
@@ -1437,7 +1442,7 @@ public class Edt_Admin extends Edt {
                         if (stock_seances[row][col] != null) //Si il y a une séance dans la cellule
                         {
                             Date today = new Date(System.currentTimeMillis());
-                            if (stock_seances[row][col].getDate().compareTo(today) < 0) //Si la séance selectionnée venaat après la date actuelle
+                            if (stock_seances[row][col].getDate().compareTo(today) < 0 &&stock_seances[row][col].getEtat()!=2 ) //Si la séance selectionnée venaat après la date actuelle
                             {
                                 System.out.println(stock_seances[row][col].getID());
                                 JFrame frame = new JFrame();
@@ -1446,6 +1451,11 @@ public class Edt_Admin extends Edt {
                                         + " Date séance : " + stock_seances[row][col].getDate());
                                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                                 majControleur.validerSeance(stock_seances[row][col]);
+                            }
+                            else if(stock_seances[row][col].getEtat()==2)
+                            {
+                                JOptionPane stop = new JOptionPane();
+                                stop.showMessageDialog(null, "Cette séance est déjà validée", "ERREUR", JOptionPane.ERROR_MESSAGE);
                             }
                             else
                             {
@@ -1581,7 +1591,7 @@ public class Edt_Admin extends Edt {
                                 case 1:
                                     {
                                         String myString =
-                                                "<html><p>" + seance_manquante.getCours().getNom();
+                                                "<html><p>"  +seance_manquante.getID()+ seance_manquante.getCours().getNom();
                                         if(seanceDao.siProf(seance_manquante)==false)
                                         {
                                             myString+="<br>Manque PROF</p></html>";
@@ -1600,7 +1610,7 @@ public class Edt_Admin extends Edt {
                                 case 2:
                                     {
                                         String myString =
-                                                "<html><p>" + seance_manquante.getCours().getNom() + "<br>Prof :" +
+                                                "<html><p>" +seance_manquante.getID() + seance_manquante.getCours().getNom() + "<br>Prof :" +
                                                 prof.getNom() + "<br>Salle :" +
                                                 salle.getNom() + "<br>Site :" +
                                                 salle.getSite().getNom() + "Valide</p></html>";
@@ -1611,7 +1621,7 @@ public class Edt_Admin extends Edt {
                                 case 3:
                                     {
                                         String myString =
-                                                "<html><p>" + seance_manquante.getCours().getNom() + "<br>Prof :" +
+                                                "<html><p>" +seance_manquante.getID() + seance_manquante.getCours().getNom() + "<br>Prof :" +
                                                 prof.getNom() + "<br>Salle :" +
                                                 salle.getNom() + "<br>Site :" +
                                                 salle.getSite().getNom() + "Annulé</p></html>";
@@ -1879,7 +1889,7 @@ public class Edt_Admin extends Edt {
                                 case 1:
                                     {
                                         String myString =
-                                                "<html><p>" + mes_seances.get(i).getCours().getNom();
+                                                "<html><p>"  +mes_seances.get(i).getID()+ mes_seances.get(i).getCours().getNom();
                                         if(seanceDao.siProf(mes_seances.get(i))==false)
                                         {
                                             myString+="<br>Manque PROF</p></html>";
@@ -1898,7 +1908,7 @@ public class Edt_Admin extends Edt {
                                 case 2:
                                     {
                                         String myString =
-                                                "<html><p>" + mes_seances.get(i).getCours().getNom()+ " "+ mes_seances.get(i).getType().getNom() + "<br>Prof :" +
+                                                "<html><p>" +mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom()+ " "+ mes_seances.get(i).getType().getNom() + "<br>Prof :" +
                                                 prof.getNom() + "<br>Salle :" +
                                                 salle.getNom() + "<br>Site :" +
                                                 salle.getSite().getNom() + "Valide</p></html>";
@@ -1909,7 +1919,7 @@ public class Edt_Admin extends Edt {
                                 case 3:
                                     {
                                         String myString =
-                                                "<html><p>" + mes_seances.get(i).getCours().getNom()+ " "+ mes_seances.get(i).getType().getNom() + "<br>Prof :" +
+                                                "<html><p>" +mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom()+ " "+ mes_seances.get(i).getType().getNom() + "<br>Prof :" +
                                                 prof.getNom() + "<br>Salle :" +
                                                 salle.getNom() + "<br>Site :" +
                                                 salle.getSite().getNom() + "Annulé</p></html>";
@@ -2028,7 +2038,7 @@ public class Edt_Admin extends Edt {
                                 case 1:
                                     {
                                         String myString =
-                                                "<html><p>" + mes_seances.get(i).getCours().getNom();
+                                                "<html><p>" +mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom();
                                         if(seanceDao.siProf(mes_seances.get(i))==false)
                                         {
                                             myString+="<br>Manque PROF</p></html>";
@@ -2047,7 +2057,7 @@ public class Edt_Admin extends Edt {
                                 case 2:
                                     {
                                         String myString =
-                                                "<html><p>" + mes_seances.get(i).getCours().getNom() + "<br>Prof :" +
+                                                "<html><p>"  +mes_seances.get(i).getID()+ mes_seances.get(i).getCours().getNom() + "<br>Prof :" +
                                                 prof.getNom() + "<br>Salle :" +
                                                 salle.getNom() + "<br>Site :" +
                                                 salle.getSite().getNom() + "Valide</p></html>";
@@ -2058,7 +2068,7 @@ public class Edt_Admin extends Edt {
                                 case 3:
                                     {
                                         String myString =
-                                                "<html><p>" + mes_seances.get(i).getCours().getNom() + "<br>Prof :" +
+                                                "<html><p>"  +mes_seances.get(i).getID()+ mes_seances.get(i).getCours().getNom() + "<br>Prof :" +
                                                 prof.getNom() + "<br>Salle :" +
                                                 salle.getNom() + "<br>Site :" +
                                                 salle.getSite().getNom() + "Annulé</p></html>";
@@ -2161,7 +2171,7 @@ public class Edt_Admin extends Edt {
                                 case 1:
                                     {
                                         String myString =
-                                                "<html><p>" + mes_seances.get(i).getCours().getNom();
+                                                "<html><p>" +mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom();
                                         if(seanceDao.siProf(mes_seances.get(i))==false)
                                         {
                                             myString+="<br>Manque PROF</p></html>";
@@ -2180,7 +2190,7 @@ public class Edt_Admin extends Edt {
                                 case 2:
                                     {
                                         String myString =
-                                                "<html><p>" + mes_seances.get(i).getCours().getNom()
+                                                "<html><p>" +mes_seances.get(i).getID() + mes_seances.get(i).getCours().getNom()
                                                 + "<br>Prof :" +
                                                 prof.getNom() + "<br>Groupe : " + groupe.getNom() + " Valide</p></html>";
                                         tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
@@ -2190,7 +2200,7 @@ public class Edt_Admin extends Edt {
                                 case 3:
                                     {
                                         String myString =
-                                                "<html><p>" + mes_seances.get(i).getCours().getNom()
+                                                "<html><p>" +mes_seances.get(i).getID()+ mes_seances.get(i).getCours().getNom()
                                                 + "<br>Prof :" +
                                                 prof.getNom() + "<br>Groupe : " + groupe.getNom() + "Annulé</p></html>";
                                         tableau.getModel().setValueAt(myString, ligne_semaine, colonne_semaine);
